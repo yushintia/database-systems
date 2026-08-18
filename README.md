@@ -23,6 +23,7 @@ slides/
   _shared/case-study.md   running University Course Registration case
   week01-introduction.md
   ...week15-final-review.md
+materials/week01/          student handout, worksheet, and self-check quiz for Week 1
 ```
 
 ## Setup

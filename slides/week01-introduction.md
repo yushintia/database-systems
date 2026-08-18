@@ -17,8 +17,10 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 </div>
 
 <!--
-notes: Welcome. Ask who has ever lost a file to a bad save, or fought over
-a shared spreadsheet with a classmate. That show of hands is today's hook.
+notes: Welcome the class.
+Ask: "Has your file ever been lost or overwritten?"
+Ask: "Have you shared one file with a group and had a conflict?"
+Let a few students answer with a show of hands. That is today's hook.
 -->
 
 ---
@@ -45,7 +47,33 @@ a shared spreadsheet with a classmate. That show of hands is today's hook.
 <div class="wk review"><div class="n">Wk 15</div><div class="t">Final Exam</div></div>
 </div>
 
-<!-- notes: Point out the arc: model, design, build, query. Fifteen weeks, one argument. -->
+<!-- notes: Point at the row. Say: "Fifteen weeks. One story. We build a database, step by step." -->
+
+---
+
+<!-- NEW: warm-up, placed right after the roadmap (slot 2) per course design -->
+
+# Before We Start: Read a Spreadsheet
+
+<div class="thread">A quick warm-up. No coding needed yet.</div>
+
+| Student | Class | Grade | Room |
+|---|---|---|---|
+| Lee Jun | CSE201 | B+ | 402 |
+| Park Somi | CSE201 | A0 | 402 |
+| Lee Jun | CSE201 | B+ | 402 |
+| Kim Tae | CSE305 | A- | 210 |
+
+- Each **row** is one record: one line about one student.
+- Each **column** is one kind of fact: name, class, grade, room.
+- Look closely. Do two rows look exactly the same?
+
+<!--
+notes: Give students 1 minute to look, alone, before asking anything.
+Ask aloud: "How many rows are there?" (4)
+Ask aloud: "How many different students?" (3, Lee Jun repeats)
+Ask aloud: "What is strange about row 1 and row 3?" (identical, a duplicate)
+-->
 
 ---
 
@@ -53,11 +81,13 @@ a shared spreadsheet with a classmate. That show of hands is today's hook.
 
 # What You Already Bring
 
-- **Computer Programming**: you can write logic that manipulates data
-- **Data Structures**: you know arrays, lists, trees. A database is a structure too, just one built for millions of rows and many users at once
-- **Discrete Mathematics**: sets and relations. The relational model in Week 2 is built directly on set theory
+- **Programming:** you already write logic that changes data.
+- **Data Structures:** you know arrays, lists, and trees. A database is
+  a structure too, just built for millions of rows and many users.
+- **Discrete Math:** you know sets. Week 2's relational model is built
+  directly on sets.
 
-We are not starting from zero. We are pointing what you know at a new problem.
+We do not start from zero. We point what you know at a new problem.
 
 ---
 
@@ -66,7 +96,7 @@ We are not starting from zero. We are pointing what you know at a new problem.
 <!-- _class: section -->
 
 # Course Logistics
-<div class="driving-q">Read once now, referenced all semester.</div>
+<div class="driving-q">Read once now. Use it all semester.</div>
 
 ---
 
@@ -81,16 +111,33 @@ We are not starting from zero. We are pointing what you know at a new problem.
 | Presentation | 10% |
 | In-class items | 10% |
 
-<!-- notes: Assignment 1 due Week 4 (E-R Diagram). Assignment 2 due Week 12 (Multi-table Queries). Quiz 1 Week 5, Quiz 2 Week 13. -->
+<!-- notes: Say Assignment 1 is due Week 4. Assignment 2 is due Week 12. Quiz 1 is Week 5. Quiz 2 is Week 13. -->
 
 ---
 
 # Textbook, Policy & Contact
 
-- **Textbook:** Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed., McGraw-Hill, 2019
-- **References:** Connolly & Begg, *Database Systems*, 6th ed.; Elmasri & Navathe, *Fundamentals of Database Systems*, 7th ed.
-- **Policy:** attend and participate every class; late assignments are penalized; plagiarism and cheating lead to disciplinary action
-- **Contact:** yushintia@deu.ac.kr, office hours by email appointment
+- **Textbook:** Silberschatz, Korth, Sudarshan, *Database System
+  Concepts*, 7th ed., McGraw-Hill, 2019
+- **Other references:** Connolly & Begg; Elmasri & Navathe (full
+  details in the syllabus)
+- **Policy:** come to every class; late work loses points; copying
+  others' work is not allowed
+- **Contact:** yushintia@deu.ac.kr — email to book office hours
+
+---
+
+<!-- NEW: Key Words Today, session 1 -->
+
+# Key Words Today
+
+- **Row:** one record. One line of data about one thing (one student).
+- **Column:** one kind of fact, repeated for every row.
+- **Duplicate:** the exact same row, typed more than once.
+- **Inconsistent:** two rows about the same thing that do not agree.
+- **Lost update:** one person's change disappears when someone else saves.
+
+<!-- notes: Read each term aloud once. Point back at the warm-up table for "row," "column," and "duplicate." -->
 
 ---
 
@@ -100,21 +147,20 @@ We are not starting from zero. We are pointing what you know at a new problem.
 
 <div class="pain">
 
-The registration office keeps everything in one spreadsheet:
-`registrations.xlsx`, 40,000 rows and growing every semester. Each
-staff member keeps their own working copy, downloaded once, edited
-over time, then uploaded back to the shared drive.
+The registration office keeps everything in one file: `registrations.xlsx`.
+It has 40,000 rows, and it grows every semester. Each staff member
+keeps their own copy. They edit it, then upload it back later.
 
-Today: a professor emails asking who is enrolled in her class. Two
-staff both uploaded this week. Whoever saved last silently replaced
-the other's edits, no warning, no merge. One student's major is spelled
-three different ways in three different rows. Nobody can say, right
-now, exactly who is enrolled in CSE301. Someone has to scroll and read,
-by eye, 40,000 rows, hoping not to miss one.
+Today, a professor asks: "Who is in my class?" Two staff both
+uploaded this week. The second save silently erased the first save's
+changes. One student's major is spelled three different ways, in
+three different rows. Nobody can say, right now, who is really
+enrolled in CSE301. Someone must scroll through all 40,000 rows by
+eye, hoping not to miss one.
 
 </div>
 
-<!-- notes: Do not use the word "database" yet. Let them feel the mess first. -->
+<!-- notes: Do not say the word "database" yet. Let the class feel the mess first. -->
 
 ---
 
@@ -133,9 +179,9 @@ by eye, 40,000 rows, hoping not to miss one.
 </div>
 </div>
 
-This is not a small inconvenience. It is the entire reason this course exists.
+This gap is not a small annoyance. It is the reason this course exists.
 
-<!-- notes: Let the tiny second bar sit in silence for a second. That gap is the whole semester. -->
+<!-- notes: Pause after showing the second bar. Let the silence make the point. -->
 
 ---
 
@@ -143,15 +189,16 @@ This is not a small inconvenience. It is the entire reason this course exists.
 
 # What Else This Actually Costs
 
-- A student's grade attaches to the wrong row: wrong transcript, and no one notices until graduation
-- Two staff each upload their own copy: whoever saves last wins, the other's edits vanish with no warning
-- A crash mid-save corrupts the file, with no way to know what was lost
+- A grade attaches to the wrong student. Nobody notices until graduation.
+- Two staff save at the same time. One person's work just disappears.
+- A crash during a save can corrupt the file, with no way to know
+  what was lost.
 
 <div class="why">
-<strong>In industry:</strong> most backend and data jobs assume SQL and
-relational design; "design a schema for X" is a standard interview
-question. At larger scale, this exact class of mistake has caused real
-multi-hour outages at major tech companies.
+<strong>In industry:</strong> most backend and data jobs expect SQL
+and database design skills. "Design a schema for X" is a common
+interview question. Mistakes like these have caused real outages at
+major tech companies.
 </div>
 
 ---
@@ -175,9 +222,9 @@ multi-hour outages at major tech companies.
   <div class="bar-value">conflict, guaranteed</div>
 </div>
 </div>
-<div class="bar-note">illustrative, not measured data: the point is the trend, not the exact numbers</div>
+<div class="bar-note">Illustrative, not measured data: the point is the trend.</div>
 
-You have all lived the third bar. A system with no answer for it
+You have all lived the third bar. A system with no plan for this
 **will** lose someone's seat, silently.
 
 ---
@@ -188,7 +235,7 @@ You have all lived the third bar. A system with no answer for it
 
 # This Week's Question
 
-<div class="driving-q">"What must a system provide before we can trust it with data that matters?"</div>
+<div class="driving-q">"What must a system do, before we can trust it with data that matters?"</div>
 
 ---
 
@@ -196,32 +243,45 @@ You have all lived the third bar. A system with no answer for it
 
 # By the End of This Week, You Can
 
-1. Explain why file-processing systems fail at scale
-2. Describe the three levels of data abstraction and why each exists
-3. Name the major data models and where each fits in this course
-4. State this course's three official objectives and where each is covered
+1. Explain why plain files fail as data grows.
+2. Describe three levels of data abstraction, and why each exists.
+3. Name the main data models, and where each fits in this course.
+4. State this course's three goals, and where each is taught.
 
 ---
 
-# This Course's Three Objectives
+# This Course's Three Goals
 
-<div class="thread">Not just this week's goals. This is what the syllabus commits this whole course to.</div>
+<div class="thread">Not just this week's goals. This is the whole course, in three lines.</div>
 
-| # | Objective (from the syllabus) | Where |
+| # | Goal (from the syllabus) | Where |
 |---|---|---|
-| 1 | Understand data models, the relational model, and SQL, to define, manipulate, and retrieve data | Weeks 2, 9-12 |
-| 2 | Design relational databases using the E-R approach and normalization theory | Weeks 3-7 |
-| 3 | Explain data storage, query processing, transaction management, concurrency control, and recovery | Previewed today, Week 1 |
+| 1 | Learn data models, the relational model, and SQL | Weeks 2, 9-12 |
+| 2 | Design databases with E-R diagrams and normalization | Weeks 3-7 |
+| 3 | Understand storage, queries, transactions, and recovery | Previewed today |
 
-Objective 3 is why today covers the DBMS engine at a glance: it is the
-only week this course states it explicitly.
+Goal 3 is why today also shows the DBMS engine. It is the only week
+that names it directly.
+
+---
+
+<!-- NEW: session-1 close, previews Worksheet Part A -->
+
+# Coming Up: Worksheet Part A
+
+<div class="thread">Next in this class: less listening, more doing.</div>
+
+Later today, you and a partner will look at a real, messy class list.
+You will find the same problems you just read about.
+
+That is **Worksheet Part A**. Keep a pen ready.
 
 ---
 
 <!-- _class: section -->
 
 # End of 차시 1
-<div class="driving-q">Short break. 차시 2 starts with: where did all this come from?</div>
+<div class="driving-q">Short break. Next: where did this problem come from?</div>
 
 ---
 
@@ -229,21 +289,20 @@ only week this course states it explicitly.
 
 # This Problem Is Not New
 
-<div class="thread">You just felt the pain. Now: who else felt it, and what did they do about it?</div>
+<div class="thread">You just felt the pain. Now: who else felt it, and what did they do?</div>
 
-- **1960s:** data lived in hand-written file-processing systems; every
-  application wrote its own file format and its own read/write logic
-- Every new application either duplicated data, or wrote brittle code to
-  reach into another application's files. Sound familiar?
+- In the 1960s, data lived in files. Every program wrote its own file
+  format, and its own code to read and write it.
+- Every new program either copied data again, or wrote fragile code to
+  reach into another program's files. Sound familiar?
 
 <div class="why">
-Imagine if KakaoTalk, your banking app, and 배달의민족 each kept their
-own private copy of your phone number. Change it in one, the other two
-never find out. That was every app, all the time, before this course's
-subject existed.
+Imagine if KakaoTalk, your bank app, and 배달의민족 each kept a private
+copy of your phone number. Change it in one, the others never know.
+That was every app, all the time, before this course's subject existed.
 </div>
 
-Companies spent **decades** and serious money on exactly this
+Companies spent **decades** and real money solving this exact
 problem, at a scale of millions of records, not 40,000 rows.
 
 ---
@@ -257,8 +316,8 @@ problem, at a scale of millions of records, not 40,000 rows.
 <div class="pt"><div class="dot"></div><div class="y">Today</div><div class="d">PostgreSQL, MySQL, Oracle<br>the same ideas, still running</div></div>
 </div>
 
-The relational model won because it separated **what** you ask for from
-**how** the machine gets it. That idea is this whole course.
+The relational model won because it split **what** you ask for from
+**how** the machine finds it. That idea is this whole course.
 
 ---
 
@@ -266,162 +325,118 @@ The relational model won because it separated **what** you ask for from
 
 # Database & DBMS: Definition
 
-<div class="thread">Fifty years of engineering point at two words. Here they are, precisely.</div>
+<div class="thread">Fifty years of work point at two words. Here they are, precisely.</div>
 
 > A **database** is an organized collection of related data.
-> A **database management system (DBMS)** is software that lets users
-> define, create, maintain, and control access to a database.
+> A **database management system (DBMS)** is software that lets
+> people create, use, and control access to a database.
 
-- **Data**: raw facts, such as `"Kim Minji", "CSE301", "A0"`
-- **Database**: the organized collection (the tables, not the spreadsheet)
-- **DBMS**: the software layer that keeps the collection correct even
-  when many people use it at once (PostgreSQL, MySQL, Oracle, and so on)
+- **Data:** raw facts, such as `"Kim Minji", "CSE301", "A0"`
+- **Database:** the organized collection (tables, not a spreadsheet)
+- **DBMS:** the software that keeps the collection correct, even with
+  many users (examples: PostgreSQL, MySQL, Oracle)
 
-Every time you unlock your phone and your Instagram feed loads, or your
-banking app shows your balance, a DBMS answered that request, correctly,
-in milliseconds. That is what you are learning to build this semester.
-
----
-
-<!-- Act 3 / BUILD: Why File Systems Fail, one anomaly at a time -->
-
-# Why File Systems Fail: Seven Names for One Morning
-
-<div class="thread">You have already lived every failure on this list. Today they get names.</div>
-
-Textbooks (Silberschatz, Ch. 1.2) group file-processing failures into
-seven categories. The next seven slides take them one at a time, each
-with the exact moment from the registration office that shows it.
+Every time your banking app shows your balance, a DBMS answered that
+request correctly, in milliseconds. That is what you build this term.
 
 ---
 
-# 1. Redundancy & Inconsistency
+<!-- NEW: Key Words Today, session 2 -->
 
-<div class="thread">First name: the problem with typing the same fact more than once.</div>
+# Key Words Today
 
-**Redundancy:** the same fact, stored in more than one place.
-**Inconsistency:** those copies disagree with each other.
+- **Redundancy:** the same fact stored in more than one place.
+- **Integrity rule:** a rule data must follow (a grade must be real).
+- **Atomicity:** a save either fully happens, or it does not happen.
+- **Concurrency:** many people using the same data at the same time.
+- **DBMS:** software that keeps shared data correct and safe.
+
+<!-- notes: Read each term aloud. Say these five words label the five problems coming next. -->
+
+---
+
+<!-- Act 3 / BUILD: Why File Systems Fail, trimmed to the essentials -->
+
+# Why File Systems Fail
+
+<div class="thread">You already lived these. Today they get names.</div>
+
+Textbooks group file-processing problems into named categories. We
+cover the five biggest ones now. Two more are in your handout.
+
+---
+
+# Copies That Disagree, Facts You Can't Find
+
+<div class="thread">Problem 1 and 2: typing a fact twice, and no way to ask a question.</div>
+
+**Redundancy & inconsistency:** the same fact stored more than once,
+and the copies disagree.
+
+**Hard to access:** a file has no built-in way to ask a question.
+Every new question means new code, or scrolling by eye.
 
 <div class="pain">
-Kim Minji's name is typed three times in `registrations.xlsx`: "Kim
-Minji," "MinJi Kim," "김민지." Three copies of one fact, and no rule
-saying which one is correct.
+Kim Minji's name is typed three ways: "Kim Minji," "MinJi Kim,"
+"김민지." "Who is in CSE301?" takes about three hours to answer by eye.
 </div>
 
 ---
 
-# 2. Difficulty Accessing Data
+# No Rules, No Safety Net
 
-<div class="thread">Second name: the problem with 40,000 rows and no way to ask a question.</div>
+<div class="thread">Problem 3 and 4: a file that accepts anything, and a save with no guarantee.</div>
 
-A file system has no built-in way to ask a question. Every new question
-means writing new code, or, for the registration office, scrolling by eye.
+**Integrity problems:** a spreadsheet cell has no idea what a valid
+value is.
+
+**Atomicity problems:** a save should fully finish, or not happen at
+all. A file has no such promise.
 
 <div class="pain">
-"Who is enrolled in CSE301?" took someone roughly three hours to answer
-by eye. The same question, asked as a query in Week 11, takes under a
-second.
+Nothing stops someone typing "A99" into the Grade column. A crash
+mid-save can leave the file half-written, with no record of what was
+lost.
 </div>
 
 ---
 
-# 3. Data Isolation
+# Two People, One File
 
-<div class="thread">Third name: the problem with data scattered across files that don't talk to each other.</div>
+<div class="thread">Problem 5: the one you already guessed at the warm-up.</div>
 
-Related data, split across separate files or separate copies, with no
-way for one program to read across all of them at once.
+When two people edit the same data at the same time, one person's
+work can silently disappear. This is called a **lost update**.
 
 <div class="pain">
-Each staff member's downloaded copy is its own island. A question like
-"which students did BOTH advisors update this week?" cannot be
-answered, because no single copy has both people's edits.
+Two staff both uploaded `registrations.xlsx` this week. Whoever
+saved last replaced the other's edits. No warning. No merge.
 </div>
 
 ---
 
-# 4. Integrity Problems
+# Five Failures, One Cause
 
-<div class="thread">Fourth name: the problem with a spreadsheet that accepts anything you type.</div>
-
-**Integrity constraints** are rules data must obey (a grade must be a
-valid grade). A spreadsheet cell has no idea what a valid grade is.
-
-<div class="pain">
-Nothing stops a staff member from typing "A99" into the Grade column,
-or "-3" into an attendance count. The cell accepts it, silently.
-</div>
-
----
-
-# 5. Atomicity Problems
-
-<div class="thread">Fifth name: the problem with a save that gets interrupted halfway.</div>
-
-An operation should either fully happen or not happen at all. A file
-save has no such guarantee.
-
-<div class="pain">
-A crash mid-save leaves `registrations.xlsx` half-written: some rows
-updated, some not, no record of which. There is no way to know what
-was lost.
-</div>
-
----
-
-# 6. Concurrent-Access Anomalies
-
-<div class="thread">Sixth name: the problem with two people editing at once.</div>
-
-When multiple people update the same data around the same time with no
-coordination, one person's work can silently overwrite another's.
-
-<div class="pain">
-Two staff both uploaded `registrations.xlsx` this week. Whoever saved
-last silently replaced the other's edits. No warning, no merge.
-</div>
-
----
-
-# 7. Security Problems
-
-<div class="thread">Seventh and last name: the problem with everyone seeing everything.</div>
-
-Not every user should see or change every piece of data. A shared file
-has no concept of "your data" versus "everyone's data."
-
-<div class="pain">
-Anyone with `registrations.xlsx` can read and edit every student's
-grade, in every class, department-wide. There is no restriction by role.
-</div>
-
----
-
-# Seven Failures, One Cause
-
-<div class="thread">Same seven names, now side by side. All seven, one file, one office.</div>
+<div class="thread">Same five names, side by side. Two more failures: see the handout.</div>
 
 | # | Failure | Registration office example |
 |---|---|---|
 | 1 | Redundancy & inconsistency | Kim Minji, spelled three ways |
-| 2 | Difficulty accessing data | The 3-hour scroll |
-| 3 | Data isolation | Copies that can't be combined |
-| 4 | Integrity problems | A grade of "A99" |
-| 5 | Atomicity problems | The crash mid-save |
-| 6 | Concurrent-access anomalies | The dueling uploads |
-| 7 | Security problems | Everyone can edit everyone's grade |
+| 2 | Hard to access | The 3-hour scroll |
+| 3 | Integrity problems | A grade of "A99" |
+| 4 | Atomicity problems | The crash mid-save |
+| 5 | Concurrency (lost update) | The dueling uploads |
 
-A DBMS exists to solve exactly these seven, at once, permanently.
+A DBMS exists to fix exactly these, all at once, for good.
 
 ---
 
-# Case Study: What's Actually in That Spreadsheet
+# Worked Example: Inside `registrations.xlsx`
 
-<div class="thread">Seven failures, one file. Here is that exact file, so you can see all seven in the flesh.</div>
+<div class="thread">Five failures, one file. Here is that exact file.</div>
 
-This semester, every week's example uses the same system: **university
-course registration**. A real excerpt from `registrations.xlsx`,
-unedited:
+This semester's running example is **university course registration**.
+A real excerpt, unedited:
 
 | Student | Major | Course | Instructor | Grade |
 |---|---|---|---|---|
@@ -430,327 +445,220 @@ unedited:
 | <span style="color:#C0392B;font-weight:700">김민지</span> | <span style="color:#C0392B;font-weight:700">Comp. Science</span> | CSE301 | <span style="color:#C0392B;font-weight:700">(blank)</span> | |
 | Park Jiho | Software Eng. | CSE305 | Prof. Han | A- |
 
-Same student, three rows, three spellings of her name and her major.
-One instructor cell just empty. This is what you were scrolling through.
+One student, three rows, three spellings. One blank instructor. This
+is what you were scrolling through.
 
 ---
 
-# Case Study: How the Pieces Will Connect
+# Where This Is Heading
 
-<div class="thread">The mess above is one flat sheet. By Week 7 it becomes four small, connected tables. Here is the shape we are building toward.</div>
+<div class="thread">The mess above becomes five small, linked tables by Week 7.</div>
 
 <div class="pipeline">
 <div class="stage"><div class="h">Student</div><div class="s">who</div></div>
 <div class="arrow">&rsaquo;</div>
 <div class="stage"><div class="h">Enrollment</div><div class="s">signs up for</div></div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Section</div><div class="s">a class, a room, a time</div></div>
+<div class="stage"><div class="h">Section</div><div class="s">class, room, time</div></div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Course</div><div class="s">CSE301, the subject itself</div></div>
+<div class="stage"><div class="h">Course</div><div class="s">the subject itself</div></div>
 </div>
 
-Each Section is also taught by one **Instructor**, its own small table.
-No name is ever retyped twice; every table links to the next by a
-shared ID, not a shared spelling. The formal diagram for this arrives
-in **Week 4**; for now, just the shape.
+No name is ever retyped. Every table links to the next by a shared
+ID, not a shared spelling. Week 4 shows the full diagram.
 
 ---
 
-# Case Study: Meet the Registration System
+<!-- NEW: Try-It hand-off, session 2 -->
 
-<div class="thread">Five plain-language names. You will see these five words in every remaining week of this course.</div>
+# Now: Worksheet Part A
 
-By **Week 7**, the messy sheet becomes five clean, related tables:
+<div class="thread">Time to practice. Find these problems yourself.</div>
 
-<div class="chip-row">
-<span class="chip">Student</span>
-<span class="chip">Course</span>
-<span class="chip">Instructor</span>
-<span class="chip">Section</span>
-<span class="chip">Enrollment</span>
-</div>
+Work with your neighbor. Open **Worksheet Part A**. Find the
+duplicates, the inconsistency, and the lost update in the sample
+class list.
 
-We build toward that, one concept at a time.
+**~15 minutes.** Raise your hand if you get stuck.
 
----
-
-# Databases Are Already in Your Pocket
-
-<div class="thread">You just met one running example. Here is where databases live in ones you already use every day.</div>
-
-<div class="appgrid">
-<div class="app"><div class="name">KakaoTalk</div><div class="desc">your whole chat history, searchable instantly</div></div>
-<div class="app"><div class="name">Instagram</div><div class="desc">a feed built from millions of posts, live</div></div>
-<div class="app"><div class="name">배달의민족</div><div class="desc">your orders, the restaurant's live menu</div></div>
-<div class="app"><div class="name">Banking app</div><div class="desc">your balance, correct, every refresh</div></div>
-<div class="app"><div class="name">Netflix</div><div class="desc">exactly where you paused, on any device</div></div>
-</div>
-
-None of these apps are "a database." Every one of them **runs on** one,
-answering a question like this, thousands of times a second.
-
----
-
-# The DBMS Landscape
-
-<div class="thread">Same idea, now by product name, and which IT solution each one actually runs.</div>
-
-| Product | Powers |
-|---|---|
-| **PostgreSQL / MySQL** | Most e-commerce and web backends: a Coupang-style storefront |
-| **SQLite** | Lives inside the phone itself: local storage in almost every app |
-| **Oracle / SQL Server** | Banks, airlines, large enterprise systems |
-| NoSQL (mentioned, not covered) | Social feeds and chat, at massive scale |
-
-Relational (this course) remains the default choice whenever data has
-clear structure and correctness matters more than flexibility, which
-describes most business, academic, and financial systems.
+<!--
+notes: Hand out or project Worksheet Part A. Walk the room while pairs work.
+After 15 minutes, ask 2 pairs to share one problem they found.
+-->
 
 ---
 
 <!-- _class: section -->
 
 # End of 차시 2
-<div class="driving-q">Short break. 차시 3 starts with: how a DBMS actually solves all seven.</div>
+<div class="driving-q">Short break. Next: how a DBMS actually fixes all this.</div>
+
+---
+
+<!-- NEW: Key Words Today, session 3 -->
+
+# Key Words Today
+
+- **Schema:** the design. Fixed column names and types.
+- **Instance:** the actual data right now. Always changing.
+- **Abstraction level:** one of three separate views of the same data.
+- **Data model:** the shape data takes (tables, diagrams, documents).
+- **Data independence:** storage can change without breaking your app.
+
+<!-- notes: Read each term aloud. Say: "You will hear these five words for the rest of the semester." -->
 
 ---
 
 <!-- Act 3 / BUILD, continued -->
 
-# A DBMS Shows Different Faces to Different People
+# Databases Are Already in Your Pocket
 
-<div class="thread">You now know the failures, and you have met the running example. Here is the first piece of how a DBMS fixes it: it never mixes these three questions.</div>
+<div class="thread">You just met one example. Here are three more you already use.</div>
 
-A spreadsheet answers "what is the data, and how do I see it, and how
-is it stored" all in one flat sheet. A DBMS keeps three separate
-answers, called levels of abstraction. The next three slides take them
-one at a time, from the bottom up.
-
----
-
-# Level 1: Physical
-
-<div class="thread">The lowest level: how bytes actually sit on disk. Nobody in the registration office ever needs to see this.</div>
-
-**Physical level:** file layout, indexes, exactly how and where the
-bytes are stored.
-
-<div class="why">
-When IT migrates the university's servers to new hardware, this level
-changes completely, new disks, maybe a new data center. Nobody in the
-registration office should notice, or need to care.
+<div class="appgrid">
+<div class="app"><div class="name">KakaoTalk</div><div class="desc">your chat history, searchable instantly</div></div>
+<div class="app"><div class="name">Banking app</div><div class="desc">your balance, correct, every time</div></div>
+<div class="app"><div class="name">Netflix</div><div class="desc">exactly where you paused, on any device</div></div>
 </div>
 
----
-
-# Level 2: Logical
-
-<div class="thread">One level up: what data exists, and how it relates. This is what this whole course actually teaches.</div>
-
-**Logical level:** what data is stored, and how it relates:
-`Student(id, name, major)`, `Course(code, title)`, and so on.
-
-<div class="why">
-This is the level a programmer, and this course, works at almost all
-the time. You design at the logical level; the physical level is
-someone else's problem (often the DBMS itself).
-</div>
+None of these apps "is" a database. Each one **runs on** one,
+answering questions like this thousands of times a second.
 
 ---
 
-# Level 3: View
+# Three Levels: What a DBMS Separates
 
-<div class="thread">The top level: what one specific user is allowed to see. This is the answer to last week's security problem.</div>
-
-**View level:** what THIS user sees, which can be a small slice of the
-full logical data.
-
-<div class="why">
-A professor's app shows only their own sections. A student's app shows
-only their own grades. Same underlying data, different views, exactly
-the fix for the security problem two slides ago.
-</div>
-
----
-
-# All Three, Together
-
-<div class="thread">Same three levels, now stacked, as the picture to keep for the rest of the semester.</div>
+<div class="thread">A spreadsheet mixes these three questions. A DBMS keeps them apart.</div>
 
 <div class="stack">
-<div class="layer view"><span class="h">View</span> <span class="s">what THIS user sees: a professor sees only their own sections</span></div>
-<div class="layer logical"><span class="h">Logical</span> <span class="s">what data exists and how it relates: Student(id, name, major)</span></div>
-<div class="layer physical"><span class="h">Physical</span> <span class="s">how bytes actually sit on disk: file layout, indexes</span></div>
+<div class="layer view"><span class="h">View</span> <span class="s">what THIS user sees: a professor sees only their own classes</span></div>
+<div class="layer logical"><span class="h">Logical</span> <span class="s">what data exists, and how it relates: Student(id, name, major)</span></div>
+<div class="layer physical"><span class="h">Physical</span> <span class="s">how bytes sit on disk: files, indexes</span></div>
 </div>
 
-Mixing these layers is exactly what a spreadsheet does. Separating them
-is exactly what a DBMS does.
+<!--
+notes: Explain bottom-up, out loud, do not just read the slide.
+Physical: disks and files. Nobody in the office ever sees this.
+Logical: what data exists. This is what this whole course teaches.
+View: what one user is allowed to see. This fixes the security problem in the handout.
+-->
 
 ---
 
-# Instances & Schemas
+# Schema & Instance
 
-<div class="thread">Within each layer above, one thing is fixed and one thing constantly changes. Which is which?</div>
+<div class="thread">In every level above, one thing is fixed. One thing keeps changing.</div>
 
-- **Schema:** the design, column names and types, unchanging day to day
-  (like a variable's declared type)
-- **Instance:** the actual data at this moment, changing constantly
-  (like a variable's current value)
-
-<div class="why">
-No coding background needed for this one: your student ID card has a
-<strong>schema</strong>, name, photo, student number, department, the
-same blank fields on every card the university prints. Your own card,
-filled in with your face and your number, is one <strong>instance</strong>.
-</div>
-
-**Data independence:** changing physical storage should not force you
-to rewrite the application, which only talks to the logical level. This
-is why the three levels exist, so the registration office's spreadsheet
-chaos never happens again when the university switches disks or servers.
-
----
-
-# One More Example: A Course, Over Time
-
-<div class="thread">Same idea, one more time, with an actual table instead of an ID card.</div>
-
-**Schema (fixed):** `Course(code, title, room)`, three columns, never
-changes semester to semester.
+- **Schema:** the design. Column names and types. Rarely changes.
+- **Instance:** the actual data right now. Changes all the time.
 
 | Semester | code | title | room |
 |---|---|---|---|
 | This semester | CSE301 | Databases | 성파 702 |
 | Last semester | CSE301 | Databases | 성파 615 |
 
-Same three columns both times, that is the schema. The room changed,
-that is two different **instances** of the same schema.
+Same three columns both times: that is the **schema**. The room
+changed: that is two different **instances** of it.
+
+**Data independence:** changing physical storage should never force
+you to rewrite the application. The app only talks to the logical
+level.
 
 ---
 
-# Data Models: The Logical Layer Needs a Shape
+# Data Models: Two We Use, One We Name
 
-<div class="thread">The logical level from three slides ago needs an actual shape. These are the shapes a DBMS can take.</div>
+<div class="thread">The logical level needs a shape. These are the shapes it can take.</div>
 
-A **data model** is the shape data takes at the logical level. This
-course covers two of them closely, and names a third for context. One
-slide each.
-
----
-
-# Model 1: Relational
-
-<div class="thread">This course's core, starting next week.</div>
-
-**Relational:** data as tables, related to each other by shared values,
-not by retyping.
-
-<div class="why">
-Your student list and your class list, as two separate sheets, linked
-by student ID instead of retyping every name on both. Week 2 onward,
-every table in this course is built this way.
-</div>
-
----
-
-# Model 2: Entity-Relationship (E-R)
-
-<div class="thread">The step before the tables exist at all.</div>
-
-**Entity-Relationship (E-R):** a diagram of real-world things (Student,
-Course, Instructor) and how they connect, before any table is built.
-
-<div class="why">
-The mind-map sketch you draw on paper first: circle the things
-(Student, Course), draw a line for how they connect (enrolls in).
-Week 4 turns this into a formal diagram, then Week 6 turns it into
-tables.
-</div>
-
----
-
-# Named for Context: Other Models
-
-<div class="thread">Two models this course teaches. One more, so the names sound familiar later.</div>
-
-**Object-based / Semi-structured:** objects, or flexible JSON-like
-documents, used when data does not fit neatly into rows and columns.
-
-Not covered in depth this semester, this course is relational
-end to end, but the name will come up again if you work with NoSQL
-systems later in your career.
+- **Relational (this course):** data as tables, linked by shared IDs,
+  not by retyping. Week 2 onward, every table works this way.
+- **Entity-Relationship (E-R):** a diagram of real things (Student,
+  Course) and how they connect, before any table exists. Week 4.
+- **Object / semi-structured:** flexible data that does not fit rows
+  and columns, like JSON. Named here for later, not covered deeply.
 
 ---
 
 # The Design Lifecycle: This Course's Real Spine
 
-<div class="thread">Abstraction and data models are pieces. Here is the order you actually put them to work in.</div>
+<div class="thread">Here is the order we actually build in.</div>
 
 <div class="pipeline">
 <div class="stage"><div class="h">Requirements</div><div class="s">what users need</div></div>
 <div class="arrow">&rsaquo;</div>
 <div class="stage"><div class="h">Conceptual</div><div class="s">E-R diagram<br>Week 3-4</div></div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Logical</div><div class="s">mapping, normalization<br>Week 6-7</div></div>
+<div class="stage"><div class="h">Logical</div><div class="s">tables, normal form<br>Week 6-7</div></div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Physical</div><div class="s">indexes, storage</div></div>
+<div class="stage"><div class="h">Physical</div><div class="s">storage, indexes</div></div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Implementation</div><div class="s">DDL, DML, queries<br>Week 9-12</div></div>
+<div class="stage"><div class="h">Build</div><div class="s">SQL<br>Week 9-12</div></div>
 </div>
 
-Every remaining week of this course is one station on this line. When a
-topic feels disconnected, find it on this diagram.
+Every later week of this course is one stop on this line.
 
 ---
 
-# Inside the DBMS Engine
+# Inside the Engine, a Quick Look
 
-<div class="thread">The lifecycle above is what YOU do. This is what the DBMS does, every second, underneath you.</div>
+<div class="thread">This is what a DBMS does underneath you, every second.</div>
 
-- **Storage manager:** moves data between disk and memory
-- **Query processor:** turns your `SELECT` into an efficient execution plan
-- **Transaction manager:** makes sure concurrent users don't corrupt each
-  other's work, and a crash mid-write never leaves half-saved data
+- **Storage manager:** moves data between disk and memory.
+- **Query processor:** turns your question into a fast search plan.
+- **Transaction manager:** keeps users from corrupting each other's work.
 
 <div class="why">
-These three map directly to today's pain: storage manager prevents
-corruption, transaction manager is the direct answer to the 수강신청
-risk bars from earlier, query processor is the 3-hour bar shrinking to
-under 1 second.
-<br><br>
-<strong>계좌이체, a bank transfer:</strong> money must leave your account
-and arrive in your friend's, both steps, or neither. A transaction
-manager is the reason your money never just vanishes between the two.
+<strong>계좌이체, a bank transfer:</strong> money must leave one
+account and arrive in another, both steps, or neither. The
+transaction manager is why your money never just vanishes.
 </div>
 
----
-
-# Who Uses a Database System
-
-<div class="thread">An engine needs operators. Here is everyone who touches it, and how.</div>
-
-- **End users / application programmers:** query and update through apps
-- **Sophisticated users:** write SQL directly for analysis
-- **Database administrator (DBA):** owns schema, security, backups, and
-  performance; the person who would have prevented this mess
+Who uses all this? App users, analysts who write SQL directly, and a
+**DBA** (database administrator) who owns security and backups.
 
 ---
 
-# Check Yourself
+<!-- NEW: Try-It hand-off, session 3 -->
 
-1. Name two problems the registration office spreadsheet scenario shows, and
-   match each to one of Silberschatz's file-processing failure categories.
-2. Which of the three abstraction levels changes when the university
-   switches disks or servers, and which one stays the same?
+# Now: Worksheet Part B
+
+<div class="thread">One more round. Harder problems, same messy world.</div>
+
+Work with your neighbor. Open **Worksheet Part B**. Find the lost
+update, label the schema, and spot one more integrity problem.
+
+**~15 minutes.** We check answers together right after.
+
+<!--
+notes: Hand out or project Worksheet Part B. Walk the room while pairs work.
+Bring the class back together after about 15 minutes.
+-->
 
 ---
 
-# Answers
+# Worksheet Part B — Let's Check Together
 
-1. Silently overwritten upload: **concurrent-access anomaly**. Misspelled
-   major across rows: **data inconsistency / redundancy**.
-2. **Physical** changes (a new disk, a new server). **Logical** stays
-   the same, which is the entire point of data independence.
+1. Which failure caused the lost room-edit? **Concurrency (lost update).**
+2. What made the grade cell wrong? **Integrity problem.**
+3. Which part of the sheet is the schema? **The column names: student, course, grade.**
+
+<!-- notes: Ask 2-3 pairs for their answers before you reveal these. Accept any answer that names the right idea, even in different words. -->
+
+---
+
+<!-- NEW: quiz hand-off -->
+
+# Now: Quick Self-Check Quiz
+
+<div class="thread">Ungraded. Just for you, to see what stuck.</div>
+
+Open the **Week 1 Quiz**. Answer on your own, about 10 minutes.
+Check your own answers at the end. Ask if anything surprises you.
+
+<!--
+notes: Distribute or project the quiz. After about 10 minutes, reveal the
+answer key and discuss as a group any question most of the class missed.
+-->
 
 ---
 
@@ -759,11 +667,11 @@ manager is the reason your money never just vanishes between the two.
 # What Today's Big Picture Cannot Do
 
 <div class="limits">
-We now know <em>what</em> a DBMS promises: consistency, controlled
-concurrency, recovery from crashes. But we still have no idea <em>how</em>
-to structure the registration data: what tables, what columns, what
-connects to what. Knowing the destination is not the same as knowing
-the map.
+We now know <em>what</em> a DBMS promises: correct data, safe
+sharing, recovery from crashes. We still do not know <em>how</em> to
+structure the registration data: what tables, what columns, what
+connects to what. Knowing the goal is not the same as knowing the
+plan.
 </div>
 
 ---
@@ -773,8 +681,8 @@ the map.
 # Next Week
 
 Week 1 leaves **how to structure data as tables** unsolved. **Week 2,
-The Relational Model**, addresses it: relations, attributes, and the
-mathematical foundation every table in this course rests on.
+The Relational Model**, answers it: relations, attributes, and the
+math every table in this course rests on.
 
 ---
 
@@ -782,16 +690,15 @@ mathematical foundation every table in this course rests on.
 
 # Summary
 
-- File-processing systems fail through redundancy, inconsistency,
-  difficult access, poor integrity, no atomicity, concurrency anomalies,
-  and weak security. A DBMS exists to solve exactly these.
-- Three abstraction levels (physical, logical, view) exist so storage
-  changes don't break applications.
+- Plain files fail in five main ways: redundancy, hard access, weak
+  rules, no atomicity, and unsafe sharing. A DBMS fixes all five.
+- Three levels (physical, logical, view) exist so storage changes
+  never break your app.
 - This course follows the real order of database work: requirements,
-  modeling, mapping, normalization, SQL.
+  design, tables, then SQL.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 1
-- **Prepare:** think of one more real-world example, not registration,
-  where a spreadsheet would break down. Bring it to Week 2.
+- **Prepare:** think of one more everyday example where a spreadsheet
+  would break down. Bring it to Week 2.
 
 ---
 
