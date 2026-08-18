@@ -363,7 +363,8 @@ request correctly, in milliseconds. That is what you build this term.
 <div class="thread">You already lived these. Today they get names.</div>
 
 Textbooks group file-processing problems into named categories. We
-cover the five biggest ones now. Two more are in your handout.
+cover the five biggest ones now. Two more are in your
+[handout](materials/week01/handout.html).
 
 ---
 
@@ -418,7 +419,8 @@ saved last replaced the other's edits. No warning. No merge.
 
 # Five Failures, One Cause
 
-<div class="thread">Same five names, side by side. Two more failures: see the handout.</div>
+<div class="thread">Same five names, side by side. Two more failures: see the
+<a href="materials/week01/handout.html">handout</a>.</div>
 
 | # | Failure | Registration office example |
 |---|---|---|
@@ -476,7 +478,8 @@ ID, not a shared spelling. Week 4 shows the full diagram.
 
 <div class="thread">Time to practice. Find these problems yourself.</div>
 
-Work with your neighbor. Open **Worksheet Part A**. Find the
+Work with your neighbor. Open
+**[Worksheet Part A](materials/week01/worksheet.html)**. Find the
 duplicates, the inconsistency, and the lost update in the sample
 class list.
 
@@ -625,7 +628,8 @@ Who uses all this? App users, analysts who write SQL directly, and a
 
 <div class="thread">One more round. Harder problems, same messy world.</div>
 
-Work with your neighbor. Open **Worksheet Part B**. Find the lost
+Work with your neighbor. Open
+**[Worksheet Part B](materials/week01/worksheet.html)**. Find the lost
 update, label the schema, and spot one more integrity problem.
 
 **~15 minutes.** We check answers together right after.
@@ -653,7 +657,7 @@ Bring the class back together after about 15 minutes.
 
 <div class="thread">Ungraded. Just for you, to see what stuck.</div>
 
-Open the **Week 1 Quiz**. Answer on your own, about 10 minutes.
+Open the **[Week 1 Quiz](materials/week01/quiz.html)**. Answer on your own, about 10 minutes.
 Check your own answers at the end. Ask if anything surprises you.
 
 <!--

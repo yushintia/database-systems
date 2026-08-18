@@ -29,6 +29,8 @@ jobs:
             --theme-set themes/shintia.css --html --allow-local-files -o site
           cp -r assets site/assets
           cp index.html site/index.html
+      - name: Build materials to site/materials
+        run: node scripts/build-materials.js site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site

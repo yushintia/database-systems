@@ -7,7 +7,8 @@
     "preview": "marp -s slides --theme-set themes/shintia.css --html",
     "build:html": "marp -I slides --theme-set themes/shintia.css --html --allow-local-files -o dist",
     "build:pdf": "marp -I slides --theme-set themes/shintia.css --html --pdf --allow-local-files -o dist",
-    "build:pptx": "marp -I slides --theme-set themes/shintia.css --html --pptx --allow-local-files -o dist"
+    "build:pptx": "marp -I slides --theme-set themes/shintia.css --html --pptx --allow-local-files -o dist",
+    "build:materials": "node scripts/build-materials.js dist"
   },
   "devDependencies": {
     "@marp-team/marp-cli": "^4.0.1"
