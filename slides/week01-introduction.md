@@ -178,6 +178,7 @@ eye, hoping not to miss one.
   <div class="bar-value">under 1 second, any class</div>
 </div>
 </div>
+<div class="bar-note">Illustrative, not measured data: the point is the gap, not the exact minutes.</div>
 
 This gap is not a small annoyance. It is the reason this course exists.
 
