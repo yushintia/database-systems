@@ -14,10 +14,20 @@ const COURSE_NAME = 'Database Systems (511783-001)';
 const repoRoot = path.join(__dirname, '..');
 const outDir = path.join(repoRoot, process.argv[2] || 'dist');
 const materialsDir = path.join(repoRoot, 'materials');
+const slidesDir = path.join(repoRoot, 'slides');
 
 function weekLabel(week) {
   const m = week.match(/week(\d+)/i);
   return m ? `Week ${parseInt(m[1], 10)}` : week;
+}
+
+// The slide deck's filename is a topic slug (e.g. week02-performance-and-cost.md),
+// not just "<week>-introduction.md" -- that pattern only happens to hold for Week 1.
+// Find the actual deck file for this week instead of assuming the name.
+function slideDeckHtmlName(week) {
+  const files = fs.existsSync(slidesDir) ? fs.readdirSync(slidesDir) : [];
+  const match = files.find((f) => f.startsWith(`${week}-`) && f.endsWith('.md'));
+  return match ? match.replace(/\.md$/, '.html') : `${week}-introduction.html`;
 }
 
 function escapeHtml(s) {
@@ -27,7 +37,7 @@ function escapeHtml(s) {
 }
 
 function renderPage({ title, week, body }) {
-  const slideHref = `../../${week}-introduction.html`;
+  const slideHref = `../../${slideDeckHtmlName(week)}`;
   return `<!doctype html>
 <html lang="en">
 <head>

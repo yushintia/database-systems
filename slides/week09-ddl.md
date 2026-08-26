@@ -446,6 +446,11 @@ mysql> SHOW TABLES;
 Five tables, in a database that had nothing five steps ago. Every one
 of them exists because of a `CREATE TABLE` statement from this lecture.
 
+<div class="why">
+<strong>Optional tool:</strong> Visual Paradigm CE can auto-generate
+DDL like this from a paper design.
+</div>
+
 ---
 
 # DDL in the Wild
