@@ -104,10 +104,12 @@ wearing a user interface.
 
 # By the End of This Week, You Can
 
-1. Retrieve specific columns and rows with `SELECT`, `FROM`, `WHERE`
-2. Filter with comparison and logical operators, and remove duplicates with `DISTINCT`
-3. Sort results with `ORDER BY`, and limit how many rows come back
-4. Answer real questions about the registration system directly in SQL
+<div class="cardlist">
+<div class="card"><div class="h">SELECT / FROM / WHERE</div><div class="d">Retrieve specific columns and rows with <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code></div></div>
+<div class="card"><div class="h">Filtering &amp; DISTINCT</div><div class="d">Filter with comparison and logical operators, and remove duplicates with <code>DISTINCT</code></div></div>
+<div class="card"><div class="h">ORDER BY &amp; Limits</div><div class="d">Sort results with <code>ORDER BY</code>, and limit how many rows come back</div></div>
+<div class="card"><div class="h">Real Questions in SQL</div><div class="d">Answer real questions about the registration system directly in SQL</div></div>
+</div>
 
 ---
 

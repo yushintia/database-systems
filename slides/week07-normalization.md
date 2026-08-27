@@ -111,10 +111,12 @@ expensive source of data-integrity bugs discovered only after launch.
 
 # By the End of This Week, You Can
 
-1. Define a functional dependency and identify one in a relation
-2. Test a relation against 1NF, 2NF, and 3NF
-3. Decompose a relation that fails a normal form, without losing information
-4. Explain why the registration schema from Week 6 was already normalized
+<div class="cardlist">
+<div class="card"><div class="h">Functional Dependencies</div><div class="d">Define a functional dependency and identify one in a relation</div></div>
+<div class="card"><div class="h">Normal Form Testing</div><div class="d">Test a relation against 1NF, 2NF, and 3NF</div></div>
+<div class="card"><div class="h">Lossless Decomposition</div><div class="d">Decompose a relation that fails a normal form, without losing information</div></div>
+<div class="card"><div class="h">Why It Was Normalized</div><div class="d">Explain why the registration schema from Week 6 was already normalized</div></div>
+</div>
 
 ---
 

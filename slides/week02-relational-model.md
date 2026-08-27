@@ -104,10 +104,12 @@ Without it, you cannot even read a schema diagram, let alone design one.
 
 # By the End of This Week, You Can
 
-1. Define a relation precisely: attributes, domains, tuples
-2. Identify superkeys, candidate keys, and a primary key in a relation
-3. Explain the three integrity constraints a relation must obey
-4. Read and write a relation schema in standard notation
+<div class="cardlist">
+<div class="card"><div class="h">Relation Basics</div><div class="d">Define a relation precisely: attributes, domains, tuples</div></div>
+<div class="card"><div class="h">Keys</div><div class="d">Identify superkeys, candidate keys, and a primary key in a relation</div></div>
+<div class="card"><div class="h">Integrity Constraints</div><div class="d">Explain the three integrity constraints a relation must obey</div></div>
+<div class="card"><div class="h">Schema Notation</div><div class="d">Read and write a relation schema in standard notation</div></div>
+</div>
 
 ---
 

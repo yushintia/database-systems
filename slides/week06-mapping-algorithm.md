@@ -109,10 +109,12 @@ teaches by hand, once, so you understand what the tool is actually doing.
 
 # By the End of This Week, You Can
 
-1. Map a strong entity to a relation
-2. Map a weak entity to a relation with a composite key
-3. Map 1:1, 1:N, and M:N relationships correctly, without guessing
-4. Produce the registration system's full relational schema from its E-R diagram
+<div class="cardlist">
+<div class="card"><div class="h">Strong Entity Mapping</div><div class="d">Map a strong entity to a relation</div></div>
+<div class="card"><div class="h">Weak Entity Mapping</div><div class="d">Map a weak entity to a relation with a composite key</div></div>
+<div class="card"><div class="h">Relationship Mapping</div><div class="d">Map 1:1, 1:N, and M:N relationships correctly, without guessing</div></div>
+<div class="card"><div class="h">Full Schema Mapping</div><div class="d">Produce the registration system's full relational schema from its E-R diagram</div></div>
+</div>
 
 ---
 

@@ -104,10 +104,12 @@ every application you have ever used. They are DML by another name.
 
 # By the End of This Week, You Can
 
-1. Insert rows into a table with `INSERT INTO`, respecting foreign keys
-2. Change existing data with `UPDATE`, safely, using `WHERE`
-3. Remove rows with `DELETE`, safely, using `WHERE`
-4. Explain why `INSERT` order matters across related tables
+<div class="cardlist">
+<div class="card"><div class="h">INSERT</div><div class="d">Insert rows into a table with <code>INSERT INTO</code>, respecting foreign keys</div></div>
+<div class="card"><div class="h">UPDATE</div><div class="d">Change existing data with <code>UPDATE</code>, safely, using <code>WHERE</code></div></div>
+<div class="card"><div class="h">DELETE</div><div class="d">Remove rows with <code>DELETE</code>, safely, using <code>WHERE</code></div></div>
+<div class="card"><div class="h">Insert Order</div><div class="d">Explain why <code>INSERT</code> order matters across related tables</div></div>
+</div>
 
 ---
 

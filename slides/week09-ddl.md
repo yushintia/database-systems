@@ -107,10 +107,12 @@ DDL, version-controlled and applied over time.
 
 # By the End of This Week, You Can
 
-1. Write `CREATE TABLE` statements with correct MySQL data types
-2. Declare primary keys, foreign keys, and `NOT NULL` constraints
-3. Use `ALTER TABLE` to change an existing table's structure
-4. Create the registration system's full schema in MySQL
+<div class="cardlist">
+<div class="card"><div class="h">CREATE TABLE</div><div class="d">Write <code>CREATE TABLE</code> statements with correct MySQL data types</div></div>
+<div class="card"><div class="h">Keys &amp; Constraints</div><div class="d">Declare primary keys, foreign keys, and <code>NOT NULL</code> constraints</div></div>
+<div class="card"><div class="h">ALTER TABLE</div><div class="d">Use <code>ALTER TABLE</code> to change an existing table's structure</div></div>
+<div class="card"><div class="h">Full Schema in MySQL</div><div class="d">Create the registration system's full schema in MySQL</div></div>
+</div>
 
 ---
 

@@ -113,10 +113,12 @@ Being able to read and draw one is assumed, not taught on the job.
 
 # By the End of This Week, You Can
 
-1. Identify entities and attributes from a plain-English requirement
-2. Draw relationships between entities with correct cardinality
-3. Distinguish a weak entity from a strong entity
-4. Produce a complete E-R diagram for a small real-world system
+<div class="cardlist">
+<div class="card"><div class="h">Entities &amp; Attributes</div><div class="d">Identify entities and attributes from a plain-English requirement</div></div>
+<div class="card"><div class="h">Relationships &amp; Cardinality</div><div class="d">Draw relationships between entities with correct cardinality</div></div>
+<div class="card"><div class="h">Weak vs. Strong Entities</div><div class="d">Distinguish a weak entity from a strong entity</div></div>
+<div class="card"><div class="h">Full E-R Diagram</div><div class="d">Produce a complete E-R diagram for a small real-world system</div></div>
+</div>
 
 ---
 

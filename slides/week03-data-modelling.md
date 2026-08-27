@@ -107,10 +107,12 @@ engineers are trained to catch early.
 
 # By the End of This Week, You Can
 
-1. Explain the purpose of data modeling as a design step, not a formality
-2. Name the three stages of database design and what each stage produces
-3. Distinguish data modeling stages from Week 1's abstraction levels
-4. Describe what makes a data model "good" before any table exists
+<div class="cardlist">
+<div class="card"><div class="h">Purpose of Modeling</div><div class="d">Explain the purpose of data modeling as a design step, not a formality</div></div>
+<div class="card"><div class="h">Design Stages</div><div class="d">Name the three stages of database design and what each stage produces</div></div>
+<div class="card"><div class="h">Stages vs. Abstraction</div><div class="d">Distinguish data modeling stages from Week 1's abstraction levels</div></div>
+<div class="card"><div class="h">What Makes It Good</div><div class="d">Describe what makes a data model "good" before any table exists</div></div>
+</div>
 
 ---
 

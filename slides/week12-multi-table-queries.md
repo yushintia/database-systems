@@ -114,10 +114,12 @@ real report." Nearly every analytics dashboard is a `JOIN` plus a
 
 # By the End of This Week, You Can
 
-1. Write an `INNER JOIN` and a `LEFT JOIN`, and explain the difference
-2. Join more than two tables in a single query
-3. Group rows with `GROUP BY` and summarize them with aggregate functions
-4. Filter grouped results with `HAVING`, as distinct from `WHERE`
+<div class="cardlist">
+<div class="card"><div class="h">INNER vs. LEFT JOIN</div><div class="d">Write an <code>INNER JOIN</code> and a <code>LEFT JOIN</code>, and explain the difference</div></div>
+<div class="card"><div class="h">Multi-table Joins</div><div class="d">Join more than two tables in a single query</div></div>
+<div class="card"><div class="h">GROUP BY &amp; Aggregates</div><div class="d">Group rows with <code>GROUP BY</code> and summarize them with aggregate functions</div></div>
+<div class="card"><div class="h">HAVING vs. WHERE</div><div class="d">Filter grouped results with <code>HAVING</code>, as distinct from <code>WHERE</code></div></div>
+</div>
 
 ---
 

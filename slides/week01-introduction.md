@@ -158,13 +158,22 @@ from one running case study: university course registration.
 
 By the end of this course, you can:
 
-1. Explain why plain files fail, and what a database promises instead.
-2. Model real-world requirements as an E-R diagram.
-3. Design relational schemas and apply normalization.
-4. Write SQL to define (DDL) and change (DML) data.
-5. Write single-table and multi-table SQL queries.
-6. Explain a schema's keys, constraints, and normal forms.
-7. Present a small database design as a finished case study.
+<style scoped>
+.cardlist { gap: 10px; margin-top: 6px; }
+.cardlist .card { padding: 8px 18px; }
+.cardlist .card .h { font-size: 17px; margin-bottom: 2px; }
+.cardlist .card .d { font-size: 15px; line-height: 1.25; }
+</style>
+
+<div class="cardlist">
+<div class="card"><div class="h">Files vs. Databases</div><div class="d">Explain why plain files fail, and what a database promises instead.</div></div>
+<div class="card"><div class="h">E-R Modeling</div><div class="d">Model real-world requirements as an E-R diagram.</div></div>
+<div class="card"><div class="h">Schemas &amp; Normalization</div><div class="d">Design relational schemas and apply normalization.</div></div>
+<div class="card"><div class="h">DDL &amp; DML</div><div class="d">Write SQL to define (DDL) and change (DML) data.</div></div>
+<div class="card"><div class="h">SQL Queries</div><div class="d">Write single-table and multi-table SQL queries.</div></div>
+<div class="card"><div class="h">Keys &amp; Constraints</div><div class="d">Explain a schema's keys, constraints, and normal forms.</div></div>
+<div class="card"><div class="h">Case Study Presentation</div><div class="d">Present a small database design as a finished case study.</div></div>
+</div>
 
 ---
 
@@ -288,14 +297,12 @@ enough for it to still matter for the next assignment or exam.
 
 <div class="thread">Concrete rules, stated once, so nobody is surprised later.</div>
 
-- **Attendance** is 10% of your grade and is recorded every session.
-- **Late arrival:** arriving within 15 minutes of the start is on-time;
-  after that, you're marked late. Three lates equal one absence.
-- **Can't attend?** Email the instructor *before* the session to be
-  marked excused - unexcused absences aren't eligible for makeup credit.
-- **Late work:** loses 10% of that assignment's grade per day late, up
-  to 3 days. No credit after 3 days, unless arranged with the
-  instructor in advance.
+<div class="cardlist">
+<div class="card"><div class="h">Attendance</div><div class="d">is 10% of your grade and is recorded every session.</div></div>
+<div class="card"><div class="h">Late arrival</div><div class="d">arriving within 15 minutes of the start is on-time; after that, you're marked late. Three lates equal one absence.</div></div>
+<div class="card"><div class="h">Can't attend</div><div class="d">Email the instructor <em>before</em> the session to be marked excused - unexcused absences aren't eligible for makeup credit.</div></div>
+<div class="card"><div class="h">Late work</div><div class="d">loses 10% of that assignment's grade per day late, up to 3 days. No credit after 3 days, unless arranged with the instructor in advance.</div></div>
+</div>
 
 ---
 
