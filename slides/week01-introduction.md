@@ -17,10 +17,9 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 </div>
 
 <!--
-notes: Welcome the class.
-Ask: "Has your file ever been lost or overwritten?"
-Ask: "Have you shared one file with a group and had a conflict?"
-Let a few students answer with a show of hands. That is today's hook.
+notes: Welcome the class. This session is the course contract: what this
+course covers, how it's graded, what's expected of you, and how the
+semester runs. No database content yet - that starts next week.
 -->
 
 ---
@@ -47,60 +46,200 @@ Let a few students answer with a show of hands. That is today's hook.
 <div class="wk review"><div class="n">Wk 15</div><div class="t">Final Exam</div></div>
 </div>
 
-<!-- notes: Point at the row. Say: "Fifteen weeks. One story. We build a database, step by step." -->
+<!-- notes: Point at the row. Say: "Fifteen weeks. Today's the odd one out - it's about how this course works, not a technique. Weeks 5, 8, 13, and 15 are quizzes and exams; the other eleven each add one new piece of the database story." -->
 
 ---
 
-<!-- NEW: warm-up, placed right after the roadmap (slot 2) per course design -->
+<!-- Course intro: why this course, briefly, before the contract -->
 
-# Before We Start: Read a Spreadsheet
+# Why This Course
 
-<div class="thread">A quick warm-up. No coding needed yet.</div>
+<div class="thread">One reason, in plain terms, before the course contract.</div>
 
-| Student | Class | Grade | Room |
-|---|---|---|---|
-| Lee Jun | CSE201 | B+ | 402 |
-| Park Somi | CSE201 | A0 | 402 |
-| Lee Jun | CSE201 | B+ | 402 |
-| Kim Tae | CSE305 | A- | 210 |
+Almost every backend, data, or analytics job expects you to know SQL
+and how to design a database. "Design a schema for X" is one of the
+most common questions in a technical interview.
 
-- Each **row** is one record: one line about one student.
-- Each **column** is one kind of fact: name, class, grade, room.
-- Look closely. Do two rows look exactly the same?
+Every idea this semester - from the first messy spreadsheet to the
+final SQL query - is something you will be asked to use, by name, in
+a job or a later course that assumes you already know it.
+
+---
+
+<!-- Running case study tease: the premise only, no numbers, no teaching -->
+
+# This Semester's Running Example
+
+<div class="thread">Not a topic yet. A mess we will fix, one piece at a time, all semester.</div>
+
+The university's registration office keeps everything in one shared
+file: a spreadsheet, edited by hand, by several different staff
+members, every semester.
+
+Sometimes the same student's name gets typed two different ways.
+Sometimes two people save changes at almost the same moment. Sometimes
+nobody can quickly answer a simple question, like "who is in this
+class?"
+
+We will use this same messy spreadsheet, all semester, to build
+something that does not have these problems.
+
+---
+
+<!-- Discussion prompt, not answered today; Week 2 opens with exactly this -->
+
+# One Question to Sit With
+
+<div class="thread">Not answered today. Week 2 starts here.</div>
+
+Imagine two people are each asked, separately, to turn that same
+messy spreadsheet into "proper tables."
+
+- Would they draw the same tables?
+- If they disagree, who is right?
 
 <!--
-notes: Give students 1 minute to look, alone, before asking anything.
-Ask aloud: "How many rows are there?" (4)
-Ask aloud: "How many different students?" (3, Lee Jun repeats)
-Ask aloud: "What is strange about row 1 and row 3?" (identical, a duplicate)
+notes: A discussion prompt, not a lesson - do not answer it today.
+Just let the class sit with the question for a moment. Week 2 opens
+with exactly this scenario and starts answering it.
 -->
 
 ---
 
-<!-- SLOT 3: What you already have -->
-
-# What You Already Bring
-
-- **Programming:** you already write logic that changes data.
-- **Data Structures:** you know arrays, lists, and trees. A database is
-  a structure too, just built for millions of rows and many users.
-- **Discrete Math:** you know sets. Week 2's relational model is built
-  directly on sets.
-
-We do not start from zero. We point what you know at a new problem.
-
----
-
-<!-- Course logistics appendix: administrative, outside the spine, placed here so it doesn't blunt slot 4 -->
+<!-- SLOT 6: Driving question -->
 
 <!-- _class: section -->
 
-# Course Logistics
-<div class="driving-q">Read once now. Use it all semester.</div>
+# This Course's Question
+
+<div class="driving-q">"What must a system do, before we can trust it with data that matters?"</div>
+
+---
+
+# This Course's Three Goals
+
+<div class="thread">Not just today's goals. This is the whole course, in three lines.</div>
+
+| # | Goal (from the syllabus) | Where |
+|---|---|---|
+| 1 | Learn data models, the relational model, and SQL | Weeks 2, 9-12 |
+| 2 | Design databases with E-R diagrams and normalization | Weeks 3-7 |
+| 3 | Understand storage, queries, transactions, and recovery | Throughout the semester |
+
+Every one of these three goals gets built, piece by piece, using the
+university's own registration data as the running illustration - not
+as an abstract exercise.
+
+---
+
+<!-- _class: section -->
+
+# End of 차시 1
+<div class="driving-q">Short break. Next: the course description, objectives, and how this class runs.</div>
+
+---
+
+# Course Description
+
+<div class="thread">From the official syllabus.</div>
+
+This course introduces the principles of database systems: how data
+is modeled, organized, and queried, so that it stays correct,
+consistent, and useful as it grows. It covers data models and the
+relational model, entity-relationship design and normalization, and
+SQL for defining, changing, and querying data - working throughout
+from one running case study: university course registration.
+
+---
+
+# Learning Objectives
+
+<div class="thread">The official course objectives, from the syllabus - what you'll be able to do by Week 15.</div>
+
+By the end of this course, you can:
+
+1. Explain why plain files fail, and what a database promises instead.
+2. Model real-world requirements as an E-R diagram.
+3. Design relational schemas and apply normalization.
+4. Write SQL to define (DDL) and change (DML) data.
+5. Write single-table and multi-table SQL queries.
+6. Explain a schema's keys, constraints, and normal forms.
+7. Present a small database design as a finished case study.
+
+---
+
+# Prerequisites
+
+<div class="thread">What this course assumes you already have.</div>
+
+- **Computer Programming I & II**
+- **Data Structures**
+- **Discrete Mathematics**
+
+We do not start from zero. If any of these feel shaky, say so early -
+it compounds fast otherwise.
+
+---
+
+# Textbooks
+
+<div class="thread">One primary text. Everything else is optional support.</div>
+
+- **Primary:** Silberschatz, Korth, Sudarshan, *Database System
+  Concepts*, 7th ed., McGraw-Hill, 2019
+- **Secondary:** Connolly & Begg, *Database Systems*; Elmasri &
+  Navathe, *Fundamentals of Database Systems* (full details in the
+  syllabus)
+- **Also:** these lecture slides themselves are a listed course
+  reference
+
+---
+
+# How This Course Runs
+
+<div class="thread">What to expect from a 3-period block, every week.</div>
+
+Each session runs three 50-minute periods, back to back, mixing short
+lectures with:
+
+- **A warm-up** - a short, concrete question to start, before any
+  jargon
+- **A recap** - what last week delivered, and what it left unsolved
+- **Pair activities** - work through a real example with a partner,
+  answer discussed right after
+- **A self-check** - ungraded, just for you, most weeks
+
+You will talk in this class, not just listen.
+
+---
+
+# Weekly Schedule
+
+<div class="thread">One line per week - the full walkthrough.</div>
+
+| Wk | Topic | Wk | Topic |
+|---|---|---|---|
+| 1 | Introduction (today) | 9 | DDL |
+| 2 | Relational Model | 10 | DML |
+| 3 | Data Modelling | 11 | Single-table Queries |
+| 4 | E-R Diagram - **Assignment 1** | 12 | Multi-table Queries - **Assignment 2** |
+| 5 | **Quiz 1** | 13 | **Quiz 2** |
+| 6 | Mapping Algorithm | 14 | Case Study Presentation |
+| 7 | Normalization | 15 | **Final Exam** |
+| 8 | **Midterm Exam** | | |
+
+---
+
+<!-- _class: section -->
+
+# End of 차시 2
+<div class="driving-q">Short break. Next: grading, assignments, and policy.</div>
 
 ---
 
 # Grading & Materials
+
+<div class="thread">Six components, 100% total.</div>
 
 | Item | Weight |
 |---|---|
@@ -111,603 +250,140 @@ We do not start from zero. We point what you know at a new problem.
 | Presentation | 10% |
 | In-class items | 10% |
 
+<div class="why">
+<strong>Grade distribution guideline:</strong> A ≤30%, B ≤40%, C-F ≤30%
+of the class. This may shift after the add/drop period, based on final
+enrollment.
+</div>
+
 <!-- notes: Say Assignment 1 is due Week 4. Assignment 2 is due Week 12. Quiz 1 is Week 5. Quiz 2 is Week 13. -->
 
 ---
 
-# Textbook, Policy & Contact
+# Assignments
 
-- **Textbook:** Silberschatz, Korth, Sudarshan, *Database System
-  Concepts*, 7th ed., McGraw-Hill, 2019
-- **Other references:** Connolly & Begg; Elmasri & Navathe (full
-  details in the syllabus)
-- **Policy:** come to every class; late work loses points; copying
-  others' work is not allowed
-- **Contact:** yushintia@deu.ac.kr — email to book office hours
+<div class="thread">Two assignments, spaced across the semester.</div>
 
----
-
-<!-- NEW: Key Words Today, session 1 -->
-
-# Key Words Today
-
-- **Row:** one record. One line of data about one thing (one student).
-- **Column:** one kind of fact, repeated for every row.
-- **Duplicate:** the exact same row, typed more than once.
-- **Inconsistent:** two rows about the same thing that do not agree.
-- **Lost update:** one person's change disappears when someone else saves.
-
-<!-- notes: Read each term aloud once. Point back at the warm-up table for "row," "column," and "duplicate." -->
-
----
-
-<!-- SLOT 4: The pain (Act 1 / MOTIVATE), zero jargon -->
-
-# Inside the Registration Office
-
-<div class="pain">
-
-The registration office keeps everything in one file: `registrations.xlsx`.
-It has 40,000 rows, and it grows every semester. Each staff member
-keeps their own copy. They edit it, then upload it back later.
-
-Today, a professor asks: "Who is in my class?" Two staff both
-uploaded this week. The second save silently erased the first save's
-changes. One student's major is spelled three different ways, in
-three different rows. Nobody can say, right now, who is really
-enrolled in CSE301. Someone must scroll through all 40,000 rows by
-eye, hoping not to miss one.
-
-</div>
-
-<!-- notes: Do not say the word "database" yet. Let the class feel the mess first. -->
-
----
-
-# How Long Does That Actually Take?
-
-<div class="barchart">
-<div class="bar-row">
-  <div class="bar-label">By eye, spreadsheet</div>
-  <div class="bar-track"><div class="bar-fill long" style="width: 100%"></div></div>
-  <div class="bar-value">~3 hours, one class</div>
-</div>
-<div class="bar-row">
-  <div class="bar-label">By query, SQL (Week 11)</div>
-  <div class="bar-track"><div class="bar-fill short" style="width: 3%"></div></div>
-  <div class="bar-value">under 1 second, any class</div>
-</div>
-</div>
-<div class="bar-note">Illustrative, not measured data: the point is the gap, not the exact minutes.</div>
-
-This gap is not a small annoyance. It is the reason this course exists.
-
-<!-- notes: Pause after showing the second bar. Let the silence make the point. -->
-
----
-
-<!-- SLOT 5: Cost of not knowing -->
-
-# What Else This Actually Costs
-
-- A grade attaches to the wrong student. Nobody notices until graduation.
-- Two staff save at the same time. One person's work just disappears.
-- A crash during a save can corrupt the file, with no way to know
-  what was lost.
-
-<div class="why">
-<strong>In industry:</strong> most backend and data jobs expect SQL
-and database design skills. "Design a schema for X" is a common
-interview question. Mistakes like these have caused real outages at
-major tech companies.
-</div>
-
----
-
-# It Gets Worse With Every Extra Person
-
-<div class="barchart">
-<div class="bar-row">
-  <div class="bar-label">2 staff, dueling uploads</div>
-  <div class="bar-track"><div class="bar-fill risk-low" style="width: 20%"></div></div>
-  <div class="bar-value">already happened</div>
-</div>
-<div class="bar-row">
-  <div class="bar-label">50 students, one popular class</div>
-  <div class="bar-track"><div class="bar-fill risk-med" style="width: 55%"></div></div>
-  <div class="bar-value">rising conflict risk</div>
-</div>
-<div class="bar-row">
-  <div class="bar-label">3,000 students, 수강신청 rush</div>
-  <div class="bar-track"><div class="bar-fill risk-high" style="width: 92%"></div></div>
-  <div class="bar-value">conflict, guaranteed</div>
-</div>
-</div>
-<div class="bar-note">Illustrative, not measured data: the point is the trend.</div>
-
-You have all lived the third bar. A system with no plan for this
-**will** lose someone's seat, silently.
-
----
-
-<!-- SLOT 6: Driving question -->
-
-<!-- _class: section -->
-
-# This Week's Question
-
-<div class="driving-q">"What must a system do, before we can trust it with data that matters?"</div>
-
----
-
-<!-- SLOT 7: Learning outcomes -->
-
-# By the End of This Week, You Can
-
-1. Explain why plain files fail as data grows.
-2. Describe three levels of data abstraction, and why each exists.
-3. Name the main data models, and where each fits in this course.
-4. State this course's three goals, and where each is taught.
-
----
-
-# This Course's Three Goals
-
-<div class="thread">Not just this week's goals. This is the whole course, in three lines.</div>
-
-| # | Goal (from the syllabus) | Where |
-|---|---|---|
-| 1 | Learn data models, the relational model, and SQL | Weeks 2, 9-12 |
-| 2 | Design databases with E-R diagrams and normalization | Weeks 3-7 |
-| 3 | Understand storage, queries, transactions, and recovery | Previewed today |
-
-Goal 3 is why today also shows the DBMS engine. It is the only week
-that names it directly.
-
----
-
-<!-- NEW: session-1 close, previews Worksheet Part A -->
-
-# Coming Up: Worksheet Part A
-
-<div class="thread">Next in this class: less listening, more doing.</div>
-
-Later today, you and a partner will look at a real, messy class list.
-You will find the same problems you just read about.
-
-That is **Worksheet Part A**. Keep a pen ready.
-
----
-
-<!-- _class: section -->
-
-# End of 차시 1
-<div class="driving-q">Short break. Next: where did this problem come from?</div>
-
----
-
-<!-- SLOT 8: Origin -->
-
-# This Problem Is Not New
-
-<div class="thread">You just felt the pain. Now: who else felt it, and what did they do?</div>
-
-- In the 1960s, data lived in files. Every program wrote its own file
-  format, and its own code to read and write it.
-- Every new program either copied data again, or wrote fragile code to
-  reach into another program's files. Sound familiar?
-
-<div class="why">
-Imagine if KakaoTalk, your bank app, and 배달의민족 each kept a private
-copy of your phone number. Change it in one, the others never know.
-That was every app, all the time, before this course's subject existed.
-</div>
-
-Companies spent **decades** and real money solving this exact
-problem, at a scale of millions of records, not 40,000 rows.
-
----
-
-# Fifty Years of Solving Your Spreadsheet Problem
-
-<div class="timeline">
-<div class="pt"><div class="dot"></div><div class="y">1960s</div><div class="d">File-processing systems<br>every app, its own format</div></div>
-<div class="pt"><div class="dot"></div><div class="y">1970</div><div class="d">Edgar F. Codd (IBM)<br>the relational model</div></div>
-<div class="pt"><div class="dot"></div><div class="y">1974</div><div class="d">IBM System R<br>SQL is born</div></div>
-<div class="pt"><div class="dot"></div><div class="y">Today</div><div class="d">PostgreSQL, MySQL, Oracle<br>the same ideas, still running</div></div>
-</div>
-
-The relational model won because it split **what** you ask for from
-**how** the machine finds it. That idea is this whole course.
-
----
-
-<!-- SLOT 9: Core concept -->
-
-# Database & DBMS: Definition
-
-<div class="thread">Fifty years of work point at two words. Here they are, precisely.</div>
-
-> A **database** is an organized collection of related data.
-> A **database management system (DBMS)** is software that lets
-> people create, use, and control access to a database.
-
-- **Data:** raw facts, such as `"Kim Minji", "CSE301", "A0"`
-- **Database:** the organized collection (tables, not a spreadsheet)
-- **DBMS:** the software that keeps the collection correct, even with
-  many users (examples: PostgreSQL, MySQL, Oracle)
-
-Every time your banking app shows your balance, a DBMS answered that
-request correctly, in milliseconds. That is what you build this term.
-
----
-
-<!-- NEW: Key Words Today, session 2 -->
-
-# Key Words Today
-
-- **Redundancy:** the same fact stored in more than one place.
-- **Integrity rule:** a rule data must follow (a grade must be real).
-- **Atomicity:** a save either fully happens, or it does not happen.
-- **Concurrency:** many people using the same data at the same time.
-- **DBMS:** software that keeps shared data correct and safe.
-
-<!-- notes: Read each term aloud. Say these five words label the five problems coming next. -->
-
----
-
-<!-- Act 3 / BUILD: Why File Systems Fail, trimmed to the essentials -->
-
-# Why File Systems Fail
-
-<div class="thread">You already lived these. Today they get names.</div>
-
-Textbooks group file-processing problems into named categories. We
-cover the five biggest ones now. Two more are in your
-[handout](materials/week01/handout.html).
-
----
-
-# Copies That Disagree, Facts You Can't Find
-
-<div class="thread">Problem 1 and 2: typing a fact twice, and no way to ask a question.</div>
-
-**Redundancy & inconsistency:** the same fact stored more than once,
-and the copies disagree.
-
-**Hard to access:** a file has no built-in way to ask a question.
-Every new question means new code, or scrolling by eye.
-
-<div class="pain">
-Kim Minji's name is typed three ways: "Kim Minji," "MinJi Kim,"
-"김민지." "Who is in CSE301?" takes about three hours to answer by eye.
-</div>
-
----
-
-# No Rules, No Safety Net
-
-<div class="thread">Problem 3 and 4: a file that accepts anything, and a save with no guarantee.</div>
-
-**Integrity problems:** a spreadsheet cell has no idea what a valid
-value is.
-
-**Atomicity problems:** a save should fully finish, or not happen at
-all. A file has no such promise.
-
-<div class="pain">
-Nothing stops someone typing "A99" into the Grade column. A crash
-mid-save can leave the file half-written, with no record of what was
-lost.
-</div>
-
----
-
-# Two People, One File
-
-<div class="thread">Problem 5: the one you already guessed at the warm-up.</div>
-
-When two people edit the same data at the same time, one person's
-work can silently disappear. This is called a **lost update**.
-
-<div class="pain">
-Two staff both uploaded `registrations.xlsx` this week. Whoever
-saved last replaced the other's edits. No warning. No merge.
-</div>
-
----
-
-# Five Failures, One Cause
-
-<div class="thread">Same five names, side by side. Two more failures: see the
-<a href="materials/week01/handout.html">handout</a>.</div>
-
-| # | Failure | Registration office example |
-|---|---|---|
-| 1 | Redundancy & inconsistency | Kim Minji, spelled three ways |
-| 2 | Hard to access | The 3-hour scroll |
-| 3 | Integrity problems | A grade of "A99" |
-| 4 | Atomicity problems | The crash mid-save |
-| 5 | Concurrency (lost update) | The dueling uploads |
-
-A DBMS exists to fix exactly these, all at once, for good.
-
----
-
-# Worked Example: Inside `registrations.xlsx`
-
-<div class="thread">Five failures, one file. Here is that exact file.</div>
-
-This semester's running example is **university course registration**.
-A real excerpt, unedited:
-
-| Student | Major | Course | Instructor | Grade |
-|---|---|---|---|---|
-| Kim Minji | Computer Sci. | CSE301 | Prof. Lee | |
-| <span style="color:#C0392B;font-weight:700">MinJi Kim</span> | <span style="color:#C0392B;font-weight:700">CS</span> | CSE301 | Prof. Lee | A0 |
-| <span style="color:#C0392B;font-weight:700">김민지</span> | <span style="color:#C0392B;font-weight:700">Comp. Science</span> | CSE301 | <span style="color:#C0392B;font-weight:700">(blank)</span> | |
-| Park Jiho | Software Eng. | CSE305 | Prof. Han | A- |
-
-One student, three rows, three spellings. One blank instructor. This
-is what you were scrolling through.
-
----
-
-# Where This Is Heading
-
-<div class="thread">The mess above becomes five small, linked tables by Week 7.</div>
-
-<div class="pipeline">
-<div class="stage"><div class="h">Student</div><div class="s">who</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Enrollment</div><div class="s">signs up for</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Section</div><div class="s">class, room, time</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Course</div><div class="s">the subject itself</div></div>
-</div>
-
-No name is ever retyped. Every table links to the next by a shared
-ID, not a shared spelling. Week 4 shows the full diagram.
-
----
-
-<!-- NEW: Try-It hand-off, session 2 -->
-
-# Now: Worksheet Part A
-
-<div class="thread">Time to practice. Find these problems yourself.</div>
-
-Work with your neighbor. Open
-**[Worksheet Part A](materials/week01/worksheet.html)**. Find the
-duplicates, the inconsistency, and the lost update in the sample
-class list.
-
-**~15 minutes.** Raise your hand if you get stuck.
-
-<!--
-notes: Hand out or project Worksheet Part A. Walk the room while pairs work.
-After 15 minutes, ask 2 pairs to share one problem they found.
--->
-
----
-
-<!-- _class: section -->
-
-# End of 차시 2
-<div class="driving-q">Short break. Next: how a DBMS actually fixes all this.</div>
-
----
-
-<!-- NEW: Key Words Today, session 3 -->
-
-# Key Words Today
-
-- **Schema:** the design. Fixed column names and types.
-- **Instance:** the actual data right now. Always changing.
-- **Abstraction level:** one of three separate views of the same data.
-- **Data model:** the shape data takes (tables, diagrams, documents).
-- **Data independence:** storage can change without breaking your app.
-
-<!-- notes: Read each term aloud. Say: "You will hear these five words for the rest of the semester." -->
-
----
-
-<!-- Act 3 / BUILD, continued -->
-
-# Databases Are Already in Your Pocket
-
-<div class="thread">You just met one example. Here are three more you already use.</div>
-
-<div class="appgrid">
-<div class="app"><div class="name">KakaoTalk</div><div class="desc">your chat history, searchable instantly</div></div>
-<div class="app"><div class="name">Banking app</div><div class="desc">your balance, correct, every time</div></div>
-<div class="app"><div class="name">Netflix</div><div class="desc">exactly where you paused, on any device</div></div>
-</div>
-
-None of these apps "is" a database. Each one **runs on** one,
-answering questions like this thousands of times a second.
-
----
-
-# Three Levels: What a DBMS Separates
-
-<div class="thread">A spreadsheet mixes these three questions. A DBMS keeps them apart.</div>
-
-<div class="stack">
-<div class="layer view"><span class="h">View</span> <span class="s">what THIS user sees: a professor sees only their own classes</span></div>
-<div class="layer logical"><span class="h">Logical</span> <span class="s">what data exists, and how it relates: Student(id, name, major)</span></div>
-<div class="layer physical"><span class="h">Physical</span> <span class="s">how bytes sit on disk: files, indexes</span></div>
-</div>
-
-<!--
-notes: Explain bottom-up, out loud, do not just read the slide.
-Physical: disks and files. Nobody in the office ever sees this.
-Logical: what data exists. This is what this whole course teaches.
-View: what one user is allowed to see. This fixes the security problem in the handout.
--->
-
----
-
-# Schema & Instance
-
-<div class="thread">In every level above, one thing is fixed. One thing keeps changing.</div>
-
-- **Schema:** the design. Column names and types. Rarely changes.
-- **Instance:** the actual data right now. Changes all the time.
-
-| Semester | code | title | room |
+| # | Released | Due | Topic |
 |---|---|---|---|
-| This semester | CSE301 | Databases | 성파 702 |
-| Last semester | CSE301 | Databases | 성파 615 |
-
-Same three columns both times: that is the **schema**. The room
-changed: that is two different **instances** of it.
-
-**Data independence:** changing physical storage should never force
-you to rewrite the application. The app only talks to the logical
-level.
+| 1 | Wk 2 | Wk 4 | E-R diagram design for a small system |
+| 2 | Wk 9 | Wk 12 | SQL: schema, data, and multi-table queries |
 
 ---
 
-# Data Models: Two We Use, One We Name
+# Feedback Policy
 
-<div class="thread">The logical level needs a shape. These are the shapes it can take.</div>
+<div class="thread">From the syllabus, verbatim.</div>
 
-- **Relational (this course):** data as tables, linked by shared IDs,
-  not by retyping. Week 2 onward, every table works this way.
-- **Entity-Relationship (E-R):** a diagram of real things (Student,
-  Course) and how they connect, before any table exists. Week 4.
-- **Object / semi-structured:** flexible data that does not fit rows
-  and columns, like JSON. Named here for later, not covered deeply.
+> Assignments graded within one week with rubric and model answers;
+> exam item-analysis shared with weak-topic guidance and individual
+> review on request.
 
----
-
-# The Design Lifecycle: This Course's Real Spine
-
-<div class="thread">Here is the order we actually build in.</div>
-
-<div class="pipeline">
-<div class="stage"><div class="h">Requirements</div><div class="s">what users need</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Conceptual</div><div class="s">E-R diagram<br>Week 3-4</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Logical</div><div class="s">tables, normal form<br>Week 6-7</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Physical</div><div class="s">storage, indexes</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Build</div><div class="s">SQL<br>Week 9-12</div></div>
-</div>
-
-Every later week of this course is one stop on this line.
+In plain terms: you will know what you got wrong, and why, quickly
+enough for it to still matter for the next assignment or exam.
 
 ---
 
-# Inside the Engine, a Quick Look
+# Attendance & Late Work
 
-<div class="thread">This is what a DBMS does underneath you, every second.</div>
+<div class="thread">Concrete rules, stated once, so nobody is surprised later.</div>
 
-- **Storage manager:** moves data between disk and memory.
-- **Query processor:** turns your question into a fast search plan.
-- **Transaction manager:** keeps users from corrupting each other's work.
-
-<div class="why">
-<strong>계좌이체, a bank transfer:</strong> money must leave one
-account and arrive in another, both steps, or neither. The
-transaction manager is why your money never just vanishes.
-</div>
-
-Who uses all this? App users, analysts who write SQL directly, and a
-**DBA** (database administrator) who owns security and backups.
+- **Attendance** is 10% of your grade and is recorded every session.
+- **Late arrival:** arriving within 15 minutes of the start is on-time;
+  after that, you're marked late. Three lates equal one absence.
+- **Can't attend?** Email the instructor *before* the session to be
+  marked excused - unexcused absences aren't eligible for makeup credit.
+- **Late work:** loses 10% of that assignment's grade per day late, up
+  to 3 days. No credit after 3 days, unless arranged with the
+  instructor in advance.
 
 ---
 
-<!-- NEW: Try-It hand-off, session 3 -->
+# Academic Integrity
 
-# Now: Worksheet Part B
+<div class="thread">Same principle as attendance: stated once, plainly.</div>
 
-<div class="thread">One more round. Harder problems, same messy world.</div>
-
-Work with your neighbor. Open
-**[Worksheet Part B](materials/week01/worksheet.html)**. Find the lost
-update, label the schema, and spot one more integrity problem.
-
-**~15 minutes.** We check answers together right after.
-
-<!--
-notes: Hand out or project Worksheet Part B. Walk the room while pairs work.
-Bring the class back together after about 15 minutes.
--->
+- **Academic integrity:** submit your own work. Copying another
+  student's work, having someone else complete it for you, or
+  submitting unattributed AI-generated work as your own is a
+  violation.
+- **First violation:** zero credit on that assignment or exam, plus a
+  formal report. **Repeat violation:** may result in failing the
+  course, per university policy.
+- If anything here is unclear, ask - now is the cheapest time to ask.
 
 ---
 
-# Worksheet Part B — Let's Check Together
+# Support for Students with Disabilities
 
-1. Which failure caused the lost room-edit? **Concurrency (lost update).**
-2. What made the grade cell wrong? **Integrity problem.**
-3. Which part of the sheet is the schema? **The column names: student, course, grade.**
+<div class="thread">From the syllabus's accommodations section.</div>
 
-<!-- notes: Ask 2-3 pairs for their answers before you reveal these. Accept any answer that names the right idea, even in different words. -->
+- **Hearing-impaired:** front-row seating, lecture material files
+  provided where possible, urgent notices given in writing
+- **Mobility-impaired:** extended exam time
+- **Other documented conditions:** extended exam time, materials
+  provided in advance, enlarged exam copies, or other reasonable
+  accommodation based on need
 
----
-
-<!-- NEW: quiz hand-off -->
-
-# Now: Quick Self-Check Quiz
-
-<div class="thread">Ungraded. Just for you, to see what stuck.</div>
-
-Open the **[Week 1 Quiz](materials/week01/quiz.html)**. Answer on your own, about 10 minutes.
-Check your own answers at the end. Ask if anything surprises you.
-
-<!--
-notes: Distribute or project the quiz. After about 10 minutes, reveal the
-answer key and discuss as a group any question most of the class missed.
--->
+Contact the instructor early, and the Disability Student Support
+Center or Academic Affairs Team, so accommodations are ready before
+you need them.
 
 ---
 
-<!-- SLOT 14: Limits (Act 4 / CLOSE), becomes Week 2 slot 4 -->
+# Contact
 
-# What Today's Big Picture Cannot Do
+<div class="thread">How to reach the instructor.</div>
+
+- **Email:** yushintia@deu.ac.kr
+- **Office hours:** by email appointment
+- Email is the fastest way to reach the instructor outside of class.
+
+---
+
+<!-- SLOT N+1: Limits (Act 4 / CLOSE), reused in Week 2's slot 3 recap -->
+
+# What Today Doesn't Give You Yet
 
 <div class="limits">
-We now know <em>what</em> a DBMS promises: correct data, safe
-sharing, recovery from crashes. We still do not know <em>how</em> to
-structure the registration data: what tables, what columns, what
-connects to what. Knowing the goal is not the same as knowing the
-plan.
+You now know how this course runs, how you are graded, and what is
+expected of you. You have not yet touched a single database problem:
+you don't know why a plain spreadsheet or file breaks once real data
+and real people are involved, or what a database promises instead.
+Knowing the rules of the course is not the same as knowing why this
+subject exists.
 </div>
 
 ---
 
-<!-- SLOT 15: Bridge -->
+<!-- SLOT N+2: Bridge -->
 
 # Next Week
 
-Week 1 leaves **how to structure data as tables** unsolved. **Week 2,
-The Relational Model**, answers it: relations, attributes, and the
-math every table in this course rests on.
+Week 1 leaves **why plain files and spreadsheets break, and what
+replaces them** unsolved. **Week 2, The Relational Model**, starts
+that story: the exact mess a spreadsheet makes, and the first precise
+idea - a relation, a properly defined table - built to fix it.
 
 ---
 
-<!-- SLOT 16: Summary -->
+<!-- SLOT N+3: Summary -->
 
 # Summary
 
-- Plain files fail in five main ways: redundancy, hard access, weak
-  rules, no atomicity, and unsafe sharing. A DBMS fixes all five.
-- Three levels (physical, logical, view) exist so storage changes
-  never break your app.
-- This course follows the real order of database work: requirements,
-  design, tables, then SQL.
-- **Reading:** Silberschatz et al., 7th ed., Chapter 1
-- **Prepare:** think of one more everyday example where a spreadsheet
-  would break down. Bring it to Week 2.
+- This course: data models, relational design, and SQL - grounded in
+  one running case study, the university's own registration system.
+- Grading: Attendance 10%, Midterm 30%, Final 30%, Assignments 10%,
+  Presentation 10%, In-class items 10%.
+- Assignments due Weeks 4 and 12. Quizzes in Weeks 5 and 13. Graded
+  within one week, with a rubric and model answers.
+- Primary text: Silberschatz et al., 7th ed. Contact:
+  yushintia@deu.ac.kr.
+- **Prepare:** skim Chapter 1 before Week 2. No exercises due.
 
 ---
 
-<!-- SLOT 17: Thank You -->
+<!-- SLOT N+4: Thank You -->
 <!-- _class: end -->
 
 # Thank You

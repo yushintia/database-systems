@@ -48,8 +48,8 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 # Last Week, This Week
 
-- **Last week delivered:** what a DBMS promises (consistency, controlled concurrency, recovery), and the three levels of abstraction that make it possible
-- **Last week left broken:** we still have no idea how to structure the registration data. What tables? What columns? What connects to what?
+- **Last week delivered:** the course contract - what this course covers, how you're graded, and how the semester runs
+- **Last week left broken:** we still don't know why a plain spreadsheet or file breaks, or what a database promises instead. What tables? What columns? What connects to what?
 
 ---
 

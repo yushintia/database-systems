@@ -69,7 +69,7 @@ the pain slide (4) is too abstract, so fix it instead of breaking the rule.
 
 | Wk | Topic | Limit (leads to next pain) |
 |---|---|---|
-| 1 | Introduction | Files can't guarantee consistency, concurrency, recovery → **W2** |
+| 1 | Introduction | **Orientation variant** (contract-only: course policy, grading, schedule; no worksheet, no quiz; handout only). We don't yet know why plain files or spreadsheets break, or what a database promises instead → **W2** |
 | 2 | Relational Model | Tables are the target; nothing says *which* tables → **W3** |
 | 3 | Data Modelling | Conceptual model is prose, not executable, not verifiable → **W4** |
 | 4 | E-R Diagram | A diagram is not a database; no DBMS runs a diagram → **W6** |
@@ -90,6 +90,18 @@ Act 3 slot "Check yourself" (expanded into full review questions) + Act 4
 (slots N+1..N+4, "Limits" replaced by "What to focus on next"). No Pain or
 Ground acts: there is no new concept to motivate.
 
+Week 1 uses the **orientation variant**: a pure course-contract session
+(department standard, matching the sibling course-algorithms deck). It is
+course description, objectives, prerequisites, textbook, schedule,
+grading, assignments, and policy - near-zero technical content, a light
+non-technical tease of the running case study, and a discussion-prompt
+slide (not answered) that Week 2 opens by answering. It closes with the
+standard Limits → Next Week → Summary → Thank You, same as every other
+week, so the chain into Week 2 still holds. It has no Pain/Cost/Origin/
+Build/Worked-example/Common-mistakes/Check-yourself acts, no worksheet,
+and no quiz - handout only (the handout is now a course handbook, not a
+technical glossary).
+
 ## Enforcement
 
 - Copy `slides/_template/week-XX.md` for every new week. It carries all 17
@@ -98,6 +110,6 @@ Ground acts: there is no new concept to motivate.
 - `slides/_shared/case-study.md`: the registration-system schema as it stands
   after each week; update it when a week changes the schema (E-R, Mapping,
   Normalization, DDL weeks).
-- Course logistics (grading, textbook, policies) live in an appendix block
-  in Week 1 only, outside the spine numbering. Administrative content
-  must never sit between the roadmap and the pain slide.
+- Course logistics (grading, textbook, policies) are the entire content of
+  Week 1 (the orientation variant above). For every other week, they must
+  never appear at all - administrative content lives only in Week 1.
