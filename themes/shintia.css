@@ -319,6 +319,26 @@ section { counter-increment: none; }
   line-height: 1.35;
 }
 
+/* card list: bulleted process/step content as a 2-col grid, full reading
+   size (unlike .appgrid, which is sized for short reference labels).
+   Use for "how this works" / objectives / common-mistakes style lists,
+   not for prose paragraphs. */
+.cardlist { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 10px; }
+.cardlist .card {
+  background: var(--pale);
+  border: 1px solid #C7DAE6;
+  border-radius: 10px;
+  padding: 18px 22px;
+}
+.cardlist .card .h {
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--brand);
+  font-size: 21px;
+  margin-bottom: 6px;
+}
+.cardlist .card .d { font-size: 19px; color: var(--ink); line-height: 1.4; }
+
 /* chip row: small labeled entities in a line, replaces fenced-code lists */
 .chip-row {
   display: flex;

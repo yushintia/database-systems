@@ -202,12 +202,12 @@ it compounds fast otherwise.
 Each session runs three 50-minute periods, back to back, mixing short
 lectures with:
 
-- **A warm-up** - a short, concrete question to start, before any
-  jargon
-- **A recap** - what last week delivered, and what it left unsolved
-- **Pair activities** - work through a real example with a partner,
-  answer discussed right after
-- **A self-check** - ungraded, just for you, most weeks
+<div class="cardlist">
+<div class="card"><div class="h">A warm-up</div><div class="d">a short, concrete question to start, before any jargon</div></div>
+<div class="card"><div class="h">A recap</div><div class="d">what last week delivered, and what it left unsolved</div></div>
+<div class="card"><div class="h">Pair activities</div><div class="d">work through a real example with a partner, answer discussed right after</div></div>
+<div class="card"><div class="h">A self-check</div><div class="d">ungraded, just for you, most weeks</div></div>
+</div>
 
 You will talk in this class, not just listen.
 

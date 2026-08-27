@@ -185,13 +185,12 @@ hand. That promise is now kept.
 
 # What to Present
 
-1. **The pain:** a real, concrete scenario your system fixes, in the
-   style of Week 1's registration-office scenario, zero jargon
-2. **The design:** your E-R diagram, your normalized schema, and one
-   anomaly your normalization step actually caught
-3. **The build:** your `CREATE TABLE` statements for the core tables
-4. **The payoff:** one real question your system can now answer, shown
-   as a working SQL query, with its result
+<div class="cardlist">
+<div class="card"><div class="h">The pain</div><div class="d">a real, concrete scenario your system fixes, in the style of Week 1's registration-office scenario, zero jargon</div></div>
+<div class="card"><div class="h">The design</div><div class="d">your E-R diagram, your normalized schema, and one anomaly your normalization step actually caught</div></div>
+<div class="card"><div class="h">The build</div><div class="d">your <code>CREATE TABLE</code> statements for the core tables</div></div>
+<div class="card"><div class="h">The payoff</div><div class="d">one real question your system can now answer, shown as a working SQL query, with its result</div></div>
+</div>
 
 ---
 

@@ -87,29 +87,24 @@ find where it sits on this chain first.
 
 # Review: Week 1 Core Terms
 
-- **DBMS:** software that lets users define, create, maintain, and
-  control access to a database, correctly, even with many users at once
-- **Three abstraction levels:** physical (bytes on disk), logical (what
-  data exists), view (what one user sees)
-- **Schema vs. instance:** schema is the fixed design, instance is the
-  data at a given moment
-- **Silberschatz's seven failures:** redundancy and inconsistency,
-  difficulty accessing data, data isolation, integrity problems,
-  atomicity problems, concurrent-access anomalies, security problems
+<div class="cardlist">
+<div class="card"><div class="h">DBMS</div><div class="d">software that lets users define, create, maintain, and control access to a database, correctly, even with many users at once</div></div>
+<div class="card"><div class="h">Three abstraction levels</div><div class="d">physical (bytes on disk), logical (what data exists), view (what one user sees)</div></div>
+<div class="card"><div class="h">Schema vs. instance</div><div class="d">schema is the fixed design, instance is the data at a given moment</div></div>
+<div class="card"><div class="h">Silberschatz's seven failures</div><div class="d">redundancy and inconsistency, difficulty accessing data, data isolation, integrity problems, atomicity problems, concurrent-access anomalies, security problems</div></div>
+</div>
 
 ---
 
 # Review: Week 2 Core Terms
 
-- **Relation:** a set of tuples conforming to a schema, no duplicate
-  tuples, no meaningful row order
-- **Attribute, domain, tuple:** a named column, its set of legal
-  values, and one row
-- **Superkey, candidate key, primary key:** a uniquely-identifying
-  attribute set, its minimal form, and the one chosen as the main
-  identifier
-- **Foreign key:** an attribute referencing another relation's primary key
-- **Three integrity constraints:** domain, key, referential
+<div class="cardlist">
+<div class="card"><div class="h">Relation</div><div class="d">a set of tuples conforming to a schema, no duplicate tuples, no meaningful row order</div></div>
+<div class="card"><div class="h">Attribute, domain, tuple</div><div class="d">a named column, its set of legal values, and one row</div></div>
+<div class="card"><div class="h">Superkey, candidate key, primary key</div><div class="d">a uniquely-identifying attribute set, its minimal form, and the one chosen as the main identifier</div></div>
+<div class="card"><div class="h">Foreign key</div><div class="d">an attribute referencing another relation's primary key</div></div>
+<div class="card"><div class="h">Three integrity constraints</div><div class="d">domain, key, referential</div></div>
+</div>
 
 ---
 
