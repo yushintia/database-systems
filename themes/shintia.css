@@ -84,7 +84,7 @@ section footer p {
 section h1 {
   font-family: var(--font-head);
   color: var(--navy);
-  font-size: 40px;
+  font-size: 46px;
   font-weight: 700;
   margin: 0 0 18px 0;
   padding-bottom: 14px;
@@ -94,18 +94,18 @@ section h1 {
 section h2 {
   font-family: var(--font-head);
   color: var(--brand);
-  font-size: 30px;
+  font-size: 34px;
   margin: 0 0 12px 0;
 }
 
 section h3 {
   font-family: var(--font-head);
   color: var(--deep);
-  font-size: 24px;
+  font-size: 26px;
   margin: 0 0 8px 0;
 }
 
-section p, section li { font-size: 22px; }
+section p, section li { font-size: 24px; }
 
 section a { color: var(--accent); }
 
@@ -134,7 +134,7 @@ section pre code { background: none; padding: 0; }
 section table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 19px;
+  font-size: 22px;
 }
 section th {
   background: var(--brand);
@@ -451,12 +451,12 @@ section.section {
 section.section h1 {
   color: #fff;
   border-bottom: 3px solid rgba(255,255,255,.5);
-  font-size: 40px;
+  font-size: 46px;
 }
 section.section .driving-q {
   font-family: var(--font-head);
   font-style: italic;
-  font-size: 26px;
+  font-size: 30px;
   color: #DCEAF0;
   margin-top: 14px;
 }
