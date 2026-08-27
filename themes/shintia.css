@@ -27,7 +27,7 @@ section {
   font-family: var(--font-body);
   color: var(--ink);
   background: #ffffff;
-  padding: 56px 72px 106px 72px;
+  padding: 38px 88px 106px 88px;
   font-size: 24px;
   line-height: 1.45;
   position: relative;
@@ -410,7 +410,7 @@ section.title {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding-top: 106px;
   background: linear-gradient(180deg, #ffffff 0%, #ffffff 72%, var(--pale) 72%, var(--pale) 100%);
 }
