@@ -115,7 +115,7 @@ Without it, you cannot even read a schema diagram, let alone design one.
 
 # Where This Vocabulary Came From
 
-<div class="thread">You met Codd's 1970 paper last week as history. This week, his actual definitions.</div>
+<div class="thread">This week, meet Edgar F. Codd's actual definitions.</div>
 
 - Before 1970, "tables" in navigational databases had no shared,
   agreed-on rules; every system defined its own structure informally
