@@ -167,12 +167,31 @@ process, whether or not anyone called it "data modeling" out loud.
 
 <div class="thread">One process, three stages, each stage producing a different kind of artifact.</div>
 
-<div class="pipeline">
-<div class="stage"><div class="h">Conceptual</div><div class="s">what exists, in plain terms</div></div>
+<div class="trimodel">
+<div class="panel">
+<div class="hd">Conceptual (CDM)</div>
+<div class="bubble-row">
+<div class="bubble">Student</div>
+<div class="bubble-arrow">enrolls</div>
+<div class="bubble">Course</div>
+</div>
+</div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Logical</div><div class="s">a relational schema</div></div>
+<div class="panel">
+<div class="hd">Logical (LDM)</div>
+<div class="schema-tbl">
+<div class="hd"><span>Enrollment</span></div>
+<div class="row"><span class="pk">student_id</span></div>
+<div class="row"><span class="pk">course_code</span></div>
+<div class="row">grade</div>
+</div>
+</div>
 <div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Physical</div><div class="s">how it is stored</div></div>
+<div class="panel">
+<div class="hd">Physical (PDM)</div>
+<div class="line">Index: student_id (B-tree)</div>
+<div class="line">Storage: row-oriented, 4KB pages</div>
+</div>
 </div>
 
 The next three slides take each stage in turn.

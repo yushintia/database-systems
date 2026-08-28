@@ -265,12 +265,40 @@ a Student having exactly one optional Advisor relationship.
 
 <div class="thread">All five rules, seen as one transformation, entity by entity.</div>
 
-<div class="pipeline">
-<div class="stage"><div class="h">E-R Diagram</div><div class="s">Week 4, entities + relationships</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Apply Rules 1-5</div><div class="s">no guessing, one rule per shape</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Relational Schema</div><div class="s">real relations, real keys</div></div>
+<div class="two-col">
+<div class="er">
+<svg viewBox="0 0 480 300" width="380" height="238">
+<line class="link" x1="95" y1="60" x2="240" y2="110"/>
+<line class="link" x1="240" y1="110" x2="385" y2="60"/>
+<line class="link" x1="240" y1="110" x2="240" y2="200"/>
+<polygon class="rel-outer" points="240,68 311,110 240,152 169,110"/>
+<polygon class="rel" points="240,74 305,110 240,146 175,110"/>
+<rect class="ent-outer" x="149" y="164" width="182" height="72" rx="4"/>
+<rect class="ent" x="155" y="170" width="170" height="60" rx="4"/>
+<rect class="ent" x="20" y="30" width="150" height="60" rx="4"/>
+<rect class="ent" x="310" y="30" width="150" height="60" rx="4"/>
+<text class="lbl" x="95" y="65">Student</text>
+<text class="lbl" x="385" y="65">Section</text>
+<text class="lbl" x="240" y="205">Enrollment</text>
+<text class="lbl" x="240" y="114">enrolls</text>
+<text class="card" x="60" y="105">M</text>
+<text class="card" x="470" y="65">N</text>
+</svg>
+</div>
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Student</span><span class="tag">Rule 1</span></div>
+<div class="row"><span class="pk">student_id</span>, name, major</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Section</span><span class="tag">Rule 1 + 2</span></div>
+<div class="row"><span class="pk">section_id</span>, <span class="fk">course_code</span>, <span class="fk">instructor_id</span></div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Enrollment</span><span class="tag">Rule 3 + 4</span></div>
+<div class="row"><span class="pk fk">student_id</span>, <span class="pk fk">section_id</span>, grade</div>
+</div>
+</div>
 </div>
 
 Every box and line on Week 4's diagram maps to exactly one rule from

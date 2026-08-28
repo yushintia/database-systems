@@ -293,18 +293,35 @@ relation in the first place.
 
 <div class="thread">Applying cardinality to every connection in the system at once.</div>
 
-<div class="pipeline">
-<div class="stage"><div class="h">Student</div><div class="s">M:N enrolls in</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Section</div><div class="s">1:N belongs to</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Course</div><div class="s">the subject itself</div></div>
-</div>
-
-<div class="pipeline">
-<div class="stage"><div class="h">Section</div><div class="s">N:1 taught by</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Instructor</div><div class="s">one per section</div></div>
+<div class="er">
+<svg viewBox="0 0 1050 360" width="700" height="240">
+<line class="link" x1="115" y1="65" x2="280" y2="140"/>
+<line class="link" x1="280" y1="140" x2="525" y2="185"/>
+<line class="link" x1="525" y1="185" x2="770" y2="140"/>
+<line class="link" x1="770" y1="140" x2="935" y2="65"/>
+<line class="link" x1="525" y1="185" x2="525" y2="235"/>
+<line class="link" x1="525" y1="235" x2="525" y2="315"/>
+<polygon class="rel" points="280,95 355,140 280,185 205,140"/>
+<polygon class="rel" points="770,95 845,140 770,185 695,140"/>
+<polygon class="rel" points="525,195 600,235 525,275 450,235"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="850" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="440" y="150" width="170" height="70" rx="4"/>
+<rect class="ent" x="440" y="280" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="935" y="70">Course</text>
+<text class="lbl" x="525" y="190">Section</text>
+<text class="lbl" x="525" y="320">Instructor</text>
+<text class="lbl" x="280" y="144">enrolls</text>
+<text class="lbl" x="770" y="144">belongs to</text>
+<text class="lbl" x="525" y="239">taught by</text>
+<text class="card" x="70" y="120">M</text>
+<text class="card" x="395" y="168">N</text>
+<text class="card" x="630" y="168">N</text>
+<text class="card" x="860" y="120">1</text>
+<text class="card" x="630" y="210">N</text>
+<text class="card" x="630" y="300">1</text>
+</svg>
 </div>
 
 Student to Section is many-to-many, exactly why Week 2's Enrollment
@@ -342,6 +359,17 @@ you in the Enrollment relation.
 `Student` and `Section` already exist on the main diagram. `Waitlist`
 is new, from Week 3's conceptual pass.
 
+<div class="er">
+<svg viewBox="0 0 900 420" width="560" height="261">
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="700" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="365" y="175" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="785" y="70">Section</text>
+<text class="lbl" x="450" y="215">Waitlist</text>
+</svg>
+</div>
+
 ---
 
 # Step 2: Give Waitlist Its Attributes
@@ -350,6 +378,23 @@ is new, from Week 3's conceptual pass.
 attribute means anything without knowing which student and which
 section, a signal worth remembering for the next step.
 
+<div class="er">
+<svg viewBox="0 0 900 420" width="560" height="261">
+<line class="link" x1="400" y1="245" x2="300" y2="292"/>
+<line class="link" x1="500" y1="245" x2="600" y2="292"/>
+<ellipse class="attr" cx="300" cy="320" rx="70" ry="30"/>
+<ellipse class="attr" cx="600" cy="320" rx="70" ry="30"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="700" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="365" y="175" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="785" y="70">Section</text>
+<text class="lbl" x="450" y="215">Waitlist</text>
+<text x="300" y="325">date_joined</text>
+<text x="600" y="325">position</text>
+</svg>
+</div>
+
 ---
 
 # Step 3: Draw the Relationship, With Cardinality
@@ -357,6 +402,30 @@ section, a signal worth remembering for the next step.
 Student M:N Section, via joining a Waitlist, same shape as
 `Enrollment`. Cardinality stated explicitly, exactly this lecture's
 rule: never leave it implied.
+
+<div class="er">
+<svg viewBox="0 0 900 420" width="560" height="261">
+<line class="link" x1="115" y1="65" x2="450" y2="80"/>
+<line class="link" x1="450" y1="80" x2="785" y2="65"/>
+<line class="link" x1="450" y1="120" x2="450" y2="175"/>
+<line class="link" x1="400" y1="245" x2="300" y2="292"/>
+<line class="link" x1="500" y1="245" x2="600" y2="292"/>
+<ellipse class="attr" cx="300" cy="320" rx="70" ry="30"/>
+<ellipse class="attr" cx="600" cy="320" rx="70" ry="30"/>
+<polygon class="rel" points="450,40 525,80 450,120 375,80"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="700" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="365" y="175" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="785" y="70">Section</text>
+<text class="lbl" x="450" y="215">Waitlist</text>
+<text class="lbl" x="450" y="84">joins</text>
+<text x="300" y="325">date_joined</text>
+<text x="600" y="325">position</text>
+<text class="card" x="70" y="120">M</text>
+<text class="card" x="740" y="120">N</text>
+</svg>
+</div>
 
 ---
 
@@ -367,22 +436,78 @@ without a specific student and a specific section. **Weak entity**,
 identity borrowed from both, exactly like `Enrollment`. Week 6 picks
 this up next, mapping it to a real relation.
 
+<div class="er">
+<svg viewBox="0 0 900 420" width="560" height="261">
+<line class="link" x1="115" y1="65" x2="450" y2="80"/>
+<line class="link" x1="450" y1="80" x2="785" y2="65"/>
+<line class="link" x1="450" y1="120" x2="450" y2="175"/>
+<line class="link" x1="400" y1="245" x2="300" y2="292"/>
+<line class="link" x1="500" y1="245" x2="600" y2="292"/>
+<ellipse class="attr" cx="300" cy="320" rx="70" ry="30"/>
+<ellipse class="attr" cx="600" cy="320" rx="70" ry="30"/>
+<polygon class="rel-outer" points="450,34 531,80 450,126 369,80"/>
+<polygon class="rel" points="450,40 525,80 450,120 375,80"/>
+<rect class="ent-outer" x="359" y="169" width="182" height="82" rx="4"/>
+<rect class="ent" x="365" y="175" width="170" height="70" rx="4"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="700" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="785" y="70">Section</text>
+<text class="lbl" x="450" y="215">Waitlist</text>
+<text class="lbl" x="450" y="84">joins</text>
+<text x="300" y="325">date_joined</text>
+<text x="600" y="325">position</text>
+<text class="card" x="70" y="120">M</text>
+<text class="card" x="740" y="120">N</text>
+</svg>
+</div>
+
 ---
 
 # Worked Example: The Full E-R Diagram
 
 <div class="thread">Every piece from this lecture, assembled into the registration system's actual design.</div>
 
-**Entities:** Student, Course, Instructor, Section, Enrollment (weak)
-
-**Key attributes:** `student_id`, `course_code`, `instructor_id`,
-`section_id`
-
-**Relationships:**
-
-- Student M:N Section, via the weak entity Enrollment
-- Section N:1 Course
-- Section N:1 Instructor
+<div class="er">
+<svg viewBox="0 0 1050 470" width="660" height="295">
+<line class="link" x1="120" y1="70" x2="300" y2="120"/>
+<line class="link" x1="300" y1="120" x2="275" y2="225"/>
+<line class="link" x1="300" y1="120" x2="525" y2="230"/>
+<line class="link" x1="525" y1="230" x2="770" y2="120"/>
+<line class="link" x1="770" y1="120" x2="930" y2="70"/>
+<line class="link" x1="525" y1="230" x2="525" y2="308"/>
+<line class="link" x1="525" y1="308" x2="525" y2="396"/>
+<polygon class="rel-outer" points="300,72 381,120 300,168 219,120"/>
+<polygon class="rel" points="300,78 375,120 300,162 225,120"/>
+<polygon class="rel" points="770,78 845,120 770,162 695,120"/>
+<polygon class="rel" points="525,270 600,308 525,346 450,308"/>
+<rect class="ent-outer" x="184" y="184" width="182" height="82" rx="4"/>
+<rect class="ent" x="190" y="190" width="170" height="70" rx="4"/>
+<rect class="ent" x="30" y="30" width="180" height="80" rx="4"/>
+<rect class="ent" x="840" y="30" width="180" height="80" rx="4"/>
+<rect class="ent" x="435" y="190" width="180" height="80" rx="4"/>
+<rect class="ent" x="435" y="356" width="180" height="80" rx="4"/>
+<text class="lbl" x="120" y="75">Student</text>
+<text class="lbl" x="930" y="75">Course</text>
+<text class="lbl" x="525" y="235">Section</text>
+<text class="lbl" x="525" y="401">Instructor</text>
+<text class="lbl" x="275" y="229">Enrollment</text>
+<text class="lbl" x="300" y="124">enrolls</text>
+<text class="lbl" x="770" y="124">belongs to</text>
+<text class="lbl" x="525" y="312">taught by</text>
+<text class="keytxt" x="120" y="126">student_id</text>
+<text class="keytxt" x="930" y="126">course_code</text>
+<text class="keytxt" x="525" y="182">section_id</text>
+<text class="keytxt" x="525" y="452">instructor_id</text>
+<text class="keytxt" x="275" y="278">student_id, section_id</text>
+<text class="card" x="70" y="130">M</text>
+<text class="card" x="395" y="225">N</text>
+<text class="card" x="655" y="225">N</text>
+<text class="card" x="860" y="130">1</text>
+<text class="card" x="655" y="270">N</text>
+<text class="card" x="655" y="375">1</text>
+</svg>
+</div>
 
 This is the complete conceptual design. Week 6 turns it into tables
 mechanically, no guessing required.

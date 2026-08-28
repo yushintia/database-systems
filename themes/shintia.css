@@ -423,6 +423,92 @@ section { counter-increment: none; }
 .timeline .pt .y { font-family: var(--font-head); font-weight: 700; color: var(--navy); font-size: 16px; }
 .timeline .pt .d { font-size: 13px; color: var(--deep); margin-top: 2px; line-height: 1.3; }
 
+/* E-R diagram: inline SVG canvas in Chen notation (rectangle entities,
+   diamond relationships, oval attributes). Styled through the theme,
+   like every other utility class here, instead of hardcoding colors
+   per diagram, so every deck's diagrams stay visually consistent. A
+   weak entity/identifying relationship is a second, larger "-outer"
+   shape drawn behind the normal one, giving the double-border look. */
+.er { display: flex; justify-content: center; margin: 10px 0; }
+.er .ent { fill: var(--pale); stroke: var(--navy); stroke-width: 2; }
+.er .ent-outer { fill: none; stroke: var(--navy); stroke-width: 2; }
+.er .rel { fill: #fff; stroke: var(--brand); stroke-width: 2; }
+.er .rel-outer { fill: none; stroke: var(--brand); stroke-width: 2; }
+.er .attr { fill: #fff; stroke: var(--accent); stroke-width: 1.5; }
+.er .link { stroke: var(--deep); stroke-width: 1.5; }
+.er text { font-family: var(--font-body); font-size: 15px; fill: var(--ink); text-anchor: middle; }
+.er .lbl { font-family: var(--font-head); font-weight: 700; fill: var(--navy); font-size: 16px; }
+.er .card { font-weight: 700; fill: var(--gold); font-size: 15px; }
+.er .keytxt { text-decoration: underline; }
+
+/* schema table: a mini relational-schema card, PK underlined, FK
+   italicized, an optional tag naming which mapping rule produced it */
+.schema-stack { display: flex; flex-direction: column; gap: 10px; }
+.schema-tbl {
+  background: #fff;
+  border: 1px solid #C7DAE6;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 13px;
+}
+.schema-tbl .hd {
+  background: var(--navy);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  padding: 6px 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.schema-tbl .hd .tag {
+  background: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.schema-tbl .row { padding: 5px 10px; border-top: 1px solid var(--pale); color: var(--ink); }
+.schema-tbl .pk { text-decoration: underline; font-weight: 700; color: var(--navy); }
+.schema-tbl .fk { font-style: italic; color: var(--brand); }
+
+/* tri-model: the same mini design shown three ways (conceptual bubbles,
+   logical schema table, physical storage notes), for the CDM/LDM/PDM
+   design-stage slide */
+.trimodel { display: flex; align-items: stretch; gap: 0; }
+.trimodel .panel { flex: 1; background: var(--pale); border-radius: 8px; padding: 14px; }
+.trimodel .panel .hd {
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 16px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.trimodel .panel .line { font-size: 13px; color: var(--deep); line-height: 1.4; margin: 4px 0; text-align: center; }
+.trimodel .arrow {
+  flex: 0 0 auto;
+  width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--brand);
+  font-size: 20px;
+}
+.trimodel .bubble-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.trimodel .bubble {
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--deep);
+  white-space: nowrap;
+}
+.trimodel .bubble-arrow { font-size: 11px; color: var(--brand); font-weight: 700; white-space: nowrap; }
+
 /* ---- slide classes ---- */
 
 /* Title slide: the only slide with a top band too (73px, template-measured) */
