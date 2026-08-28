@@ -1,6 +1,6 @@
 # Outline: Database Systems (511783-001)
 
-DEU 2026-2, Mon 4-6교시 (3×50 min), 성파 702, 3rd-year. Instructor:
+DEU 2026-2, Mon 4-6교시 (3×50 min), 성파 702, 3rd-year. Professor:
 Yushintia Pramitarini. Texts: Silberschatz; Connolly &amp; Begg; Elmasri.
 
 Full pedagogical rules (chain-linking, slot structure) live in
