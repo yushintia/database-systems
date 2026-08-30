@@ -29,6 +29,12 @@ jobs:
             --theme-set themes/shintia.css --html --allow-local-files -o site
           cp -r assets site/assets
           cp index.html site/index.html
+      - name: Install LibreOffice (for PPTX export)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libreoffice
+
+      - name: Build slides (PPTX)
+        run: npx --yes @marp-team/marp-cli@^4.0.1 -I slides --theme-set themes/shintia.css --html --pptx --pptx-editable --allow-local-files -o site --parallel 1 --browser-timeout 120
+
       - name: Build materials to site/materials
         run: node scripts/build-materials.js site
       - uses: actions/upload-pages-artifact@v3
