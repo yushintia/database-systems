@@ -212,6 +212,7 @@ section { counter-increment: none; }
   font-weight: 700;
   color: var(--brand);
   font-size: 13px;
+  margin-bottom: 14px;
 }
 .roadmap .wk .t {
   font-size: 14px;
