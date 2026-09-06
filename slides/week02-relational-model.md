@@ -418,6 +418,303 @@ missing. Week 4 fills in the rest, formally.
 
 ---
 
+# Beyond Storage: Asking Questions of a Relation
+
+<div class="thread">Everything so far describes what a relation holds. Nothing yet describes how to ask it a question.</div>
+
+`Student(student_id, name, major)` can hold thousands of rows. "Who
+majors in Computer Science?" and "list every student's name and major,
+with no ID column" are both questions about that same relation, and
+neither is answered by anything defined so far. A formal way to ask
+questions of a relation, and get back another relation as the answer,
+is what the rest of this section builds.
+
+---
+
+# Relational Algebra: Definition
+
+<div class="thread">A small set of operators, each one taking relations in and producing a relation out.</div>
+
+> **Relational algebra** is a formal query language: a small set of
+> operators that take one or two relations as input and produce a new
+> relation as output.
+
+Because the output of every operator is itself a relation, operators
+can be chained, the output of one becomes the input of the next,
+exactly like function composition. The next six slides cover one
+operator each, using a small four-row `Student` instance.
+
+<div class="why">
+<strong>The running example:</strong> Student(1, Kim Minji, Computer Science),
+(2, Park Jiho, Software Engineering), (3, Lee Somin, Computer Science),
+(4, Choi Yuna, Data Science).
+</div>
+
+---
+
+# Selection (σ): Picking Rows
+
+<div class="thread">Answers "which rows?" Nothing about columns changes.</div>
+
+> **σ**<sub>condition</sub>**(R)** returns every tuple of R that
+> satisfies the condition, with every column intact.
+
+**σ**<sub>major = "Computer Science"</sub>**(Student)**:
+
+| student_id | name | major |
+|---|---|---|
+| 1 | Kim Minji | Computer Science |
+| 3 | Lee Somin | Computer Science |
+
+Park Jiho and Choi Yuna are filtered out; every remaining row still has
+all three original columns.
+
+---
+
+# Projection (π): Picking Columns
+
+<div class="thread">Answers "which columns?" The row count can shrink, because a relation is a set.</div>
+
+> **π**<sub>attribute list</sub>**(R)** returns only the listed
+> columns of every tuple of R, with duplicate resulting tuples merged
+> into one.
+
+**π**<sub>major</sub>**(Student)**:
+
+| major |
+|---|
+| Computer Science |
+| Software Engineering |
+| Data Science |
+
+Four students, three rows: Kim Minji and Lee Somin both project to
+`Computer Science`, and a relation cannot contain that duplicate twice.
+
+---
+
+# Union (∪): Combining Two Relations
+
+<div class="thread">Requires the two relations to have the exact same schema, "union-compatible."</div>
+
+> **R ∪ S** returns every tuple in R, in S, or in both, with duplicates
+> merged, only defined when R and S share the same attributes.
+
+`EnrolledCSE301 = {1, 3}`, `EnrolledCSE302 = {2, 3}` (each just a
+single-column `student_id` relation).
+
+**EnrolledCSE301 ∪ EnrolledCSE302 = {1, 2, 3}**
+
+Student 3 appears in both source relations but only once in the
+union, exactly the set property from Week 2's core definition.
+
+---
+
+# Set Difference (−): What's in One, Not the Other
+
+<div class="thread">Same union-compatibility rule as ∪, opposite question.</div>
+
+> **R − S** returns every tuple in R that does **not** also appear in S.
+
+Using the same two enrollment relations:
+
+**EnrolledCSE301 − EnrolledCSE302 = {1}**
+
+Student 1 is in CSE301 only. Student 3 is removed, because it appears
+in both; order matters here, unlike union:
+**EnrolledCSE302 − EnrolledCSE301 = {2}**, a different relation.
+
+---
+
+# Cartesian Product (×): Every Pairing
+
+<div class="thread">No condition, no filtering, just every combination.</div>
+
+> **R × S** returns every tuple of R paired with every tuple of S: if R
+> has *m* tuples and S has *n*, the result has *m* × *n* tuples.
+
+A tiny `Course(course_code, title)` with 2 rows, times a 4-row
+`Student`, produces **4 × 2 = 8** rows, one pairing Kim Minji with a
+course she has never taken, alongside every pairing that happens to be
+real.
+
+---
+
+# Cartesian Product: Why It Is Rarely Used Alone
+
+<div class="pain">
+Eight rows out of a 4-student, 2-course Cartesian product, and only the
+rows matching a real `Enrollment` fact mean anything. Used by itself,
+× manufactures far more meaningless combinations than real ones, and
+that ratio only gets worse as tables grow. It is almost always paired
+immediately with a σ that filters back down to the rows that actually
+correspond to a fact, exactly the pattern Week 12's joins formalize.
+</div>
+
+---
+
+# Rename (ρ): Giving a Relation or Column a New Name
+
+<div class="thread">Not a filter, not a transform, just a label.</div>
+
+> **ρ**<sub>newname</sub>**(R)** returns exactly R's tuples, under a
+> new relation name (or new attribute names).
+
+`ρ`<sub>S1</sub>`(Student)` and `ρ`<sub>S2</sub>`(Student)` produce two
+independently named copies of the same rows. Without renaming, an
+expression that needs to refer to "two students" in one query has no
+way to tell the two copies apart, they would both still be called
+`Student`.
+
+---
+
+# Combining Operators: One Expression, Several Steps
+
+<div class="thread">Every operator's output is a relation, so operators chain, exactly like nested function calls.</div>
+
+**π**<sub>name</sub>**(σ**<sub>major = "Computer Science"</sub>**(Student))**
+
+Read inside-out: first σ narrows `Student` to its two Computer Science
+rows, then π keeps only the `name` column of that result.
+
+**Result:** `{Kim Minji, Lee Somin}`. Neither operator alone answers
+"names of Computer Science majors"; composed, together they do.
+
+---
+
+# The Six Operators, at a Glance
+
+| Symbol | Name | What it does |
+|---|---|---|
+| σ | Selection | keeps rows matching a condition |
+| π | Projection | keeps listed columns, drops duplicate rows |
+| ∪ | Union | rows in either union-compatible relation |
+| − | Set difference | rows in one relation but not the other |
+| × | Cartesian product | every row of one paired with every row of the other |
+| ρ | Rename | relabels a relation or its attributes |
+
+---
+
+# Relational Algebra: SQL's Theoretical Foundation
+
+<div class="thread">Every one of these six operators has a direct SQL counterpart, waiting for Week 9-12.</div>
+
+| Algebra | SQL |
+|---|---|
+| σ (selection) | `WHERE` clause |
+| π (projection) | column list after `SELECT` |
+| ∪ (union) | `UNION` |
+| − (set difference) | `EXCEPT` / `MINUS` |
+| × (Cartesian product) | comma-separated tables in `FROM` |
+| ρ (rename) | `AS` alias |
+
+<div class="why">
+This is not a coincidence. SQL's designers built its query engine
+directly on relational algebra, so that every SQL query has a precise,
+checkable algebra expression behind it, not just a English-like
+sentence.
+</div>
+
+---
+
+# NULL: The Value That Isn't There
+
+<div class="thread">One more idea the relational model needs, before this week closes.</div>
+
+> **NULL** represents a missing or unknown value: not zero, not an
+> empty string, not any value in the attribute's domain at all.
+
+A student who enrolled yesterday has no `grade` yet:
+`Enrollment(1, CSE301, NULL)`. The domain constraint from earlier this
+week still holds, `NULL` is a special marker outside every domain, not
+a violation of it.
+
+<div class="why">
+<strong>Why this matters:</strong> `grade = NULL` is not true and not
+false, it is <em>unknown</em>, because comparing "unknown" to anything
+can only produce "unknown." Even `NULL = NULL` evaluates to unknown,
+not true, two missing values are not known to be equal. Week 11's SQL
+queries inherit this exact behavior.
+</div>
+
+---
+
+# Common Mistakes with Relational Algebra
+
+- **Treating π like `SELECT *`:** projection actively removes duplicate
+  rows from its result; picking columns is only half of what it does
+- **Unioning relations that are not union-compatible:** `Student ∪
+  Course` is undefined, the two relations do not share a schema
+- **Using × and expecting a meaningful answer:** a bare Cartesian
+  product answers no real question until a σ narrows it back down
+
+---
+
+# Practice: Relational Algebra on a Library System
+
+<div class="thread">Same operators, `Loan(isbn, member_id, due_date)` from earlier this week.</div>
+
+**Question:** write a relational algebra expression for "the ISBNs of
+every book currently loaned to member 5."
+
+**Answer:** **π**<sub>isbn</sub>**(σ**<sub>member_id = 5</sub>**(Loan))** -
+selection narrows to member 5's rows, projection keeps only `isbn`.
+
+---
+
+# Practice: Relational Algebra on a Ride-Hailing App
+
+<div class="thread">One more domain, the same two operators composed together.</div>
+
+`Ride(ride_id, driver_id, rider_id, fare)`.
+
+**Question:** write an expression returning the `ride_id` and `fare`
+of every ride given by `driver_id = 12`.
+
+**Answer:** **π**<sub>ride_id, fare</sub>**(σ**<sub>driver_id = 12</sub>**(Ride))**.
+
+---
+
+# Practice: Relational Algebra on a Fitness App
+
+<div class="thread">Union-compatible relations, tested with set difference this time.</div>
+
+`WorkoutsJan(user_id)` and `WorkoutsFeb(user_id)`, each just the users
+who logged at least one workout that month.
+
+**Question:** which single operator finds users who worked out in
+January but stopped by February?
+
+**Answer:** **set difference**, `WorkoutsJan − WorkoutsFeb`. Union
+would combine both months together instead of isolating who dropped off.
+
+---
+
+# Check Yourself: Relational Algebra
+
+1. Using the four-row `Student` table, what does
+   **σ**<sub>major = "Data Science"</sub>**(Student)** return?
+2. True or false: `π_major(Student)` can return fewer rows than
+   `Student` has, even though projection never removes a row outright.
+   Why?
+3. Why is a bare Cartesian product almost never the final step of a
+   real query?
+
+---
+
+# Answers
+
+1. **One row:** `(4, Choi Yuna, Data Science)`, the only student whose
+   major matches.
+2. **True.** Projection drops columns first; if two tuples become
+   identical once those columns are gone, the set property merges
+   them into one row, shrinking the count without "removing" anything.
+3. Because × pairs every row of one relation with every row of the
+   other, producing mostly combinations with no basis in reality; it
+   is almost always followed immediately by a σ that filters back down
+   to the pairings that correspond to an actual fact.
+
+---
+
 # Common Mistakes
 
 - **Using a name as a primary key:** names repeat, get misspelled, and
@@ -523,6 +820,19 @@ answer stops being a guess.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 2
 - **Prepare:** think about the registration system's Section and
   Enrollment relations. What would their primary keys be?
+
+---
+
+# A Note on Sources
+
+<div class="thread">One line of attribution, stated once.</div>
+
+This week's topic list, including relational algebra and NULL
+handling, follows the standard chapter organization of Silberschatz,
+Korth, and Sudarshan's *Database System Concepts*, 7th ed., this
+course's primary reference text. Every example, table, and explanation
+on these slides is original, built around this course's own
+registration case study.
 
 ---
 

@@ -219,6 +219,219 @@ One new row, appended. Nothing else in the table changed.
 
 ---
 
+# NULL Handling on INSERT: What You Can Omit
+
+<div class="thread">Not every column needs a value. Which ones don't, and why.</div>
+
+```sql
+INSERT INTO Enrollment (student_id, section_id)
+VALUES (12, 3);
+```
+
+`grade` is left out entirely; MySQL fills it with `NULL`
+automatically, "not yet graded." This only works because `grade` was
+declared without `NOT NULL` back in Week 9. Try the same omission on
+`Student.name`, declared `NOT NULL`, and MySQL rejects the statement
+instead, a required column has no fallback value to fall back on.
+
+- **Can omit:** any `AUTO_INCREMENT` column (Week 9's `student_id`),
+  any column with a `DEFAULT`, any column that allows `NULL`
+- **Cannot omit:** any column declared `NOT NULL` with no `DEFAULT`,
+  MySQL has nothing to put there instead
+
+---
+
+# Illustration: A Row With an Omitted Column
+
+<div class="thread">The exact row the previous slide's INSERT produces.</div>
+
+**Before**, `Enrollment` has one row:
+
+| student_id | section_id | grade |
+|---|---|---|
+| 1 | 3 | A0 |
+
+**After** `INSERT INTO Enrollment (student_id, section_id) VALUES (12, 3);`
+
+| student_id | section_id | grade |
+|---|---|---|
+| 1 | 3 | A0 |
+| 12 | 3 | NULL |
+
+The new row exists, is fully valid, and openly says "grade unknown,"
+exactly the meaning Week 11 assigns to `IS NULL` later.
+
+---
+
+# INSERT ... SELECT: Deriving Rows From a Query
+
+<div class="thread">Every INSERT so far spelled out literal values. This one computes them instead.</div>
+
+> `INSERT ... SELECT` copies the rows returned by a query directly into
+> a table, instead of listing values by hand with `VALUES`.
+
+```sql
+INSERT INTO target_table (col1, col2)
+SELECT col_a, col_b
+FROM source_table
+WHERE <condition>;
+```
+
+The columns listed after `target_table` must line up, in order and in
+compatible type, with the columns the `SELECT` returns. No `VALUES`
+keyword appears at all, the query itself supplies every row.
+
+---
+
+# INSERT ... SELECT: Archiving a Semester's Grades
+
+<div class="thread">A realistic use: deriving one table's rows from another table already in the schema.</div>
+
+Suppose the registrar keeps a permanent `Transcript` table, structurally
+similar to `Enrollment` plus an archive date:
+
+```sql
+CREATE TABLE Transcript (
+    student_id INT, section_id INT, grade VARCHAR(2), archived_on DATE
+);
+
+INSERT INTO Transcript (student_id, section_id, grade, archived_on)
+SELECT student_id, section_id, grade, CURDATE()
+FROM Enrollment
+WHERE grade IS NOT NULL;
+```
+
+One statement copies every already-graded enrollment into
+`Transcript`, stamped with today's date. No `VALUES` list, no per-row
+typing, the `SELECT` did the work of reading every source row.
+
+---
+
+# Illustration: What INSERT ... SELECT Actually Copies
+
+<div class="thread">Two tables, one INSERT ... SELECT, made visible.</div>
+
+**`Enrollment` (source):**
+
+| student_id | section_id | grade |
+|---|---|---|
+| 1 | 3 | A0 |
+| 7 | 3 | NULL |
+
+**`Transcript` (target)** after the previous slide's statement:
+
+| student_id | section_id | grade | archived_on |
+|---|---|---|---|
+| 1 | 3 | A0 | 2026-09-06 |
+
+Only `student_id = 1` copied over: the `WHERE grade IS NOT NULL` filter
+excluded the ungraded row, exactly as it would in a plain `SELECT`.
+
+---
+
+# INSERT ... SELECT vs. Multi-Row VALUES: Choosing Between Them
+
+<div class="thread">Two ways to insert many rows in one statement. Different sources, same one round trip.</div>
+
+- **Multi-row `VALUES`** (earlier this lecture): the data comes from
+  outside the database, typed by hand or supplied by an application
+- **`INSERT ... SELECT`:** the data already lives inside the database,
+  in another table or another query's result
+
+If the values already exist somewhere in the schema, `INSERT ...
+SELECT` avoids retyping them, and avoids the risk of a typo producing
+a value that does not match what `SELECT` would have read directly.
+
+---
+
+# INSERT ... ON DUPLICATE KEY UPDATE: The Upsert Pattern
+
+<div class="thread">MySQL's own answer to "insert this, unless it's already there, then update it instead."</div>
+
+> `INSERT ... ON DUPLICATE KEY UPDATE` attempts a normal `INSERT`; if it
+> would violate a `PRIMARY KEY` or `UNIQUE` constraint, MySQL updates
+> the existing row instead of raising an error.
+
+```sql
+INSERT INTO target_table (col1, col2, col3)
+VALUES (v1, v2, v3)
+ON DUPLICATE KEY UPDATE col3 = v3;
+```
+
+"Upsert" (**up**date-or-in**sert**) is the common industry name for
+this exact pattern, one statement doing the job of "check if it
+exists, then decide."
+
+---
+
+# Upsert: Re-Enrolling Without a Duplicate-Key Error
+
+<div class="thread">Enrollment's own PRIMARY KEY(student_id, section_id) from Week 9, turned into a feature instead of an obstacle.</div>
+
+```sql
+INSERT INTO Enrollment (student_id, section_id, grade)
+VALUES (12, 3, 'A0')
+ON DUPLICATE KEY UPDATE grade = 'A0';
+```
+
+If `(12, 3)` is new, this behaves exactly like a plain `INSERT`. If
+`(12, 3)` already exists, the composite primary key from Week 9
+collides, and instead of MySQL's usual duplicate-key error, `grade` is
+updated on the existing row. Same intent as the two-step "check, then
+`UPDATE`" pattern from earlier in this lecture, in one statement.
+
+---
+
+# Illustration: Insert vs. Upsert on the Same Key
+
+<div class="thread">Same statement pattern, two different starting states, one consistent result.</div>
+
+**Case A, no existing row for `(12, 3)`:** the `INSERT` branch runs,
+one new row appears with `grade = 'A0'`.
+
+**Case B, `(12, 3)` already exists with `grade = 'B+'`:**
+
+| student_id | section_id | grade (before) | grade (after) |
+|---|---|---|---|
+| 12 | 3 | B+ | A0 |
+
+Same one statement, no error either way, because the composite key
+from Week 9 tells MySQL exactly which case it is in.
+
+---
+
+# Upsert Without a Conflict: Behaves Like Plain INSERT
+
+<div class="thread">The clause that never fires is not wasted, it is insurance.</div>
+
+```sql
+INSERT INTO Enrollment (student_id, section_id, grade)
+VALUES (20, 4, 'B0')
+ON DUPLICATE KEY UPDATE grade = 'B0';
+```
+
+If `(20, 4)` does not already exist, `ON DUPLICATE KEY UPDATE` never
+triggers, the statement is a plain `INSERT`, nothing more. The clause
+only changes behavior in the one case where a plain `INSERT` would
+otherwise fail.
+
+---
+
+# Why Upsert and Derived Inserts Matter in Real Systems
+
+<div class="why">
+Real applications insert data constantly without knowing in advance
+whether a row already exists, a user revisiting a form, a nightly sync
+job re-running after a partial failure. Handling that with two
+statements, a <code>SELECT</code> to check, then an <code>INSERT</code>
+or <code>UPDATE</code>, is slower and racier: another process can
+insert between the check and the write. <code>INSERT ... ON DUPLICATE
+KEY UPDATE</code> and <code>INSERT ... SELECT</code> push that decision
+into the database itself, inside one atomic statement.
+</div>
+
+---
+
 # UPDATE: Changing Existing Data
 
 <div class="thread">Week 7's exact update-anomaly scenario, now the actual fix.</div>
@@ -319,6 +532,139 @@ removed first. This is the DELETE-side mirror of INSERT's ordering rule.
 | 1 | 3 | A0 |
 
 One row removed. The other row, and every other table, untouched.
+
+---
+
+# Subqueries Inside WHERE: A Query Inside a Query
+
+<div class="thread">Every WHERE so far compared a column to a literal value. This one compares it to the result of another SELECT.</div>
+
+> A **subquery** is a complete `SELECT` statement nested inside another
+> statement's `WHERE` clause; its result feeds the outer statement's
+> condition.
+
+```sql
+DELETE FROM table_name
+WHERE column IN (
+    SELECT column FROM other_table WHERE <condition>
+);
+```
+
+MySQL runs the inner `SELECT` first, producing a list of values, then
+runs the outer statement's `WHERE column IN (...)` against that list,
+exactly like `IN` from Week 11, except the list comes from a query
+instead of being typed out by hand.
+
+---
+
+# DELETE Using a Subquery: Discontinuing a Program
+
+<div class="thread">The Software Engineering program is being discontinued; every current enrollment for its students must go.</div>
+
+```sql
+DELETE FROM Enrollment
+WHERE student_id IN (
+    SELECT student_id FROM Student
+    WHERE major = 'Software Engineering'
+);
+```
+
+The inner `SELECT` finds every Software Engineering student's
+`student_id`. The outer `DELETE` removes exactly their enrollments, no
+other major is touched, and `Student` rows themselves are untouched,
+only `Enrollment` was named after `DELETE FROM`.
+
+---
+
+# UPDATE Using a Subquery: Fixing One Instructor's Sections
+
+<div class="thread">Professor Lee mis-entered every grade this term; reset them all for a clean re-grade.</div>
+
+```sql
+UPDATE Enrollment
+SET grade = NULL
+WHERE section_id IN (
+    SELECT section_id FROM Section
+    WHERE instructor_id = 1
+);
+```
+
+The inner `SELECT` finds every `section_id` Professor Lee
+(`instructor_id = 1`) teaches. The outer `UPDATE` resets `grade` to
+`NULL` only for enrollments in those sections; every other
+instructor's grades are left exactly as they were.
+
+---
+
+# Subquery With NOT IN: The Opposite Selection
+
+<div class="thread">Same mechanism, the complement of the previous two slides.</div>
+
+```sql
+DELETE FROM Enrollment
+WHERE student_id NOT IN (
+    SELECT student_id FROM Student
+    WHERE major = 'Computer Science'
+);
+```
+
+`NOT IN` keeps only the rows whose value does **not** appear in the
+subquery's list, here, every enrollment belonging to a non-CS student.
+`NOT IN` behaves unexpectedly if the subquery can return a `NULL`
+value, always confirm the subquery's column is `NOT NULL` before
+relying on `NOT IN`.
+
+---
+
+# Subquery Discipline: Run the Inner SELECT First
+
+<div class="thread">The exact same caution this lecture already gave plain UPDATE and DELETE, applied one level deeper.</div>
+
+```sql
+SELECT student_id FROM Student
+WHERE major = 'Software Engineering';   -- check first, alone
+```
+
+Running the subquery by itself, before wrapping it in `DELETE` or
+`UPDATE`, shows exactly which rows the outer statement is about to
+touch. A subquery that returns the wrong rows makes the outer
+statement wrong in exactly the same silent way a bad `WHERE` clause
+does; checking it alone first is cheap insurance either way.
+
+---
+
+# TRUNCATE TABLE vs. DELETE: What's Different
+
+<div class="thread">Two ways to empty a table, not interchangeable.</div>
+
+| | `DELETE FROM t;` | `TRUNCATE TABLE t;` |
+|---|---|---|
+| Accepts `WHERE`? | Yes, row by row | No, always the whole table |
+| Resets `AUTO_INCREMENT`? | No | Yes, back to 1 |
+| Logs each row removed? | Yes, row by row | No, deallocates the whole table at once |
+| Blocked by a foreign key reference? | Only the referencing rows matter | Yes, any table another table references |
+| Classified as | DML | DDL, technically |
+
+`TRUNCATE` is faster on a large table precisely because it does not
+examine rows individually; that same shortcut is also why it cannot
+take a `WHERE` clause at all.
+
+---
+
+# Illustration: TRUNCATE Resets the Counter, DELETE Doesn't
+
+<div class="thread">The one difference students most often get burned by.</div>
+
+**After deleting every row with `DELETE FROM Student;`, then inserting
+Park Jiho again:** `student_id` continues from wherever
+`AUTO_INCREMENT` last left off, never reusing an old value.
+
+**After `TRUNCATE TABLE Student;`, then inserting Park Jiho again:**
+`student_id` restarts at `1`, as if the table were brand new.
+
+Also: `TRUNCATE TABLE Instructor;` fails outright if any `Section`
+still references it, exactly Week 9's foreign-key protection, this
+time blocking a truncate instead of a delete.
 
 ---
 
@@ -425,6 +771,21 @@ security bug, not just a data bug.
 
 ---
 
+# Common Mistakes, Continued: New Patterns, Same Old Traps
+
+- **Wrapping a subquery around a `DELETE`/`UPDATE` without running it
+  alone first:** the outer statement is only as correct as the row set
+  the inner `SELECT` actually returns
+- **Reaching for `TRUNCATE` out of habit:** it silently resets
+  `AUTO_INCREMENT` and fails against any foreign-key reference,
+  `DELETE FROM t;` (still with no `WHERE`, still dangerous) is the
+  safer default when a full wipe is genuinely intended
+- **Forgetting `ON DUPLICATE KEY UPDATE` needs a key to collide with:**
+  without a `PRIMARY KEY` or `UNIQUE` constraint on the target columns,
+  MySQL has no "duplicate" to detect, and the clause never triggers
+
+---
+
 # Practice: Enrolling a New Student
 
 <div class="thread">Two related INSERT statements, in the correct order, applied end to end.</div>
@@ -460,6 +821,69 @@ UPDATE Section SET room = '성파 615' WHERE section_id = 5;
 ```
 Running the matching `SELECT` first, with the exact same `WHERE`
 clause, confirms exactly which row will change before it does.
+
+---
+
+# Practice: Upserting a Library Loan Record
+
+<div class="thread">The library domain, one more time, with the upsert pattern from this lecture.</div>
+
+**Question:** a `Loan(book_isbn, member_id, due_date)` table has
+`PRIMARY KEY(book_isbn, member_id)`. Write one statement that inserts a
+new loan, or extends the due date if that member already has that
+book checked out.
+
+**Answer:**
+```sql
+INSERT INTO Loan (book_isbn, member_id, due_date)
+VALUES ('978-0-13-608530-0', 4, '2026-09-20')
+ON DUPLICATE KEY UPDATE due_date = '2026-09-20';
+```
+
+---
+
+# Practice: Delete-by-Subquery on the Library Domain
+
+<div class="thread">Same subquery pattern, a different domain, same shape of question.</div>
+
+**Question:** write a statement removing every `Loan` belonging to
+members whose `membership_status = 'expired'`.
+
+**Answer:**
+```sql
+DELETE FROM Loan
+WHERE member_id IN (
+    SELECT member_id FROM Member WHERE membership_status = 'expired'
+);
+```
+
+---
+
+# Check Yourself: New DML Patterns
+
+1. Write an `INSERT ... SELECT` statement copying every Computer
+   Science student's `name` into a table `CSMailingList(name)`.
+2. What is the one difference that makes `TRUNCATE TABLE Enrollment;`
+   dangerous in a way `DELETE FROM Enrollment;` is not, for a table an
+   application depends on for correctly increasing IDs?
+3. Why does `INSERT ... ON DUPLICATE KEY UPDATE` need a `PRIMARY KEY`
+   or `UNIQUE` constraint on the table to work at all?
+
+---
+
+# Answers: New DML Patterns
+
+1. ```sql
+   INSERT INTO CSMailingList (name)
+   SELECT name FROM Student WHERE major = 'Computer Science';
+   ```
+2. `TRUNCATE` resets `AUTO_INCREMENT` back to 1; any code assuming a
+   newer row always has a larger ID breaks silently the next time a
+   row is inserted after the truncate.
+3. Without a `PRIMARY KEY` or `UNIQUE` constraint, MySQL has no
+   definition of "duplicate" to detect; `ON DUPLICATE KEY UPDATE` has
+   nothing to trigger it, so the statement behaves like a plain
+   `INSERT` every time.
 
 ---
 
@@ -529,6 +953,17 @@ enrolled in CSE301?" directly.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3 (SQL DML)
 - **Prepare:** write, on paper, the `INSERT` statements needed to add
   yourself as a `Student` and enroll yourself in one `Section`.
+
+---
+
+# A Note on This Week's Sources
+
+Some topics in this deck (`INSERT`/`UPDATE`/`DELETE`, subqueries inside
+DML statements, MySQL's upsert syntax) follow the standard SQL topic
+organization used by course reference texts such as *Database System
+Concepts*, 7th ed. (Silberschatz, Korth, Sudarshan). All wording,
+examples, and the registration-system case study on these slides are
+original.
 
 ---
 

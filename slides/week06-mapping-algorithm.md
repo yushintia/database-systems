@@ -306,6 +306,446 @@ this lecture. Nothing on the diagram is left for a human to interpret.
 
 ---
 
+<!-- _class: section -->
+
+# Beyond the Five Rules
+
+> "What deterministic rules turn any E-R diagram into the same tables, no matter who applies them?" — this week's question, still.
+
+<div class="thread">Rules 1-5 covered every entity and relationship shape. Real diagrams also carry composite attributes, multivalued attributes, derived attributes, and specialization hierarchies — five more rules close the gap.</div>
+
+---
+
+# Rule 6: Composite Attributes
+
+<div class="thread">An attribute that is itself made of parts, flattened into plain columns.</div>
+
+**A composite attribute groups several component attributes under one
+conceptual name** (e.g. `Address`, made of `street`, `city`, and
+`zip_code`). **Each component becomes its own column on the owning
+relation. The composite name itself never becomes a column** — only
+its leaf components do.
+
+Suppose `Student` also carried a composite `address` attribute on the
+Week 4 diagram:
+
+```
+Student(student_id, name, major, street, city, zip_code)
+```
+
+No `address` column exists anywhere in the mapped table. Only its
+three flattened components do.
+
+---
+
+# Rule 6, Continued: Why Not One `address` Column?
+
+<div class="thread">The tempting shortcut, and why the mapping algorithm forbids it.</div>
+
+<div class="pain">
+A tempting shortcut: <code>Student(student_id, name, major, address)</code>
+where <code>address</code> holds the full string
+<code>"123 Hyoja-dong, Pohang, 37673"</code> in one column. Now find
+every student in <code>"Pohang"</code> — the database has no idea
+<code>"Pohang"</code> is the city part of that string, so the query
+must guess at parsing text meant for humans, not for
+<code>WHERE city = 'Pohang'</code>.
+</div>
+
+Flattening a composite attribute into separate columns is what makes
+each component independently searchable, sortable, and constrained —
+exactly what a single blob column cannot offer.
+
+---
+
+# Rule 7: Multivalued Attributes
+
+<div class="thread">An attribute that can hold more than one value needs a relation of its own.</div>
+
+**A multivalued attribute can legitimately hold more than one value
+for a single entity instance** (e.g. a `Student` having several
+`phone_number`s). **Mapping rule: a multivalued attribute never
+becomes a column on the owning relation. It becomes a brand-new
+relation, with a foreign key back to the owner, and its primary key is
+that foreign key combined with the value itself.**
+
+Suppose `Student` also carried a multivalued `phone_number` attribute:
+
+```
+StudentPhone(student_id, phone_number)
+PRIMARY KEY (student_id, phone_number)
+FOREIGN KEY (student_id) REFERENCES Student(student_id)
+```
+
+One row per phone number, per student. A student with three phone
+numbers has three rows in `StudentPhone`, zero extra columns in
+`Student`.
+
+---
+
+# Rule 7, Continued: Why This Looks Familiar
+
+<div class="thread">The same shape this lecture has already produced twice.</div>
+
+`StudentPhone(student_id, phone_number)` has exactly the shape of a
+weak entity's relation from Rule 3: a foreign key to its owner, plus
+whatever value it stores, combined into the key. A multivalued
+attribute is, structurally, a one-attribute weak entity that never got
+its own name on the E-R diagram — the mapping algorithm treats it the
+same way regardless.
+
+<div class="why">
+Compare this to storing <code>"010-1234,010-5678"</code> in one
+<code>phone_number</code> column instead: unqueryable without parsing a
+string by hand, the exact 1NF problem Week 7 names formally.
+</div>
+
+---
+
+# Rule 8: Derived Attributes
+
+<div class="thread">Some attributes should never be stored at all.</div>
+
+**A derived attribute's value can always be computed from other data
+already in the database** (e.g. a student's `total_credits_earned`,
+computable by summing `Section.credits` across every passing
+`Enrollment`). **Mapping rule: derived attributes are typically NOT
+given a column. They are computed on demand, by a query, when needed.**
+
+```
+-- NOT stored:
+Student(student_id, name, major, total_credits_earned)
+
+-- Stored instead:
+Student(student_id, name, major)
+-- total_credits_earned computed later, e.g.:
+-- SELECT SUM(credits) FROM Enrollment JOIN Section ... WHERE grade <> 'F'
+```
+
+---
+
+# Rule 8, Continued: Why Not Just Store It?
+
+<div class="thread">The obvious-looking shortcut, and the anomaly it reintroduces.</div>
+
+Storing `total_credits_earned` directly looks convenient, one column,
+no computation needed at query time. But every time a grade posts, or
+an enrollment is added or dropped, that stored number must be updated
+by hand or it silently drifts out of sync with the truth already
+living in `Enrollment`. **This is exactly the update anomaly Week 7
+formalizes:** one fact, stored in two places, that can disagree with
+itself.
+
+<div class="why">
+Real systems sometimes store a derived value anyway, called a cache or
+a materialized column, purely for performance on a huge table — but
+only with an explicit plan for keeping it in sync. That is an
+optimization decision made on top of the mapping algorithm, not part
+of it.
+</div>
+
+---
+
+# Rule 9: Specialization and Generalization
+
+<div class="thread">A superclass/subclass hierarchy needs a mapping rule of its own.</div>
+
+Some E-R diagrams group entities into a superclass with several
+subclasses — for example, a `Person` superclass with `Student` and
+`Instructor` as subclasses, each sharing `person_id`, `name`, and
+`email`, but each also carrying attributes the other does not (`major`
+for `Student`, `office` for `Instructor`). **Two standard strategies
+map this to relations:**
+
+1. **One table per subclass**, sharing the superclass's key
+2. **One single table**, with an extra column marking which subclass
+   each row belongs to
+
+This lecture works Strategy 1 in full, and describes Strategy 2 briefly.
+
+---
+
+# Rule 9, Strategy Chosen: One Table Per Subclass
+
+<div class="thread">Every table shares the same key as the superclass. That shared key is what stitches them back together.</div>
+
+```
+Person(person_id, name, email)
+Student(person_id, major)
+Instructor(person_id, office)
+```
+
+`Student.person_id` and `Instructor.person_id` are each simultaneously
+a primary key **and** a foreign key referencing `Person.person_id`. A
+row only exists in `Student` if that person is a student; a person who
+is both (a graduate student who also TAs) simply has a row in both
+tables, sharing the same `person_id`.
+
+<div class="why">
+Our registration schema keeps <code>Student</code> and
+<code>Instructor</code> as independent strong entities rather than
+subclasses of <code>Person</code>, because this course never needs to
+treat them as the same kind of thing. This rule exists for the
+diagrams that do.
+</div>
+
+---
+
+# Rule 9, The Other Strategy, Briefly
+
+<div class="thread">Named for completeness, one table for everyone, not used above.</div>
+
+**Strategy 2: a single table for the whole hierarchy, with a
+type-discriminator column** naming which subclass a row belongs to,
+and every subclass-specific column present but left `NULL` when it
+does not apply:
+
+```
+Person(person_id, name, email, person_type,
+       major,   -- NULL unless person_type = 'student'
+       office)  -- NULL unless person_type = 'instructor'
+```
+
+One table to query, but every subclass-specific column is `NULL` for
+rows that do not need it. Strategy 1 avoids that wasted space;
+Strategy 2 avoids joining several tables to see one person's full
+record. Real schemas pick based on which trade-off matters more.
+
+---
+
+# Rule 10: Aggregation
+
+<div class="thread">A relationship that itself needs to participate in another relationship.</div>
+
+**Aggregation treats an entire relationship as if it were a single
+higher-level entity**, so that a *different* relationship can connect
+to the relationship itself, not to either of its original entities.
+Week 4 modeled `Enrollment` as exactly this: the `Student`-`Section`
+relationship, treated as one aggregate thing with its own attribute
+(`grade`).
+
+**Mapping rule: an aggregation maps to a relation exactly like any
+other entity — its already-mapped relation (produced by Rule 3 or
+Rule 4) simply gains one more foreign key, for whatever new
+relationship connects to the aggregate.**
+
+---
+
+# Rule 10, Worked Example: Who Recorded This Grade?
+
+<div class="thread">A new relationship, attached to `Enrollment` itself, not to `Student` or `Section` alone.</div>
+
+Suppose the registration system also tracks **which instructor
+recorded each grade** — a relationship connecting the aggregate
+`Enrollment` to `Instructor`, not connecting `Student` or `Section`
+individually to `Instructor`:
+
+```
+Enrollment(student_id, section_id, grade, recorded_by)
+PRIMARY KEY (student_id, section_id)
+FOREIGN KEY (recorded_by) REFERENCES Instructor(instructor_id)
+```
+
+`recorded_by` is a plain foreign key on `Enrollment`'s already-mapped
+relation, added by the ordinary 1:N rule (Rule 2), the same way any
+other 1:N relationship would add one. Aggregation changes how you
+*think* about the diagram; it changes nothing about how the resulting
+table is built.
+
+---
+
+# Where Aggregation Shows Up in Real Systems
+
+<div class="thread">The same "a relationship needs its own relationship" shape, in familiar apps.</div>
+
+<div class="appgrid">
+<div class="app"><div class="name">Amazon</div><div class="desc">an Order-Product line item itself gets a Return relationship</div></div>
+<div class="app"><div class="name">GitHub</div><div class="desc">a Pull-Request review relationship itself gets Comments attached</div></div>
+<div class="app"><div class="name">배달의민족 (Baemin)</div><div class="desc">an Order-Restaurant relationship itself gets a Rating relationship</div></div>
+</div>
+
+Every one of these is a relationship treated as a thing, so a further
+relationship can attach to it, exactly the shape Rule 10 maps.
+
+---
+
+# Extended Schema: Five New Rules, Applied
+
+<div class="thread">Every new construct from this section, mapped and placed beside the original five relations.</div>
+
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Student</span><span class="tag">Rule 1 + 6</span></div>
+<div class="row"><span class="pk">student_id</span>, name, major, street, city, zip_code</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>StudentPhone</span><span class="tag">Rule 7</span></div>
+<div class="row"><span class="pk fk">student_id</span>, <span class="pk">phone_number</span></div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Enrollment</span><span class="tag">Rule 3 + 4 + 10</span></div>
+<div class="row"><span class="pk fk">student_id</span>, <span class="pk fk">section_id</span>, grade, <span class="fk">recorded_by</span></div>
+</div>
+</div>
+
+`total_credits_earned` (Rule 8) appears nowhere on this schema, on
+purpose — it is computed, never stored. `Person`/`Student`/`Instructor`
+(Rule 9) stays a "what if" for this course, since our `Student` and
+`Instructor` are already independent strong entities.
+
+---
+
+# Demo, Step by Step: Extending the Waitlist
+
+<div class="thread">Suppose the registration office wants a text or email alert when a waitlisted student reaches position 1. One more multivalued attribute, mapped exactly like Rule 7.</div>
+
+`Waitlist` gains a new requirement: a student may register **more than
+one** contact method for alerts. That is a multivalued attribute.
+
+---
+
+# Step 1: Identify the Shape
+
+`contact_method` is multivalued: one waitlisted student may list a
+phone number and an email, both, for alerts. Rule 7 applies, the same
+way it applied to `Student.phone_number` earlier in this lecture.
+
+---
+
+# Step 2: Apply Rule 7, Produce the New Relation
+
+```
+WaitlistContact(student_id, section_id, contact_method)
+PRIMARY KEY (student_id, section_id, contact_method)
+FOREIGN KEY (student_id, section_id) REFERENCES Waitlist(student_id, section_id)
+```
+
+The foreign key here is itself composite, referencing `Waitlist`'s own
+composite key, because the *owner* of this multivalued attribute is a
+weak entity, not a simple strong entity like `Student` was.
+
+---
+
+# Common Mistakes, Continued
+
+- **Storing a composite attribute as one unparsed string:** flatten it
+  into its components, or every query needing just the city has to
+  parse text meant for display, not for `WHERE`
+- **Adding a multivalued attribute as a comma-separated column:**
+  identical mistake to a 1NF violation, give it its own relation instead
+- **Storing a derived attribute "just in case":** it will eventually
+  disagree with the data it was computed from, unless something keeps
+  it in sync on every update
+- **Forcing every hierarchy into Strategy 1 or Strategy 2 out of habit:**
+  pick based on whether subclass-specific columns are rare (favor
+  Strategy 2) or the hierarchy is deep and heavily queried per subclass
+  (favor Strategy 1)
+
+---
+
+# Practice: A Library System — Composite Attribute
+
+<div class="thread">Rule 6, applied to a new domain.</div>
+
+`Member` gains a composite `name` attribute, made of `first_name` and
+`last_name`.
+
+**Question:** map `Member(member_id, name, ...)` using Rule 6.
+
+**Answer:**
+```
+Member(member_id, first_name, last_name, ...)
+```
+No `name` column exists. Only its two flattened components do, exactly
+Rule 6's flattening pattern.
+
+---
+
+# Practice: A Ride-Hailing App — Multivalued Attribute
+
+<div class="thread">Rule 7, one more time, in a different domain.</div>
+
+A `Driver` may register more than one vehicle license plate.
+
+**Question:** map this multivalued attribute using Rule 7.
+
+**Answer:**
+```
+DriverPlate(driver_id, plate_number)
+PRIMARY KEY (driver_id, plate_number)
+FOREIGN KEY (driver_id) REFERENCES Driver(driver_id)
+```
+One row per plate, per driver, zero new columns on `Driver` itself.
+
+---
+
+# Practice: A Ride-Hailing App — Specialization
+
+<div class="thread">Rule 9, Strategy 1, applied to vehicles instead of people.</div>
+
+`Vehicle` specializes into `Car` (extra attribute: `trunk_capacity`)
+and `Motorcycle` (extra attribute: `has_sidecar`).
+
+**Question:** map this using Strategy 1 (one table per subclass).
+
+**Answer:**
+```
+Vehicle(vehicle_id, plate_number, driver_id)
+Car(vehicle_id, trunk_capacity)
+Motorcycle(vehicle_id, has_sidecar)
+```
+`Car.vehicle_id` and `Motorcycle.vehicle_id` are each primary key and
+foreign key to `Vehicle`, exactly like `Student.person_id` earlier.
+
+---
+
+# Practice: A Ride-Hailing App — Aggregation
+
+<div class="thread">Rule 10, one more time: a relationship gaining its own relationship.</div>
+
+The `Rider`-`Ride` relationship (a completed trip) is itself rated by
+the `Driver`, a relationship attached to the trip as a whole, not to
+`Rider` or `Ride` alone.
+
+**Question:** what does Rule 10 add, and to which relation?
+
+**Answer:** a plain foreign key, `rated_by`, added to `Ride`'s
+already-mapped relation (the aggregate), referencing `Driver`. No new
+relation is created, exactly like `recorded_by` on `Enrollment`.
+
+---
+
+# Check Yourself: Rules 6-10
+
+1. `Instructor` gains a composite `office_location`, made of
+   `building` and `room_number`. How does Rule 6 map it?
+2. Why does a multivalued attribute never become a single column, no
+   matter how few values it usually holds?
+3. `Section` gains a derived `seats_remaining`, computable from
+   `Section.capacity` minus a count of `Enrollment` rows. Should it be
+   stored? Why or why not?
+4. A `Vehicle` superclass has `Car` and `Truck` subclasses. Name one
+   advantage Strategy 1 (one table per subclass) has over Strategy 2
+   (one shared table).
+
+---
+
+# Answers
+
+1. `Instructor(instructor_id, name, building, room_number)` — the
+   composite name never becomes a column, only its two components do.
+2. Because a column holds one value. Storing several values in one
+   column (e.g. comma-separated) makes them unqueryable without parsing
+   text by hand, exactly a 1NF violation waiting to happen.
+3. **No.** `seats_remaining` is derived from `capacity` and a live
+   count of enrollments; storing it risks drifting out of sync every
+   time an enrollment is added or dropped. Compute it on demand instead.
+4. Strategy 1 avoids `NULL` columns: a `Car`-only attribute like
+   `trunk_capacity` never appears, even as an empty cell, on a `Truck`
+   row, since `Truck` has no such column at all.
+
+---
+
 # Real Tools That Automate This
 
 <div class="thread">The "in industry" claim from earlier, made concrete.</div>
@@ -500,6 +940,17 @@ kind of problem, and a procedure to fix it.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 7
 - **Prepare:** find one place in the derived registration schema where
   a fact could still be stored redundantly. Bring it to Week 7.
+
+---
+
+# A Note on Course References
+
+This week's topics — mapping composite, multivalued, derived, and
+specialization/generalization constructs, and aggregation — follow the
+standard topic organization used in *Database System Concepts*, 7th
+ed. (Silberschatz, Korth, Sudarshan), this course's reference text.
+The wording, examples, and diagrams on these slides are original,
+written for this course and this case study.
 
 ---
 

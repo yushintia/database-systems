@@ -325,6 +325,286 @@ understand is not yet a model, it is a private guess.
 
 ---
 
+# Why These Design Issues Matter
+
+<div class="pain">
+Even after agreeing to write "things that exist" and "facts connecting
+them" in plain English, two designers on the same requirement still
+disagree on basic questions: is a property like "major" its own
+concept, or just a field? Is "who is TA-ing which section" a
+relationship, or does it deserve to be tracked on its own? These are
+not typos, they are recurring design forks that come up in almost
+every real system, and the four tests above do not resolve them by
+themselves.
+</div>
+
+This section gives each fork a name and a way to reason through it,
+before Week 4 turns any of it into a diagram.
+
+---
+
+# Relationship Sets, Formally
+
+<div class="thread">"A student enrolls in a section" names one fact. This slide names the whole category of facts like it.</div>
+
+> A **relationship set** is a named association among instances of one
+> or more of the things a design tracks. One **relationship** is a
+> single instance of that association.
+
+"Kim Minji enrolls in CSE301" is one relationship. Every such pairing,
+for every student and every section, together forms the relationship
+set `Enrolls`. This week's "facts connecting them" language now has a
+formal name.
+
+---
+
+# Degree of a Relationship: Definition
+
+<div class="thread">Not every relationship connects exactly two things.</div>
+
+> The **degree** of a relationship set is the number of entities
+> participating in it.
+
+Most relationships connect exactly two things, a **binary**
+relationship, degree 2. Some connect one thing to itself, or three or
+more things at once. The next three slides take each case.
+
+---
+
+# Higher-Degree: A Ternary Example
+
+<div class="thread">Three things, one relationship set, not three separate binary ones.</div>
+
+The registration system needs to know which instructor taught which
+course in which semester, because the same instructor might teach the
+same course in a different semester with a different outcome.
+`Offers`, a single relationship set of degree 3, connects Instructor,
+Course, and Semester at once.
+
+<div class="why">
+Splitting this into three binary relationships (Instructor-Course,
+Course-Semester, Instructor-Semester) loses information: it can no
+longer say which specific combination actually happened together. A
+true ternary relationship set is sometimes the only accurate model.
+</div>
+
+---
+
+# Unary (Recursive) Relationships
+
+<div class="thread">Degree 1: something related to another instance of its own kind.</div>
+
+> A **unary**, or **recursive**, relationship connects instances of the
+> same entity set to each other.
+
+`Prerequisite`, connecting Course to Course ("CSE301 is a prerequisite
+of CSE401"), is unary: both roles in the relationship are filled by
+the same kind of thing, just different instances of it.
+
+---
+
+# Degree, at a Glance
+
+| Degree | Name | Registration example |
+|---|---|---|
+| 1 | Unary (recursive) | Course is a prerequisite of Course |
+| 2 | Binary | Student enrolls in Section |
+| 3 | Ternary | Instructor offers Course in Semester |
+
+Binary is by far the most common case in practice; unary and ternary
+exist specifically for the facts a binary relationship cannot state
+accurately.
+
+---
+
+# Degree Matters: A Mapping Preview
+
+<div class="why">
+Week 6's mapping algorithm treats a binary, unary, and ternary
+relationship set with three different rules. Misreading a ternary fact
+as two binary ones here, in Week 3, produces a design that Week 6
+cannot correctly map back, a mistake far cheaper to catch now, on
+paper, than after tables exist.
+</div>
+
+---
+
+# Design Issue: Entity or Attribute?
+
+<div class="thread">The first of two design forks that plain-English requirements hide.</div>
+
+Some real-world things are properties of exactly one other thing, and
+some deserve to be tracked in their own right. Getting this wrong
+either buries information inside a single field, or manufactures a
+whole tracked thing for something that never needed one.
+
+> Ask: does this thing have properties of its own that the system must
+> track independently of whatever it is currently attached to?
+
+---
+
+# Entity or Attribute - Worked Example: Major
+
+Requirement: "each student has a major." Two designs:
+
+- **As a property:** `Student(student_id, name, major)`, major is just
+  a text field
+- **As its own tracked thing:** a `Major` concept, with its own
+  department, required credit count, and advisor, connected to Student
+  by a relationship
+
+If the registration system only ever prints a student's major name,
+the property design is complete. The moment the university needs to
+ask "which majors require 130 credits," major's own properties are
+being tracked, and it has become an entity in every way that matters.
+
+---
+
+# Design Issue: Entity or Relationship?
+
+<div class="thread">The second fork: sometimes a connection between two things needs to be tracked like a thing itself.</div>
+
+> Ask: does this connection need properties of its own, or does it
+> need to connect onward to still other things? If either is true,
+> model it as its own tracked thing, not a plain relationship.
+
+---
+
+# Entity or Relationship - Worked Example: TA Assignment
+
+Requirement: "a teaching assistant helps with a section, a fixed
+number of hours per week." As a plain relationship, "Assists" between
+Student and Section, carrying an `hours` property, works fine, until
+the university also needs to record which assistance was paid through
+which payroll batch. The moment a fact needs to attach to the
+assignment itself, not to the student or the section alone, "Assists"
+has outgrown being just a relationship.
+
+---
+
+# Keys at the Conceptual Level
+
+<div class="thread">Before Week 2's candidate key and primary key, this same idea already existed, just not yet formal.</div>
+
+> At the conceptual level, a **key** is whatever combination of
+> properties the real world already guarantees will distinguish one
+> instance from every other, whether or not any rule enforces it yet.
+
+The university's own numbering policy guarantees no two students ever
+share a `student_id`; that real-world guarantee is what makes it a key
+here, a full week before Week 2 calls it a candidate key or a primary
+key by name.
+
+---
+
+# Entity vs. Attribute vs. Relationship: A Checklist
+
+<div class="thread">Three questions, in order, for anything a requirement mentions.</div>
+
+- Does it have properties of its own the system must track? If yes, it
+  may deserve to be its own entity.
+- Does it just describe one other thing, with no life of its own? It
+  is an attribute.
+- Does it exist only to connect two or more other things? It is a
+  relationship - unless it needs its own properties or further
+  connections, in which case treat it as an entity instead.
+
+---
+
+# Common Mistakes: Conceptual Design Vocabulary
+
+- **Modeling every noun as its own entity:** "grade" is a property of
+  an enrollment, not its own tracked thing, unless grades themselves
+  need independent history
+- **Flattening a ternary relationship into two binaries:** loses
+  exactly which three things occurred together
+- **Treating any attribute on a relationship as proof it must become
+  an entity:** a relationship can carry a simple property (like
+  `hours`) without needing to become one
+
+---
+
+# Practice: A Library System - Relationship Degree
+
+Requirement: "a librarian checks out a copy to a member."
+
+**Question:** is this relationship binary or ternary, and why?
+
+**Answer:** **Ternary.** Librarian, Copy, and Member all participate in
+the same single event; splitting it into Librarian-Copy and
+Copy-Member loses which librarian handled which member's checkout.
+
+---
+
+# Practice: A Fitness App - Entity or Attribute?
+
+Requirement: "each workout belongs to a category, like cardio or
+strength."
+
+**Question:** attribute or entity?
+
+**Answer:** **Attribute**, if the app only ever labels a workout with a
+category name. **Entity**, the moment the app needs to track a
+category's own data: a recommended weekly frequency, an icon, a
+difficulty rating.
+
+---
+
+# Practice: A Ride-Hailing App - Entity or Relationship?
+
+Requirement: "a ride is rated by the rider after it ends."
+
+**Question:** should the rating stay a property of the ride, or does it
+deserve to be its own tracked thing?
+
+**Answer:** A simple 1-5 star value can stay a property of the ride. If
+the app later needs a written review, a timestamp, and a moderation
+status independent of the ride itself, the rating has earned its own
+entity, exactly the same fork as the TA Assignment example.
+
+---
+
+# Practice: The Registration System Itself
+
+Requirement: "each section meets in a room; the facilities office is
+adding a system to flag room double-bookings across every department,
+not just this one."
+
+**Question:** should `Room` stay a property of Section, or become its
+own entity?
+
+**Answer:** **Its own entity.** The moment room conflicts must be
+checked across departments, independent of any one Section, Room has
+properties (capacity, building, a schedule of its own) that the
+system must track on its own terms, the same fork as the Major example.
+
+---
+
+# Check Yourself: Conceptual Design Vocabulary
+
+1. A relationship connects Student, Course, and Semester all at once.
+   What is its degree, and what is that degree called?
+2. "Room number" is currently a property of Section. Name one new
+   requirement that would justify making Room its own tracked entity.
+3. "Advises," between Student and Instructor, gains a new requirement:
+   track which faculty committee approved each advising assignment.
+   What should happen to "Advises"?
+
+---
+
+# Answers
+
+1. **Degree 3, ternary.**
+2. Any requirement needing Room's own independent data would justify
+   it: capacity, building, a maintenance schedule, availability across
+   multiple sections.
+3. "Advises" should become its own entity: the new fact (committee
+   approval) attaches to the advising relationship itself, not to the
+   Student or Instructor alone, exactly the entity-or-relationship
+   fork.
+
+---
+
 # Demo, Step by Step: A New Feature, Conceptually
 
 <div class="thread">A brand new requirement, never seen before, walked through the process live. Weeks 4, 6, and 7 pick this same example up.</div>
@@ -494,6 +774,19 @@ notation for exactly the conceptual stage.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 6
 - **Prepare:** write, in plain English, every real-world thing and fact
   you can think of about the registration system. Bring it to Week 4.
+
+---
+
+# A Note on Sources
+
+<div class="thread">One line of attribution, stated once.</div>
+
+This week's coverage of relationship degree, the entity-vs-attribute
+and entity-vs-relationship design issues, and conceptual-level keys
+follows the standard chapter organization of Silberschatz, Korth, and
+Sudarshan's *Database System Concepts*, 7th ed., this course's primary
+reference text. Every example and explanation on these slides is
+original, built around this course's own registration case study.
 
 ---
 
