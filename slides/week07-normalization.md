@@ -304,7 +304,7 @@ JOIN is the exact operation that undoes this split, on purpose.
 
 # Two Questions Every Decomposition Must Answer
 
-> "What formal test catches these anomalies before a schema ever goes into production?" — this week's question, still.
+> "What formal test catches these anomalies before a schema ever goes into production?" This week's question, still.
 
 <div class="thread">Splitting a relation fixes an anomaly, but a careless split can create a new, worse problem: losing information, or losing the ability to check a rule at all.</div>
 
@@ -316,7 +316,7 @@ JOIN is the exact operation that undoes this split, on purpose.
 
 > A decomposition of relation R into R1 and R2 is **lossless-join** if
 > joining R1 and R2 back together, on their shared attributes,
-> reconstructs **exactly** the original rows of R — no rows lost, and
+> reconstructs **exactly** the original rows of R: no rows lost, and
 > no extra, spurious rows gained.
 
 **The test:** the decomposition is lossless if the attributes R1 and
@@ -342,7 +342,7 @@ Split on the common attribute `course_code`:
 
 Joining `R1` and `R2` on `course_code` produces **four** rows, not two:
 `(S1,CS101,R101)`, `(S1,CS101,R102)`, `(S2,CS101,R101)`,
-`(S2,CS101,R102)` — the last two never existed. `course_code` is not a
+`(S2,CS101,R102)`. The last two never existed. `course_code` is not a
 superkey of either `R1` or `R2`, so the test predicted this failure.
 
 ---
@@ -371,7 +371,7 @@ reconstructs exactly the original two rows, `(S1,CS101,R101)` and
 -> advisor_id` and `advisor_id -> advisor_office`. A bad split:
 `R1(student_id, advisor_office)`, `R2(advisor_id, advisor_office)`.
 Checking `student_id -> advisor_id` now needs a join, its two
-attributes live in different tables — **not preserved.**
+attributes live in different tables: **not preserved.**
 
 ---
 
@@ -386,7 +386,7 @@ dependency can be verified by looking at one table alone.
 
 <div class="why">
 A decomposition can be lossless without being dependency-preserving,
-and vice versa — they are two separate checks, and a good
+and vice versa; they are two separate checks, and a good
 decomposition needs both.
 </div>
 
@@ -481,7 +481,7 @@ candidate keys. It is rare enough in practice that this course tests
 
 # Reasoning Formally About Dependencies
 
-> "What formal test catches these anomalies before a schema ever goes into production?" — this week's question, still.
+> "What formal test catches these anomalies before a schema ever goes into production?" This week's question, still.
 
 <div class="thread">1NF, 2NF, and 3NF are tests you apply by inspection. Two more tools let you prove things about functional dependencies formally, instead of by eyeballing a table.</div>
 
@@ -500,7 +500,7 @@ every other FD that must also hold:
 
 These three are **sound** (they never derive a false dependency) and
 **complete** (every true dependency can be derived by applying them
-repeatedly) — the formal justification for the closure algorithm next.
+repeatedly): the formal justification for the closure algorithm next.
 
 ---
 
@@ -509,7 +509,7 @@ repeatedly) — the formal justification for the closure algorithm next.
 <div class="thread">Applying Armstrong's axioms until nothing new appears.</div>
 
 > The **closure** of an attribute set X under F, written **X+**, is
-> the complete set of attributes functionally determined by X — every
+> the complete set of attributes functionally determined by X: every
 > attribute reachable by repeatedly applying F's dependencies (and
 > Armstrong's axioms) starting from X.
 
@@ -547,7 +547,7 @@ semester, office}`.**
 > has that property (minimality).
 
 Compute the closure of a candidate set. If it reaches every attribute
-of the relation, X determines the whole row — a key, provided nothing
+of the relation, X determines the whole row, a key, provided nothing
 smaller also works.
 
 ---
@@ -562,7 +562,7 @@ a candidate key?
 
 `{student_id, section_id}+`: start with both attributes already
 present, apply the one FD, add `grade`. Closure = `{student_id,
-section_id, grade}`, **every attribute** — it is a key.
+section_id, grade}`, **every attribute**: it is a key.
 
 Is `{student_id}` alone a key? `{student_id}+ = {student_id}` only, no
 FD has `student_id` alone on its left side. It never reaches `grade`
@@ -596,7 +596,7 @@ room is dedicated to exactly one section on any day it is used (`room
 
 Candidate keys: `{section_id, day}` (closure reaches `room`, then
 everything) and `{room, day}` (closure reaches `section_id` via `room
--> section_id`, then everything) — **two overlapping candidate keys.**
+-> section_id`, then everything): **two overlapping candidate keys.**
 `room -> section_id` is a 3NF-legal exception (`section_id` is prime),
 but it still violates BCNF, since `room` alone is not a superkey.
 
@@ -845,10 +845,10 @@ actual tables. (Week 8 is the Midterm Exam, covering Weeks 1 through 7.)
 
 # A Note on Course References
 
-This week's topics — functional dependency closure, Armstrong's
+This week's topics, functional dependency closure, Armstrong's
 axioms, candidate keys via closure, lossless-join and
 dependency-preserving decomposition, and the BCNF decomposition
-algorithm — follow the standard topic organization used in *Database
+algorithm, follow the standard topic organization used in *Database
 System Concepts*, 7th ed. (Silberschatz, Korth, Sudarshan), this
 course's reference text. The wording, examples, and worked
 computations on these slides are original, written for this course and

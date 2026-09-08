@@ -310,9 +310,9 @@ this lecture. Nothing on the diagram is left for a human to interpret.
 
 # Beyond the Five Rules
 
-> "What deterministic rules turn any E-R diagram into the same tables, no matter who applies them?" — this week's question, still.
+> "What deterministic rules turn any E-R diagram into the same tables, no matter who applies them?" This week's question, still.
 
-<div class="thread">Rules 1-5 covered every entity and relationship shape. Real diagrams also carry composite attributes, multivalued attributes, derived attributes, and specialization hierarchies — five more rules close the gap.</div>
+<div class="thread">Rules 1-5 covered every entity and relationship shape. Real diagrams also carry composite attributes, multivalued attributes, derived attributes, and specialization hierarchies. Five more rules close the gap.</div>
 
 ---
 
@@ -323,7 +323,7 @@ this lecture. Nothing on the diagram is left for a human to interpret.
 **A composite attribute groups several component attributes under one
 conceptual name** (e.g. `Address`, made of `street`, `city`, and
 `zip_code`). **Each component becomes its own column on the owning
-relation. The composite name itself never becomes a column** — only
+relation. The composite name itself never becomes a column**; only
 its leaf components do.
 
 Suppose `Student` also carried a composite `address` attribute on the
@@ -346,15 +346,15 @@ three flattened components do.
 A tempting shortcut: <code>Student(student_id, name, major, address)</code>
 where <code>address</code> holds the full string
 <code>"123 Hyoja-dong, Pohang, 37673"</code> in one column. Now find
-every student in <code>"Pohang"</code> — the database has no idea
+every student in <code>"Pohang"</code>. The database has no idea
 <code>"Pohang"</code> is the city part of that string, so the query
 must guess at parsing text meant for humans, not for
 <code>WHERE city = 'Pohang'</code>.
 </div>
 
 Flattening a composite attribute into separate columns is what makes
-each component independently searchable, sortable, and constrained —
-exactly what a single blob column cannot offer.
+each component independently searchable, sortable, and constrained.
+That is exactly what a single blob column cannot offer.
 
 ---
 
@@ -391,7 +391,7 @@ numbers has three rows in `StudentPhone`, zero extra columns in
 weak entity's relation from Rule 3: a foreign key to its owner, plus
 whatever value it stores, combined into the key. A multivalued
 attribute is, structurally, a one-attribute weak entity that never got
-its own name on the E-R diagram — the mapping algorithm treats it the
+its own name on the E-R diagram. The mapping algorithm treats it the
 same way regardless.
 
 <div class="why">
@@ -438,7 +438,7 @@ itself.
 
 <div class="why">
 Real systems sometimes store a derived value anyway, called a cache or
-a materialized column, purely for performance on a huge table — but
+a materialized column, purely for performance on a huge table, but
 only with an explicit plan for keeping it in sync. That is an
 optimization decision made on top of the mapping algorithm, not part
 of it.
@@ -451,7 +451,7 @@ of it.
 <div class="thread">A superclass/subclass hierarchy needs a mapping rule of its own.</div>
 
 Some E-R diagrams group entities into a superclass with several
-subclasses — for example, a `Person` superclass with `Student` and
+subclasses: for example, a `Person` superclass with `Student` and
 `Instructor` as subclasses, each sharing `person_id`, `name`, and
 `email`, but each also carrying attributes the other does not (`major`
 for `Student`, `office` for `Instructor`). **Two standard strategies
@@ -525,7 +525,7 @@ relationship, treated as one aggregate thing with its own attribute
 (`grade`).
 
 **Mapping rule: an aggregation maps to a relation exactly like any
-other entity — its already-mapped relation (produced by Rule 3 or
+other entity: its already-mapped relation (produced by Rule 3 or
 Rule 4) simply gains one more foreign key, for whatever new
 relationship connects to the aggregate.**
 
@@ -536,7 +536,7 @@ relationship connects to the aggregate.**
 <div class="thread">A new relationship, attached to `Enrollment` itself, not to `Student` or `Section` alone.</div>
 
 Suppose the registration system also tracks **which instructor
-recorded each grade** — a relationship connecting the aggregate
+recorded each grade**, a relationship connecting the aggregate
 `Enrollment` to `Instructor`, not connecting `Student` or `Section`
 individually to `Instructor`:
 
@@ -589,7 +589,7 @@ relationship can attach to it, exactly the shape Rule 10 maps.
 </div>
 
 `total_credits_earned` (Rule 8) appears nowhere on this schema, on
-purpose — it is computed, never stored. `Person`/`Student`/`Instructor`
+purpose: it is computed, never stored. `Person`/`Student`/`Instructor`
 (Rule 9) stays a "what if" for this course, since our `Student` and
 `Instructor` are already independent strong entities.
 
@@ -643,7 +643,7 @@ weak entity, not a simple strong entity like `Student` was.
 
 ---
 
-# Practice: A Library System — Composite Attribute
+# Practice: A Library System: Composite Attribute
 
 <div class="thread">Rule 6, applied to a new domain.</div>
 
@@ -661,7 +661,7 @@ Rule 6's flattening pattern.
 
 ---
 
-# Practice: A Ride-Hailing App — Multivalued Attribute
+# Practice: A Ride-Hailing App: Multivalued Attribute
 
 <div class="thread">Rule 7, one more time, in a different domain.</div>
 
@@ -679,7 +679,7 @@ One row per plate, per driver, zero new columns on `Driver` itself.
 
 ---
 
-# Practice: A Ride-Hailing App — Specialization
+# Practice: A Ride-Hailing App: Specialization
 
 <div class="thread">Rule 9, Strategy 1, applied to vehicles instead of people.</div>
 
@@ -699,7 +699,7 @@ foreign key to `Vehicle`, exactly like `Student.person_id` earlier.
 
 ---
 
-# Practice: A Ride-Hailing App — Aggregation
+# Practice: A Ride-Hailing App: Aggregation
 
 <div class="thread">Rule 10, one more time: a relationship gaining its own relationship.</div>
 
@@ -732,7 +732,7 @@ relation is created, exactly like `recorded_by` on `Enrollment`.
 
 # Answers
 
-1. `Instructor(instructor_id, name, building, room_number)` — the
+1. `Instructor(instructor_id, name, building, room_number)`: the
    composite name never becomes a column, only its two components do.
 2. Because a column holds one value. Storing several values in one
    column (e.g. comma-separated) makes them unqueryable without parsing
@@ -945,8 +945,8 @@ kind of problem, and a procedure to fix it.
 
 # A Note on Course References
 
-This week's topics — mapping composite, multivalued, derived, and
-specialization/generalization constructs, and aggregation — follow the
+This week's topics, mapping composite, multivalued, derived, and
+specialization/generalization constructs, and aggregation, follow the
 standard topic organization used in *Database System Concepts*, 7th
 ed. (Silberschatz, Korth, Sudarshan), this course's reference text.
 The wording, examples, and diagrams on these slides are original,

@@ -207,7 +207,7 @@ key, no two students can share one email address.
 
 # Constraints Beyond What We've Built
 
-> "What exact commands turn a schema on paper into real, running tables?" — this week's question, still.
+> "What exact commands turn a schema on paper into real, running tables?" This week's question, still.
 
 <div class="thread">DEFAULT and UNIQUE cover two constraints. A few more make the registration schema actually enforce its own rules, not just its shape.</div>
 
@@ -238,7 +238,7 @@ term has not yet been assigned can still be entered.
 <div class="thread">Two constraints that look similar and solve different problems.</div>
 
 - **`NOT NULL`** says: this fact must be provided, with no fallback.
-  Use it when there is no sensible default (`Student.name` — there is
+  Use it when there is no sensible default (`Student.name`: there is
   no reasonable default name)
 - **`DEFAULT`** says: if no value is given, use this one instead of
   leaving it empty. Use it when a sensible default exists
@@ -274,7 +274,7 @@ enforced by the database itself instead of trusted to application code.
 
 <div class="pain">
 Before MySQL 8.0.16, <code>CHECK</code> was accepted by the syntax
-parser but silently <strong>never enforced</strong> — a table could be
+parser but silently <strong>never enforced</strong>. A table could be
 created with a <code>CHECK</code> clause, and MySQL would happily
 insert rows that violated it anyway. Always confirm the MySQL version
 in a real deployment before relying on <code>CHECK</code> to actually
@@ -391,7 +391,7 @@ FOREIGN KEY (section_id) REFERENCES Section(section_id)
 
 Applied to `Enrollment.section_id`: if a `Section` is cancelled and
 deleted, every `Enrollment` row for that section is deleted
-automatically. This is the right choice here — an enrollment in a
+automatically. This is the right choice here: an enrollment in a
 section that no longer exists is not useful data to keep around.
 
 ---
@@ -459,7 +459,7 @@ without a separate manual `UPDATE` statement.
 | `Section.instructor_id -> Instructor` | `SET NULL` | keep the section, clear the assignment |
 | `Section.course_code -> Course` | `RESTRICT` | a course with active sections should not vanish |
 
-There is no single "correct" action for every foreign key — each one
+There is no single "correct" action for every foreign key: each one
 answers a different real question about what the data should mean.
 
 ---
@@ -704,7 +704,7 @@ this lecture's data type slides prepare you to make correctly.
 
 - **Name tables and columns consistently:** singular nouns
   (`Student`, not `Students`), `snake_case` for multi-word columns
-  (`student_id`, not `StudentID` or `studentId`) — pick one convention
+  (`student_id`, not `StudentID` or `studentId`): pick one convention
   and never mix it within a schema
 - **Name every foreign key column after what it references:**
   `instructor_id` referencing `Instructor.instructor_id`, not a vague
@@ -844,7 +844,7 @@ exactly the same reasoning as `Section.instructor_id` earlier.
 1. Write the column definition for `Enrollment.grade` so it can never
    be left empty.
 2. `Section.room` should never be reused by two different sections at
-   the same time and semester — is this a job for `CHECK`, `UNIQUE`,
+   the same time and semester: is this a job for `CHECK`, `UNIQUE`,
    or `NOT NULL`? Which columns would it involve?
 3. A `Department` is deleted. Its `Course` rows should be **prevented**
    from being silently orphaned or deleted. Which referential action
@@ -858,7 +858,7 @@ exactly the same reasoning as `Section.instructor_id` earlier.
    grade VARCHAR(2) NOT NULL
    ```
 2. **`UNIQUE`**, on the combination `(room, semester, meeting_time)`
-   together (a composite `UNIQUE` constraint) — this is about
+   together (a composite `UNIQUE` constraint): this is about
    preventing a duplicate combination, not about validating one
    column's range (`CHECK`) or requiring a value be present
    (`NOT NULL`).
@@ -871,8 +871,8 @@ exactly the same reasoning as `Section.instructor_id` earlier.
 
 # A Note on Course References
 
-This week's topics — `CHECK` and `NOT NULL` constraints, `ON DELETE`
-and `ON UPDATE` referential actions, and schema-evolution practice —
+This week's topics, `CHECK` and `NOT NULL` constraints, `ON DELETE`
+and `ON UPDATE` referential actions, and schema-evolution practice,
 follow the standard topic organization used in *Database System
 Concepts*, 7th ed. (Silberschatz, Korth, Sudarshan), this course's
 reference text. The wording, examples, and worked SQL on these slides
