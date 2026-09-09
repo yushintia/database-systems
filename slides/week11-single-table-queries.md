@@ -224,6 +224,47 @@ once a table has millions of rows.
 
 ---
 
+# NOT LIKE: Excluding a Pattern
+
+<div class="thread">Three placements for %, now negated the same way any test can be.</div>
+
+> `NOT LIKE` matches every row a `LIKE` pattern would exclude, and
+> excludes every row `LIKE` would match. Same wildcards, opposite result.
+
+```sql
+SELECT title FROM Course
+WHERE title NOT LIKE '%Lab%';
+```
+
+Returns every course title that does **not** contain "Lab" anywhere,
+"Database Systems" and "Data Structures" both qualify; "Systems Lab"
+does not. `NOT LIKE` is not a separate feature, it is `LIKE` with the
+match logic flipped.
+
+---
+
+# Worked Example: Finding Students by Partial Name
+
+<div class="thread">A directly answerable question, start to finish, using only what this slide's LIKE slides just covered.</div>
+
+"Which students have a family name starting with 'Kim'?"
+
+```sql
+SELECT student_id, name FROM Student
+WHERE name LIKE 'Kim%';
+```
+
+| student_id | name |
+|---|---|
+| 3 | Kim Minji |
+| 27 | Kim Doyun |
+
+Two matches out of 52 students. `'Kim%'` matches only names that
+*start* with "Kim," not every name containing it anywhere, the
+placement rule from the previous slide.
+
+---
+
 # BETWEEN: Testing a Range
 
 <div class="thread">The comparison-operators table's other preview, now given its own worked example.</div>
@@ -261,6 +302,45 @@ open range `(3, 4)`.
 
 ---
 
+# BETWEEN With NOT: Excluding a Range
+
+<div class="thread">Same range test as before, negated the same way LIKE and IN get negated.</div>
+
+```sql
+SELECT title, credits FROM Course
+WHERE credits NOT BETWEEN 3 AND 4;
+```
+
+Returns every course **outside** the closed range `[3, 4]`: credits of
+2 or lower, or 5 or higher. `NOT BETWEEN` is shorthand for
+`credits < 3 OR credits > 4`, the same inclusive-boundary rule still
+applies, just to what falls outside instead of inside.
+
+---
+
+# Worked Example: BETWEEN Combined With ORDER BY
+
+<div class="thread">Two clauses from this lecture, composed into one real answer.</div>
+
+"List every 3-4 credit course, alphabetically by title."
+
+```sql
+SELECT title, credits FROM Course
+WHERE credits BETWEEN 3 AND 4
+ORDER BY title ASC;
+```
+
+| title | credits |
+|---|---|
+| Data Structures | 3 |
+| Database Systems | 3 |
+| Software Engineering | 4 |
+
+`WHERE` narrows the rows first, `ORDER BY` then sorts only what
+survived the filter, not the whole `Course` table.
+
+---
+
 # Logical Operators: Combining Conditions
 
 <div class="thread">One WHERE test is rarely enough. Combine them.</div>
@@ -283,6 +363,31 @@ first? MySQL follows a fixed rule (<code>AND</code> before
 
 ---
 
+# Worked Example: Parentheses Change the Answer
+
+<div class="thread">The previous slide's warning, made concrete with two different results from the same words.</div>
+
+```sql
+-- No parentheses: AND binds first, so this reads as
+-- "CS" OR ("SE" AND student_id > 100)
+SELECT name FROM Student
+WHERE major = 'Computer Science' OR major = 'Software Engineering'
+  AND student_id > 100;
+
+-- Parentheses force the intended grouping
+SELECT name FROM Student
+WHERE (major = 'Computer Science' OR major = 'Software Engineering')
+  AND student_id > 100;
+```
+
+The first version returns **every** Computer Science student,
+regardless of `student_id`, plus only the Software Engineering
+students above 100. The second returns only students of either major
+whose `student_id` is above 100, a materially smaller result. Same
+words, different parentheses, different answer.
+
+---
+
 # IN and IS NULL
 
 <div class="thread">Two more tests, common enough to need their own slide.</div>
@@ -302,6 +407,82 @@ not even another unknown.
 
 ---
 
+# NOT IN: Excluding a List
+
+<div class="thread">IN's mirror image, for the same reason NOT LIKE mirrors LIKE.</div>
+
+```sql
+SELECT name FROM Student
+WHERE major NOT IN ('Computer Science', 'Software Engineering');
+```
+
+Returns every student whose major is neither of the two listed,
+`'Data Science'` and any other major in the table. `NOT IN` is
+shorthand for a chain of `AND ... != ...` conditions, the negated
+counterpart of `IN`'s chain of `OR ... = ...`.
+
+---
+
+# IS NOT NULL Combined With Another Filter
+
+<div class="thread">IS NULL's opposite, doing real work alongside a second condition.</div>
+
+```sql
+SELECT student_id, grade FROM Enrollment
+WHERE section_id = 3 AND grade IS NOT NULL;
+```
+
+Two conditions, both must hold: the row belongs to section 3, **and**
+a grade has actually been posted. `IS NOT NULL` is required here too,
+`grade != NULL` is exactly as broken as `grade = NULL`, neither ever
+matches anything.
+
+---
+
+# Worked Example: Ungraded Enrollments in One Section
+
+<div class="thread">IS NULL, narrowed to a specific section instead of the whole table.</div>
+
+```sql
+SELECT student_id FROM Enrollment
+WHERE section_id = 5 AND grade IS NULL;
+```
+
+| student_id |
+|---|
+| 19 |
+| 24 |
+
+Two students in section 5 have not yet been graded. Swapping `IS NULL`
+for `= NULL` here would silently return zero rows, even though these
+two rows plainly exist, the exact trap `IS NULL` exists to avoid.
+
+---
+
+# Worked Example: A Compound WHERE Clause, Start to Finish
+
+<div class="thread">Every operator from this slide's neighbors, stacked into one real question.</div>
+
+"Which Software Engineering students, with `student_id` over 30, are
+on record, sorted by name?"
+
+```sql
+SELECT student_id, name FROM Student
+WHERE major = 'Software Engineering' AND student_id > 30
+ORDER BY name ASC;
+```
+
+| student_id | name |
+|---|---|
+| 33 | Han Yerin |
+| 47 | Jang Hyeri |
+
+`major`, `student_id`, and a sort order, three conditions worth of
+filtering, in one statement that returns exactly the rows the question
+asked for.
+
+---
+
 # DISTINCT: Removing Duplicate Results
 
 <div class="thread">A direct answer to a question the raw data cannot answer on its own.</div>
@@ -314,6 +495,27 @@ Without `DISTINCT`, this returns "Computer Science" once for every
 student majoring in it, hundreds of duplicate rows. With `DISTINCT`,
 each distinct value appears exactly once, a direct question ("what
 majors exist?") getting a direct answer.
+
+---
+
+# Worked Example: Every Distinct Room in Use
+
+<div class="thread">The same DISTINCT idea, a second column, a genuinely useful question.</div>
+
+"What rooms does the registration system actually use?"
+
+```sql
+SELECT DISTINCT room FROM Section
+ORDER BY room ASC;
+```
+
+| room |
+|---|
+| 성파 615 |
+| 성파 702 |
+
+Without `DISTINCT`, this returns one row per `Section`, 26 rows, most
+of them repeating the same handful of rooms.
 
 ---
 
@@ -336,6 +538,23 @@ order," now visible in query results too.
 
 ---
 
+# ORDER BY Multiple Columns: Breaking Ties
+
+<div class="thread">One sort key is not always enough to produce a stable, readable order.</div>
+
+```sql
+SELECT name, major FROM Student
+ORDER BY major ASC, name ASC;
+```
+
+Rows sort by `major` first; whenever two students share a major, the
+second key, `name`, decides the order between them. Without the
+second key, MySQL is free to place same-major rows in any order at
+all, exactly the "no guaranteed order" rule from the previous slide,
+now applied inside a tie instead of across the whole result.
+
+---
+
 # LIMIT: Fewer Rows Back
 
 <div class="thread">One more clause, useful the moment a table gets large.</div>
@@ -350,6 +569,67 @@ Returns only the first 5 rows of the sorted result, "top 5" queries in
 one clause. `LIMIT` is MySQL-specific syntax; other database products
 spell this differently, one of the few places MySQL's own dialect
 shows.
+
+---
+
+# Worked Example: Highest-Credit Courses
+
+<div class="thread">The same ORDER BY + LIMIT pattern, a different column, a different question.</div>
+
+```sql
+SELECT title, credits FROM Course
+ORDER BY credits DESC
+LIMIT 3;
+```
+
+| title | credits |
+|---|---|
+| Software Engineering | 4 |
+| Database Systems | 3 |
+| Data Structures | 3 |
+
+Sort first, by the column that defines "top," then cut the result down
+to size, `ORDER BY` and `LIMIT` always work together in that order,
+never the reverse.
+
+---
+
+# LIMIT With OFFSET: Paging Through Results
+
+<div class="thread">LIMIT alone always returns the same first rows. OFFSET moves the window.</div>
+
+> `LIMIT n OFFSET m` skips the first `m` rows of the sorted result,
+> then returns the next `n`. This is the literal mechanism behind
+> every "page 2" and "load more" button.
+
+```sql
+SELECT student_id, section_id FROM Enrollment
+ORDER BY student_id ASC
+LIMIT 10 OFFSET 10;
+```
+
+Skips the first 10 rows, then returns the next 10, rows 11 through 20
+of the sorted result, exactly "page 2" if the page size is 10.
+
+---
+
+# Worked Example: Paging With OFFSET
+
+<div class="thread">The previous slide's clause, run against real data, with real output.</div>
+
+```sql
+SELECT student_id, section_id, grade FROM Enrollment
+ORDER BY student_id ASC
+LIMIT 2 OFFSET 5;
+```
+
+| student_id | section_id | grade |
+|---|---|---|
+| 6 | 3 | B0 |
+| 6 | 8 | A0 |
+
+Page 1 (`OFFSET 0`) shows the first rows in `student_id` order; this
+is the next page of that same sorted sequence, nothing more.
 
 ---
 
@@ -371,6 +651,23 @@ FROM Course;
 is not stored anywhere in `Course`. Without `AS`, its column header
 would be the expression itself, `credits * 16`, unreadable in a
 report, `AS` gives it a name a person can actually use.
+
+---
+
+# ORDER BY an Aliased Expression
+
+<div class="thread">The value the previous slide computed can drive the sort order too.</div>
+
+```sql
+SELECT title, credits, credits * 16 AS total_class_hours
+FROM Course
+ORDER BY total_class_hours DESC;
+```
+
+`ORDER BY` can reference `total_class_hours`, the alias just defined
+in `SELECT`, even though `total_class_hours` is not a stored column
+anywhere in `Course`. MySQL computes the expression once per row, then
+sorts by the computed value, not the raw column.
 
 ---
 
@@ -397,6 +694,54 @@ is evaluated independently, `CASE` never compares one row to another.
 
 ---
 
+# CASE, the Simple Form: Matching One Column Directly
+
+<div class="thread">The previous slide showed the searched form. Here is CASE's other, shorter shape.</div>
+
+```sql
+SELECT name,
+    CASE major
+        WHEN 'Computer Science' THEN 'CS'
+        WHEN 'Software Engineering' THEN 'SE'
+        ELSE 'Other'
+    END AS major_code
+FROM Student;
+```
+
+This "simple" form names one column once, right after `CASE`, then
+compares it to each `WHEN` value directly. It reads shorter than the
+searched form's repeated `WHEN major = ...`, but only works when every
+branch tests the *same* column for equality, the searched form is
+still required the moment a branch needs `IS NULL` or a range.
+
+---
+
+# Worked Example: A Status Report Built With CASE
+
+<div class="thread">CASE and arithmetic aliasing, combined into one readable report column.</div>
+
+```sql
+SELECT title, credits,
+    CASE
+        WHEN credits >= 4 THEN 'Heavy Load'
+        WHEN credits = 3 THEN 'Standard Load'
+        ELSE 'Light Load'
+    END AS load_label
+FROM Course
+ORDER BY credits DESC;
+```
+
+| title | credits | load_label |
+|---|---|---|
+| Software Engineering | 4 | Heavy Load |
+| Database Systems | 3 | Standard Load |
+| Introduction to Programming | 2 | Light Load |
+
+One query, no second table, turns a raw number into a label a
+non-technical reader can actually use.
+
+---
+
 # Whole-Table Aggregates Without GROUP BY
 
 <div class="thread">A lighter first taste of aggregation, before next week's GROUP BY groups it by category.</div>
@@ -417,6 +762,134 @@ all silently skip `NULL` the same way, an ungraded enrollment never
 distorts an average grade. Next week's `GROUP BY` reuses these exact
 same functions, producing one summary row **per category** instead of
 one for the whole table.
+
+---
+
+# SUM and AVG: Summarizing Course Load
+
+<div class="thread">Two more aggregate functions, on a column where they actually make sense.</div>
+
+```sql
+SELECT SUM(credits) AS total_credits_offered,
+       AVG(credits) AS avg_credits_per_course
+FROM Course;
+```
+
+| total_credits_offered | avg_credits_per_course |
+|---|---|
+| 56 | 3.1111 |
+
+`SUM` adds `credits` across all 18 courses; `AVG` divides that same
+total by the number of non-`NULL` rows. Both collapse the entire
+`Course` table into a single summary row, the same "no `GROUP BY`"
+rule as `COUNT`.
+
+---
+
+# COUNT(DISTINCT ...): Counting Unique Values
+
+<div class="thread">DISTINCT and an aggregate, combined into a single number instead of a list.</div>
+
+```sql
+SELECT COUNT(DISTINCT major) AS distinct_majors
+FROM Student;
+```
+
+| distinct_majors |
+|---|
+| 3 |
+
+`COUNT(major)` alone would count every non-`NULL` row, 52 of them.
+`COUNT(DISTINCT major)` counts only how many *different* values
+appear, exactly the number of rows the earlier `SELECT DISTINCT
+major` slide would return, condensed into one number.
+
+---
+
+# MIN and MAX on a Real Number, Not Text
+
+<div class="thread">The upcoming Demo sequence warns about grade text; here is the same pair of functions, done properly.</div>
+
+```sql
+SELECT MIN(credits) AS lightest, MAX(credits) AS heaviest
+FROM Course;
+```
+
+| lightest | heaviest |
+|---|---|
+| 2 | 4 |
+
+On a genuinely numeric column, `MIN`/`MAX` compare by actual
+magnitude, 2 really is smaller than 4. Contrast this with
+`MIN(grade)`/`MAX(grade)` two slides ahead, where the same functions
+compare *text* alphabetically, `'A-'` before `'A0'`, because `grade`
+is stored as a string, not a number.
+
+---
+
+# Aggregates Compose With WHERE, a Second Example
+
+<div class="thread">Filtering before summarizing, on a different column and a different condition.</div>
+
+```sql
+SELECT AVG(credits) AS avg_credits_of_larger_courses
+FROM Course
+WHERE credits >= 3;
+```
+
+| avg_credits_of_larger_courses |
+|---|
+| 3.3125 |
+
+`WHERE` removes the lighter courses first; `AVG` then averages only
+what is left. Compare this to the earlier `AVG(credits)` slide's
+`3.1111`: filtering out the 2-credit courses pulls the average up,
+exactly what "compose" means here, two clauses applied in sequence.
+
+---
+
+# CASE Inside COUNT: Conditional Counting
+
+<div class="thread">A preview of Week 12's GROUP BY, one bucket at a time, without GROUP BY itself.</div>
+
+```sql
+SELECT COUNT(*) AS total_rows,
+       COUNT(CASE WHEN grade = 'A0' THEN 1 END) AS a_count
+FROM Enrollment;
+```
+
+| total_rows | a_count |
+|---|---|
+| 175 | 22 |
+
+`CASE` returns `1` for a matching row and `NULL` (the implicit `ELSE`)
+otherwise; `COUNT` then ignores every `NULL`, exactly like
+`COUNT(grade)` does, counting only rows that actually matched. One
+pass over the table, no `GROUP BY` required.
+
+---
+
+# Illustration: The Order SQL Actually Runs a Query
+
+<div class="thread">A query reads top to bottom on the page. MySQL does not run it in that order.</div>
+
+<div class="pipeline">
+<div class="stage"><div class="h">FROM</div><div class="s">read the table</div></div>
+<div class="arrow">&rsaquo;</div>
+<div class="stage"><div class="h">WHERE</div><div class="s">filter rows</div></div>
+<div class="arrow">&rsaquo;</div>
+<div class="stage"><div class="h">SELECT</div><div class="s">pick columns</div></div>
+<div class="arrow">&rsaquo;</div>
+<div class="stage"><div class="h">ORDER BY</div><div class="s">sort what's left</div></div>
+<div class="arrow">&rsaquo;</div>
+<div class="stage"><div class="h">LIMIT</div><div class="s">cut it down</div></div>
+</div>
+
+Written order: `SELECT ... FROM ... WHERE ... ORDER BY ... LIMIT ...`.
+Actual run order: `FROM`, `WHERE`, `SELECT`, `ORDER BY`, `LIMIT`. This
+is exactly why `WHERE` can test `grade` but never a `SELECT` alias
+defined in the same query, `WHERE` runs before `SELECT` has computed
+anything yet.
 
 ---
 

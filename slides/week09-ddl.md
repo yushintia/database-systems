@@ -272,7 +272,267 @@ This is exactly Rule 4 of the mapping algorithm from Week 6.
 
 ---
 
-# Worked Example: The Three Independent Tables
+# Creation Order, as a Pipeline
+
+<div class="thread">The same dependency rule from the last slide, read left to right instead of top to bottom.</div>
+
+<div class="pipeline">
+<div class="stage"><div class="h">Student, Course, Instructor</div><div class="s">no foreign keys, any order</div></div>
+<div class="arrow">&rarr;</div>
+<div class="stage"><div class="h">Section</div><div class="s">references Course, Instructor</div></div>
+<div class="arrow">&rarr;</div>
+<div class="stage"><div class="h">Enrollment</div><div class="s">references Student, Section</div></div>
+</div>
+
+Three tables have nothing to wait for. `Section` waits for two of
+them. `Enrollment` waits for `Section`, which already waited for two
+others, making it last of all five, no exceptions.
+
+---
+
+<!-- _class: section -->
+
+# Constraints Beyond What We've Built
+
+<div class="driving-q">"What exact commands turn a schema on paper into real, running tables?"</div>
+
+<div class="thread">NOT NULL, DEFAULT, and UNIQUE cover three constraints. A few more make the registration schema enforce its own rules, not just its shape.</div>
+
+---
+
+# CHECK: Enforcing a Value Range
+
+<div class="thread">Not just "is a value present," but "is this value actually valid."</div>
+
+```sql
+CREATE TABLE Course (
+    course_code VARCHAR(10) PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    credit_hours INT CHECK (credit_hours BETWEEN 1 AND 6)
+);
+```
+
+`CHECK` rejects any row where the condition evaluates false. Insert a
+course with `credit_hours = 12`, and MySQL refuses it before the row
+ever exists, a domain constraint from Week 2, now enforced by the
+database itself instead of trusted to application code.
+
+---
+
+# CHECK: A MySQL Version Caveat
+
+<div class="thread">A real-world gotcha this course's practice environment will not hide from you.</div>
+
+<div class="pain">
+Before MySQL 8.0.16, <code>CHECK</code> was accepted by the syntax
+parser but silently <strong>never enforced</strong> — a table could be
+created with a <code>CHECK</code> clause, and MySQL would happily
+insert rows that violated it anyway. Always confirm the MySQL version
+in a real deployment before relying on <code>CHECK</code> to actually
+reject bad data; this course's practice environment enforces it
+correctly.
+</div>
+
+---
+
+# Naming a Constraint Explicitly
+
+<div class="thread">An unnamed constraint still works. It just becomes unreadable the moment something needs to reference it.</div>
+
+```sql
+CREATE TABLE Section (
+    section_id INT AUTO_INCREMENT PRIMARY KEY,
+    course_code VARCHAR(10) NOT NULL,
+    instructor_id INT,
+    CONSTRAINT fk_section_course
+        FOREIGN KEY (course_code) REFERENCES Course(course_code),
+    CONSTRAINT fk_section_instructor
+        FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
+);
+```
+
+Leave a constraint unnamed, and MySQL invents a name like `section_ibfk_1`.
+A named constraint (`fk_section_course`) can be dropped or modified
+later by that exact name, without guessing what MySQL called it.
+
+---
+
+# ON DELETE and ON UPDATE: What Happens When a Referenced Row Changes
+
+<div class="thread">A foreign key says a value must exist elsewhere. It says nothing yet about what to do when that "elsewhere" row disappears or changes.</div>
+
+Every foreign key can declare a **referential action**, telling MySQL
+exactly what to do to dependent rows when the referenced row is
+deleted or updated:
+
+```sql
+FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
+    ON DELETE ... ON UPDATE ...
+```
+
+Four standard actions exist: `CASCADE`, `SET NULL`, `RESTRICT`, and
+`NO ACTION`. Each fits a different real requirement.
+
+---
+
+# ON DELETE CASCADE: Worked Example
+
+<div class="thread">Delete the parent, and its dependents disappear with it, on purpose.</div>
+
+```sql
+FOREIGN KEY (section_id) REFERENCES Section(section_id)
+    ON DELETE CASCADE
+```
+
+Applied to `Enrollment.section_id`: if a `Section` is cancelled and
+deleted, every `Enrollment` row for that section is deleted
+automatically. This is the right choice here, an enrollment in a
+section that no longer exists is not useful data to keep around.
+
+---
+
+# ON DELETE SET NULL: Worked Example
+
+<div class="thread">Delete the parent, keep the dependent, just mark the link as unknown.</div>
+
+```sql
+instructor_id INT,
+FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
+    ON DELETE SET NULL
+```
+
+Applied to `Section.instructor_id` (requires the column to allow
+`NULL`): if an `Instructor` leaves and their row is deleted, every
+`Section` they taught keeps existing, only its `instructor_id` becomes
+`NULL`, ready for reassignment.
+
+---
+
+# ON DELETE RESTRICT / NO ACTION: Worked Example
+
+<div class="thread">The safest default: refuse the delete outright.</div>
+
+```sql
+FOREIGN KEY (course_code) REFERENCES Course(course_code)
+    ON DELETE RESTRICT
+```
+
+Applied to `Section.course_code`: attempting to delete a `Course` that
+still has `Section` rows referencing it is **rejected outright**, with
+an error, until every dependent `Section` is removed or reassigned
+first. `RESTRICT` and `NO ACTION` behave the same way in MySQL, and
+`RESTRICT` is also the default when no action is specified at all.
+
+---
+
+# ON UPDATE CASCADE: Worked Example
+
+<div class="thread">The same four choices apply when a key's value changes, not just when a row is deleted.</div>
+
+```sql
+FOREIGN KEY (student_id) REFERENCES Student(student_id)
+    ON UPDATE CASCADE
+```
+
+Applied to `Enrollment.student_id`: if a `Student`'s `student_id` ever
+had to change, every `Enrollment` row referencing that student updates
+automatically, staying consistent without a separate manual `UPDATE`
+statement.
+
+---
+
+# Choosing the Right Referential Action
+
+<div class="thread">Applying all four actions to the registration schema's actual foreign keys, in one place.</div>
+
+| Foreign key | Action on delete | Why |
+|---|---|---|
+| `Enrollment.section_id &rarr; Section` | `CASCADE` | an enrollment in a deleted section is meaningless |
+| `Enrollment.student_id &rarr; Student` | `RESTRICT` | never silently erase enrollment history by deleting a student |
+| `Section.instructor_id &rarr; Instructor` | `SET NULL` | keep the section, clear the assignment |
+| `Section.course_code &rarr; Course` | `RESTRICT` | a course with active sections should not vanish |
+
+There is no single "correct" action for every foreign key, each one
+answers a different real question about what the data should mean.
+
+---
+
+# ALTER TABLE: Changing an Existing Table
+
+<div class="thread">Requirements change after launch. ALTER is how the schema keeps up without starting over.</div>
+
+```sql
+-- add a new column
+ALTER TABLE Student ADD COLUMN email VARCHAR(100);
+
+-- change a column's type or constraint
+ALTER TABLE Student MODIFY COLUMN major VARCHAR(150);
+
+-- remove a column entirely
+ALTER TABLE Student DROP COLUMN email;
+```
+
+Each of these is still DDL, structure is changing, not data. Adding a
+new nullable column is always safe to run against a live table;
+dropping or renaming one that existing code still reads is not.
+
+---
+
+# DROP TABLE: Removing Structure Entirely
+
+<div class="thread">The most dangerous DDL command in this lecture. Handle with care.</div>
+
+```sql
+DROP TABLE Enrollment;
+```
+
+This deletes the table **and every row of data inside it**,
+permanently. In a real system, this command is almost never run
+directly against production data without a backup, and often requires
+explicit sign-off. Today, only run it against a practice database.
+
+---
+
+# DDL in the Wild
+
+<div class="thread">This exact syntax family, running behind apps you already use.</div>
+
+<div class="appgrid">
+<div class="app"><div class="name">Coupang</div><div class="desc">a Products table, ENUM for order status</div></div>
+<div class="app"><div class="name">토스 (Toss)</div><div class="desc">DECIMAL for every won amount, never FLOAT</div></div>
+<div class="app"><div class="name">인스타그램</div><div class="desc">TIMESTAMP on every post, UNIQUE on username</div></div>
+</div>
+
+<div class="why">
+Money is always <code>DECIMAL</code> in a real schema, never
+<code>FLOAT</code>: floating-point rounding errors on currency are a
+real, well-known class of bug, exactly the kind of type choice this
+lecture's data type slides prepare you to make correctly.
+</div>
+
+---
+
+# Schema Evolution and Naming Conventions
+
+<div class="thread">Practical habits that matter the moment a schema goes from a class exercise to a real, changing system.</div>
+
+- **Name tables and columns consistently:** singular nouns
+  (`Student`, not `Students`), `snake_case` for multi-word columns
+  (`student_id`, not `StudentID`), pick one convention and never mix
+  it within a schema
+- **Name every foreign key column after what it references:**
+  `instructor_id` referencing `Instructor.instructor_id`, not a vague
+  `owner` or `ref1`
+- **Prefer additive changes in production:** adding a new nullable
+  column is safe to run any time; renaming or dropping a column that
+  existing code still reads from is not
+- **Keep every DDL change in a version-controlled migration file:** a
+  running system's true schema history should be reconstructable from
+  those files alone, not from memory of who ran what
+
+---
+
+# Worked Example: Course and Instructor
 
 <div class="thread">Student, Course, and Instructor have no foreign keys — create them first, in any order.</div>
 
@@ -286,7 +546,18 @@ CREATE TABLE Instructor (
     instructor_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
+```
 
+`Course`'s primary key is a natural key, a real code, not a generated
+number, fine as long as course codes truly never repeat.
+
+---
+
+# Worked Example: Student, the Third Independent Table
+
+<div class="thread">Same rule as Course and Instructor: no foreign keys, so no dependency to wait for.</div>
+
+```sql
 CREATE TABLE Student (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -294,16 +565,15 @@ CREATE TABLE Student (
 );
 ```
 
-`Course`'s primary key is a natural key, a real code, not a generated
-number, fine as long as course codes truly never repeat. `major` has
-no `NOT NULL` on purpose: unlike a name, a student's major is allowed
-to be unrecorded.
+`major` has no `NOT NULL` on purpose: unlike a name, a student's
+major is allowed to be unrecorded, a student who has not yet declared
+one is still a valid row.
 
 ---
 
-# Worked Example: Foreign Keys, Then the Composite Key
+# Worked Example: Section, With Its Two Foreign Keys
 
-<div class="thread">Section depends on the three tables above. Enrollment depends on Section — so it comes last of all five.</div>
+<div class="thread">Section depends on the three independent tables above, both at once.</div>
 
 ```sql
 CREATE TABLE Section (
@@ -315,7 +585,19 @@ CREATE TABLE Section (
     FOREIGN KEY (course_code) REFERENCES Course(course_code),
     FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
 );
+```
 
+`instructor_id` allows `NULL` on purpose: a section can briefly exist
+with no instructor assigned yet. Both `Course` and `Instructor` must
+already exist before this statement can succeed.
+
+---
+
+# Worked Example: Enrollment, the Composite Key, Created Last
+
+<div class="thread">Enrollment depends on Section — so it comes last of all five.</div>
+
+```sql
 CREATE TABLE Enrollment (
     student_id INT,
     section_id INT,
@@ -326,10 +608,9 @@ CREATE TABLE Enrollment (
 );
 ```
 
-`instructor_id` allows `NULL` on purpose: a section can briefly exist
-with no instructor assigned yet. Both `Course` and `Instructor` must
-already exist before `Section` can be created; both `Student` and
-`Section` must already exist before `Enrollment` can.
+Both `Student` and `Section` must already exist before `Enrollment`
+can be created, and `Section` itself already needed `Course` and
+`Instructor` — making `Enrollment` last of all five, no exceptions.
 
 ---
 
@@ -354,6 +635,236 @@ did what you intended, not just "no error."
 
 ---
 
+# Demo, Continued: Adding a Constraint to a Live Schema
+
+<div class="thread">The five tables already exist. One more command makes Course enforce a rule, not just hold data.</div>
+
+```
+mysql> ALTER TABLE Course
+    -> ADD COLUMN credit_hours INT CHECK (credit_hours BETWEEN 1 AND 6);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Course VALUES ('CS999', 'Overloaded', 12);
+ERROR 3819 (HY000): Check constraint 'course_chk_1' is violated.
+```
+
+The `CHECK` clause did exactly what the earlier slide claimed: reject
+the invalid row before it was ever stored.
+
+---
+
+# Demo, Continued: A Named Referential Action After the Fact
+
+<div class="thread">The same live schema, one column's behavior changed without touching its type or its data.</div>
+
+```
+mysql> ALTER TABLE Section
+    -> ADD CONSTRAINT fk_section_instructor
+    -> FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
+    -> ON DELETE SET NULL;
+Query OK, 5 rows affected (0.04 sec)
+```
+
+A named constraint (`fk_section_instructor`) makes it possible to
+`DROP` or modify just this one referential action later, without
+touching the rest of `Section`'s definition.
+
+---
+
+# Composite UNIQUE: One More Constraint Shape
+
+<div class="thread">UNIQUE is not limited to a single column, the same way PRIMARY KEY is not.</div>
+
+```sql
+CREATE TABLE Section (
+    section_id INT AUTO_INCREMENT PRIMARY KEY,
+    room VARCHAR(20) NOT NULL,
+    semester VARCHAR(20) NOT NULL,
+    meeting_time VARCHAR(20) NOT NULL,
+    UNIQUE (room, semester, meeting_time)
+);
+```
+
+This rejects two different sections sharing the exact same room, at
+the exact same time and semester, a real scheduling conflict, without
+touching `section_id` at all. `UNIQUE` on a group of columns checks
+the *combination*, the same way a composite primary key does.
+
+---
+
+# Practice: A Self-Referencing Foreign Key
+
+<div class="thread">A foreign key does not have to point at a different table. It can point back at its own.</div>
+
+A course can require another course as a prerequisite.
+
+**Question:** write `CREATE TABLE Prerequisite(course_code,
+prereq_code)`, where both columns together form the primary key, and
+both are foreign keys to `Course(course_code)`.
+
+**Answer:**
+```sql
+CREATE TABLE Prerequisite (
+    course_code VARCHAR(10),
+    prereq_code VARCHAR(10),
+    PRIMARY KEY (course_code, prereq_code),
+    FOREIGN KEY (course_code) REFERENCES Course(course_code),
+    FOREIGN KEY (prereq_code) REFERENCES Course(course_code)
+);
+```
+
+Both foreign keys reference the same table, `Course`, they simply
+answer two different questions about the same pair of rows.
+
+---
+
+# Practice: A Library System in MySQL
+
+<div class="thread">Week 6 and 7's library example, finally as real DDL.</div>
+
+**Question:** write `CREATE TABLE` for `Book(isbn, title)`, where
+`isbn` is a 13-character code, not an auto-incrementing integer.
+
+**Answer:**
+```sql
+CREATE TABLE Book (
+    isbn VARCHAR(13) PRIMARY KEY,
+    title VARCHAR(200) NOT NULL
+);
+```
+A primary key does not have to be `AUTO_INCREMENT`; a naturally unique
+value like an ISBN can serve directly, as long as it truly never
+repeats.
+
+---
+
+# Practice: Adding a Constraint After the Fact
+
+<div class="thread">ALTER TABLE, applied to a real requirement change.</div>
+
+**Question:** `Section.room` was created with no constraint. Write the
+`ALTER TABLE` statement making it required (`NOT NULL`).
+
+**Answer:**
+```sql
+ALTER TABLE Section MODIFY COLUMN room VARCHAR(20) NOT NULL;
+```
+`MODIFY COLUMN` restates the full column definition, the constraint
+must be included, not just the change.
+
+---
+
+# Practice: ON DELETE Behavior for a Ride-Hailing App
+
+<div class="thread">Choosing among the four referential actions for a new schema, not the registration one.</div>
+
+**Question:** `Ride.driver_id` references `Driver.driver_id`. A driver
+account can be deactivated and removed. Should the foreign key use
+`CASCADE`, `SET NULL`, or `RESTRICT`? Justify your choice.
+
+**Answer:** **`SET NULL`.** Deleting a driver's account should not
+erase the historical record that a ride happened (`CASCADE` would
+destroy trip and billing history), but the ride row still needs to
+exist even once the driver reference is cleared, the same reasoning as
+`Section.instructor_id` earlier.
+
+---
+
+# Practice: CHECK Constraint in a Library System
+
+<div class="thread">The same CHECK pattern from Course.credit_hours, in a new domain.</div>
+
+**Question:** `Book.copies_available` should never go negative. Write
+the column definition enforcing that.
+
+**Answer:**
+```sql
+copies_available INT NOT NULL CHECK (copies_available >= 0)
+```
+`NOT NULL` and `CHECK` are not competitors here, they enforce two
+different rules: one that a value must exist, one that whatever value
+exists must be valid.
+
+---
+
+# Choosing a Primary Key: Natural vs. Surrogate
+
+<div class="thread">Two real choices already made earlier in this lecture, named explicitly.</div>
+
+| | Natural key | Surrogate key |
+|---|---|---|
+| Example | `Course.course_code` | `Student.student_id` |
+| Where it comes from | Already meaningful in the real world | Generated by MySQL, means nothing outside the database |
+| Declared with | `PRIMARY KEY` directly | `AUTO_INCREMENT PRIMARY KEY` |
+| Risk | Only safe if it truly never repeats or changes | Never repeats by construction, but carries no real-world meaning alone |
+
+`Course` uses a natural key because course codes are institutionally
+unique. `Student` uses a surrogate key because two students can share
+a name, Week 2's original warning against a person as a key.
+
+---
+
+# TIMESTAMP With a Generated Default
+
+<div class="thread">A DEFAULT value that is not a fixed constant.</div>
+
+```sql
+CREATE TABLE Enrollment (
+    student_id INT,
+    section_id INT,
+    grade VARCHAR(2),
+    enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (student_id, section_id),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (section_id) REFERENCES Section(section_id)
+);
+```
+
+`DEFAULT CURRENT_TIMESTAMP` fills `enrolled_at` with the exact moment
+the row was inserted, no application code has to compute or pass that
+value itself, and it can never be forgotten.
+
+---
+
+# Multiple Constraints, One Table: a Full Reference
+
+<div class="thread">Every constraint from this lecture, in one realistic table, as a single slide to return to before the exam.</div>
+
+```sql
+CREATE TABLE Instructor (
+    instructor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    office_building VARCHAR(50),
+    salary DECIMAL(10,2) CHECK (salary > 0),
+    hired_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+`AUTO_INCREMENT`, `NOT NULL`, `UNIQUE`, `CHECK`, and `DEFAULT`: five
+constraints, one table, working together, not against each other.
+
+---
+
+# Demo, Continued: Confirming What Was Built
+
+<div class="thread">Not just "no error." A structural echo of exactly what was declared.</div>
+
+```
+mysql> SHOW CREATE TABLE Section;
+Section: CREATE TABLE `Section` (
+  `section_id` int NOT NULL AUTO_INCREMENT, ...
+  CONSTRAINT `fk_section_instructor`
+    FOREIGN KEY (`instructor_id`)
+    REFERENCES `Instructor` (`instructor_id`)
+    ON DELETE SET NULL)
+```
+
+`SHOW CREATE TABLE` prints the exact statement MySQL believes defines
+this table right now, constraints included.
+
+---
+
 # Common Mistakes
 
 - **Creating tables in the wrong order:** a `FOREIGN KEY` referencing a
@@ -363,6 +874,22 @@ did what you intended, not just "no error."
 - **Using `VARCHAR` for numbers you will do math on:** `grade
   VARCHAR(2)` is correct here because grades like "A0" are not numeric;
   a GPA average should be `DECIMAL`, not text
+
+---
+
+# Common Mistakes, Continued
+
+- **Leaving every foreign key at MySQL's default (`RESTRICT`) without
+  thinking:** it is often the safest choice, but not always correct;
+  `Section.instructor_id` needed `SET NULL` instead
+- **Assuming `CHECK` works identically on every MySQL version:**
+  confirm 8.0.16 or later before relying on it in a real deployment
+- **Leaving every constraint unnamed:** an error message referencing
+  `section_ibfk_1` is much harder to act on than one referencing
+  `fk_section_instructor`
+- **Renaming a live column instead of adding a new one and migrating
+  gradually:** a rename breaks every piece of application code still
+  written against the old name, all at once
 
 ---
 
@@ -391,6 +918,36 @@ did what you intended, not just "no error."
 3. Grades like "A0" and "B+" are not numbers, they are values from a
    fixed, known list, exactly what `ENUM` (or `VARCHAR`, if the list
    might grow) represents. `DECIMAL` would reject "A0" outright.
+
+---
+
+# Check Yourself: Constraints and Referential Actions
+
+1. Write the column definition for `Enrollment.grade` so it can never
+   be left empty.
+2. `Section.room` should never be reused by two different sections at
+   the same time and semester. Is this a job for `CHECK`, `UNIQUE`, or
+   `NOT NULL`? Which columns would it involve?
+3. A `Course` is deleted. Its `Section` rows should be **prevented**
+   from being silently orphaned or deleted. Which referential action
+   belongs on `Section.course_code`?
+
+---
+
+# Answers: Constraints and Referential Actions
+
+1. ```sql
+   grade VARCHAR(2) NOT NULL
+   ```
+2. **`UNIQUE`**, on the combination `(room, semester, meeting_time)`
+   together, a composite `UNIQUE` constraint. This is about preventing
+   a duplicate combination, not about validating one column's range
+   (`CHECK`) or requiring a value be present (`NOT NULL`).
+3. **`RESTRICT`** (or `NO ACTION`, MySQL's default): deleting a
+   `Course` that still has `Section` rows referencing it should fail
+   outright, forcing those sections to be reassigned or removed first,
+   exactly like the choice already made for `Section.course_code`
+   earlier in this lecture.
 
 ---
 

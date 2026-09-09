@@ -385,7 +385,7 @@ class_id}` alone is not enough.
 
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed.,
   Ch. 2 "Introduction to the Relational Model"
-- `../appendix/sql-style-guide.md` — you'll need this starting Week 9
+- [`../appendix/sql-style-guide.md`](../appendix/sql-style-guide.md) — you'll need this starting Week 9
 - Think ahead to next week: the registration system will also need a
   `Section` and an `Enrollment` relation. What do you think each one's
   primary key should be?

@@ -192,6 +192,183 @@ accident, it is the fix for redundancy from Week 1.
 
 ---
 
+# Worked Example: The Registration System's Five Relations
+
+<div class="thread">Every relation this course builds toward, together, before we study any one of them closely.</div>
+
+<div class="two-col">
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Student</span></div>
+<div class="row"><span class="pk">student_id</span>, name, major</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Course</span></div>
+<div class="row"><span class="pk">course_code</span>, title</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Instructor</span></div>
+<div class="row"><span class="pk">instructor_id</span>, name, office, email</div>
+</div>
+</div>
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Section</span></div>
+<div class="row"><span class="pk">section_id</span>, <span class="fk">course_code</span>, <span class="fk">instructor_id</span>, room, semester</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Enrollment</span></div>
+<div class="row"><span class="pk fk">student_id</span>, <span class="pk fk">section_id</span>, grade</div>
+</div>
+</div>
+</div>
+
+Underlined = primary key, italic = foreign key. This is the target
+schema every worked example this week draws from, the same five
+relations named in the course's case-study reference.
+
+---
+
+# Worked Example: One Tuple, Attribute by Attribute
+
+<div class="thread">Checking a single row against its schema, one attribute at a time.</div>
+
+Tuple `(3, 'Lee Somin', 'Computer Science')` against
+`Student(student_id, name, major)`:
+
+| Attribute | Value | Domain | Legal? |
+|---|---|---|---|
+| student_id | 3 | positive integer | Yes |
+| name | 'Lee Somin' | text, ≤100 characters | Yes |
+| major | 'Computer Science' | one of a fixed list of majors | Yes |
+
+Change `major` to `'Undecided XYZ123'`, not on the fixed list, and the
+tuple is illegal the moment it's proposed - before keys even enter
+the discussion.
+
+---
+
+# Worked Example: A Second Relation, Section, Attribute by Attribute
+
+<div class="thread">The same check, on a relation with two foreign keys.</div>
+
+Tuple `(5, 'CSE301', 2, '성파 702', '2026-2')` against
+`Section(section_id, course_code, instructor_id, room, semester)`:
+
+| Attribute | Value | Domain | Legal? |
+|---|---|---|---|
+| section_id | 5 | positive integer | Yes |
+| course_code | 'CSE301' | must exist in `Course` | Yes (checked later) |
+| instructor_id | 2 | must exist in `Instructor` | Yes (checked later) |
+| room | '성파 702' | a real building/room code | Yes |
+| semester | '2026-2' | pattern `YYYY-1` or `YYYY-2` | Yes |
+
+`course_code` and `instructor_id`'s domains reach outside this one
+relation entirely - that reach is exactly what a foreign key is.
+
+---
+
+# Worked Example: A Third Relation, Instructor, Attribute by Attribute
+
+<div class="thread">One more relation, this time carrying two candidate keys at once - a preview of the next section.</div>
+
+Tuple `(2, 'Prof. Han', '인지관 305', 'han@deu.ac.kr')` against
+`Instructor(instructor_id, name, office, email)`:
+
+| Attribute | Value | Domain | Legal? |
+|---|---|---|---|
+| instructor_id | 2 | positive integer, system-assigned | Yes |
+| name | 'Prof. Han' | text, ≤100 characters | Yes |
+| office | '인지관 305' | a real building/room code | Yes |
+| email | 'han@deu.ac.kr' | valid email, unique per instructor | Yes |
+
+---
+
+# Worked Example: A Fourth Relation, Course, Attribute by Attribute
+
+<div class="thread">The last of the four independent relations before Enrollment ties them together.</div>
+
+Tuple `('CSE301', 'Database Systems')` against `Course(course_code,
+title)`:
+
+| Attribute | Value | Domain | Legal? |
+|---|---|---|---|
+| course_code | 'CSE301' | fixed department-prefix pattern | Yes |
+| title | 'Database Systems' | text, ≤150 characters | Yes |
+
+Only two attributes, but the same rule as every relation so far:
+every value must belong to its attribute's domain, no exceptions for
+"simple-looking" relations.
+
+---
+
+# Domains Are More Than "Any Text"
+
+<div class="thread">A domain is a rule, not just a data-type label.</div>
+
+| Attribute | Domain, in words | Legal example | Illegal example |
+|---|---|---|---|
+| grade | one of `{A+, A0, A-, ..., F}` | `'B0'` | `'A99'` |
+| student_id | positive integer, system-assigned | `1057` | `'abc'` |
+| semester | pattern `YYYY-1` or `YYYY-2` | `'2026-2'` | `'Fall'` |
+| room | a real building/room code | `'성파 702'` | `''` (empty) |
+
+---
+
+# Domain Constraint vs. Data Type
+
+<div class="thread">A data type is the first step. A domain is a stricter promise on top of it.</div>
+
+A column declared `INT` in MySQL happily stores `-5`. A `room
+capacity` column's real domain is "an integer, zero or greater" - the
+data type alone does not say that. A column declared as text happily
+stores `'Z'`; `grade`'s real domain is one specific list of letter
+grades, not "any text."
+
+<div class="why">
+Declaring a data type is necessary but not sufficient. Enforcing the
+exact legal set of values, sometimes automatically (a
+<code>CHECK</code> constraint, Week 9), sometimes only by discipline
+until then, is the domain constraint's actual job.
+</div>
+
+---
+
+# Can an Attribute's Value Be Empty?
+
+<div class="thread">Domain says what values are legal. A separate question: is "nothing yet" one of them?</div>
+
+`Enrollment.grade` has no value until an instructor submits one - a
+temporarily unknown value, legal as long as the schema explicitly
+allows this attribute to be empty. Contrast: `Student.student_id` may
+never be empty. It is the primary key, and the key constraint forbids
+any tuple from lacking one.
+
+<div class="why">
+Which attributes may be empty and which absolutely cannot is a real
+design decision. It becomes explicit in the mapping algorithm
+(Week 6) and formal in DDL (Week 9).
+</div>
+
+---
+
+# The Domain Constraint, Applied to All Five Relations
+
+<div class="thread">One rule, checked once, across everything built so far.</div>
+
+| Relation | Key attribute's domain |
+|---|---|
+| Student | student_id: positive integer, system-assigned |
+| Course | course_code: fixed department-prefix pattern |
+| Instructor | instructor_id: positive integer, system-assigned |
+| Section | section_id: positive integer, system-assigned |
+| Enrollment | {student_id, section_id}: each must independently satisfy its own relation's domain |
+
+Every relation obeys the exact same constraint, even though every
+attribute's actual legal values look completely different.
+
+---
+
 # Superkeys, Candidate Keys, and Primary Key
 
 <div class="thread">The formal answer to "what makes a row unique."</div>
@@ -214,6 +391,137 @@ always the primary key in practice.
 
 ---
 
+# The Key Hierarchy
+
+<div class="thread">Superkey, candidate key, primary key are not three unrelated ideas - one nests inside the next.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 400" width="620" height="354">
+<title>Nested-box diagram of the key hierarchy. The outermost box, Superkey, contains example attribute sets student_id-name and student_id-name-major. Inside it, a smaller box, Candidate Key, contains student_id and email. Inside that, the smallest, filled box, Primary Key, contains the single chosen key student_id, the one candidate key the designer picked.</title>
+<rect class="ent-outer" x="20" y="20" width="660" height="360" rx="14"/>
+<text class="lbl" x="350" y="50">Superkey</text>
+<text x="350" y="75">{student_id, name} &#183; {student_id, name, major}</text>
+<rect class="ent-outer" x="100" y="110" width="500" height="270" rx="14"/>
+<text class="lbl" x="350" y="140">Candidate Key</text>
+<text x="350" y="165">{student_id} &#183; {email}</text>
+<rect class="ent" x="220" y="235" width="260" height="120" rx="14"/>
+<text class="lbl" x="350" y="275">Primary Key</text>
+<text x="350" y="300">{student_id}</text>
+<text x="350" y="335" font-size="12">the one candidate key chosen</text>
+</svg>
+</div>
+
+Every primary key is a candidate key. Every candidate key is a
+superkey. The reverse is never guaranteed.
+
+---
+
+# Worked Example: Every Superkey of Enrollment
+
+<div class="thread">Applying the hierarchy diagram to one real relation, exhaustively.</div>
+
+`Enrollment(student_id, section_id, grade)`:
+
+| Attribute set | Superkey? | Candidate key? |
+|---|---|---|
+| {student_id} | No - one student has many enrollments | No |
+| {section_id} | No - one section has many enrollments | No |
+| {student_id, section_id} | Yes | **Yes - minimal** |
+| {student_id, section_id, grade} | Yes | No - `grade` is unnecessary |
+
+Exactly one candidate key exists here, and it becomes the primary key:
+`PRIMARY KEY (student_id, section_id)`.
+
+---
+
+# Worked Example: Superkeys That Aren't Candidate Keys
+
+<div class="thread">A relation where more than one attribute set turns out to work.</div>
+
+`Section(section_id, course_code, instructor_id, room, semester)`:
+
+| Attribute set | Superkey? | Candidate key? |
+|---|---|---|
+| {section_id} | Yes | **Yes - minimal** |
+| {section_id, room} | Yes | No - `room` is unnecessary |
+| {course_code, instructor_id, semester} | Yes, if one instructor teaches one section of one course per semester | **Yes - minimal, if that rule holds** |
+
+Two independent candidate keys can exist in the same relation - the
+next slide picks between them.
+
+---
+
+# Worked Example: Two Candidate Keys, One Primary Key
+
+<div class="thread">Choosing, when a relation offers more than one legitimate option.</div>
+
+`Instructor(instructor_id, name, office, email)` has two candidate
+keys: `{instructor_id}` and `{email}` (assuming email is unique and
+never reused). Only one is underlined as the primary key:
+
+`Instructor(`**`instructor_id`**`, name, office, email)`
+
+<div class="why">
+A candidate key that exists but was <em>not</em> chosen as primary is
+sometimes called an <strong>alternate key</strong>. `email` still
+matters here - it can still enforce uniqueness on its own - it is
+just not the relation's main identifier.
+</div>
+
+---
+
+# Natural Key vs. Surrogate Key
+
+<div class="thread">Choosing which candidate key becomes primary is a real design decision, not a coin flip.</div>
+
+| | Natural key | Surrogate key |
+|---|---|---|
+| Drawn from | real-world data (`email`) | system-generated, meaningless outside the database (`student_id`) |
+| Risk | people change email, or reuse one across accounts | essentially none - it never has a real-world reason to change |
+| Registration system's choice | rarely, if ever, primary | almost always primary |
+
+<div class="why">
+This is exactly why Week 1's "Kim Minji" problem gets fixed by a
+surrogate <code>student_id</code>, never by trusting a name or any
+other real-world value to stay stable.
+</div>
+
+---
+
+# Worked Example: The Key Hierarchy, Applied to the Library Schema
+
+<div class="thread">The same three-level hierarchy, on a relation outside the registration system.</div>
+
+`Loan(isbn, member_id, due_date)`, assuming one active loan per member
+per book:
+
+| Attribute set | Superkey? | Candidate key? |
+|---|---|---|
+| {isbn} | No - many members can borrow the same title over time | No |
+| {member_id} | No - one member can hold several loans | No |
+| {isbn, member_id} | Yes | **Yes - minimal** |
+
+`{isbn, member_id}` sits at the innermost box of the hierarchy: it is
+this relation's only candidate key, so it is also the primary key.
+
+---
+
+# A Note on Alternate Keys
+
+<div class="thread">One term worth recognizing, rarely tested, common in real schemas.</div>
+
+Any candidate key not chosen as primary is an **alternate key**. A
+real database can still enforce its uniqueness with a `UNIQUE`
+constraint (Week 9), even though only the primary key gets underlined
+in this course's notation.
+
+<div class="why">
+`Instructor.email` from two slides ago is a textbook alternate key:
+unique, reliable, but not the relation's chosen identifier.
+</div>
+
+---
+
 # Foreign Keys and the Three Integrity Constraints
 
 <div class="thread">A primary key identifies rows within one relation. Four more rules connect and protect every relation.</div>
@@ -230,18 +538,156 @@ version of "linked spreadsheets," now enforced.
 
 ---
 
-# Worked Example: Loading the Flat Table, and Hunting for a Key
+# Domain Constraint, Worked: The Grade Column
+
+<div class="thread">The first of the three constraints, seen as a specific attempted insert.</div>
+
+An instructor tries to record `Enrollment.grade = 'A99'`.
+`grade`'s declared domain: `{A+, A0, A-, B+, B0, B-, C+, C0, C-, D+,
+D0, F}`. `'A99'` is not a member of that set, so the domain constraint
+rejects the value outright - before this row is even checked against
+any key.
+
+Compare: `grade = 'B+'` passes immediately, it is a member of the
+declared set.
+
+---
+
+# Key Constraint, Worked: Two "Kim Minji" Rows
+
+<div class="thread">The second constraint, on the exact failure mode Week 1 opened with.</div>
+
+Two proposed `Student` tuples:
+
+```
+(7, 'Kim Minji', 'Computer Science')
+(7, 'Kim Minji', 'Computer Science')
+```
+
+Both claim `student_id = 7`. The key constraint says no two tuples may
+share a primary key value - the second insert must be rejected. This
+is the exact rule a spreadsheet never had, and the exact rule that
+makes "the same person, typed twice" impossible by definition, not
+just unlikely.
+
+---
+
+# Referential Integrity, Worked: The Dangling Foreign Key
+
+<div class="thread">The third constraint, and the failure mode a spreadsheet's "linking" never actually prevented.</div>
+
+<div class="two-col">
+<div class="schema-tbl">
+<div class="hd"><span>Enrollment</span></div>
+<div class="row"><span class="fk">student_id</span> = 999, section_id = 5, grade = <em>null</em></div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Student</span></div>
+<div class="row"><span class="pk">student_id</span> = 1, name = Kim Minji</div>
+<div class="row"><span class="pk">student_id</span> = 2, name = Park Jiho</div>
+</div>
+</div>
+
+<div class="pain">
+No row in <code>Student</code> has <code>student_id = 999</code>.
+This <code>Enrollment</code> row references nothing. Referential
+integrity forbids it from ever being inserted.
+</div>
+
+---
+
+# What Referential Integrity Prevents, a Second Case
+
+<div class="thread">The same rule, on the other foreign key in the same relation.</div>
+
+`Section.instructor_id` references `Instructor.instructor_id`. Suppose
+`Instructor` row `instructor_id = 4` is removed while a `Section` row
+still holds `instructor_id = 4`. That `Section` row now points at
+nothing - a dangling foreign key, the same failure shape as the
+previous slide, on a different pair of relations.
+
+<div class="why">
+A real DBMS can be told to block the deletion, or cascade it
+automatically - the exact mechanism is a Week 9 DDL detail. This
+week's job is only recognizing that the constraint itself must be
+enforced somehow, by someone.
+</div>
+
+---
+
+# Worked Example: The Full Foreign-Key Map
+
+<div class="thread">Every foreign key in the schema, at once.</div>
+
+<div class="cardlist">
+<div class="card"><div class="h">Enrollment &rarr; Student</div><div class="d"><code>student_id</code> must match a real <code>Student.student_id</code></div></div>
+<div class="card"><div class="h">Enrollment &rarr; Section</div><div class="d"><code>section_id</code> must match a real <code>Section.section_id</code></div></div>
+<div class="card"><div class="h">Section &rarr; Course</div><div class="d"><code>course_code</code> must match a real <code>Course.course_code</code></div></div>
+<div class="card"><div class="h">Section &rarr; Instructor</div><div class="d"><code>instructor_id</code> must match a real <code>Instructor.instructor_id</code></div></div>
+</div>
+
+Four foreign keys, four independent checks - every one of them a
+referential integrity constraint.
+
+---
+
+# All Three Constraints, Applied to Enrollment at Once
+
+<div class="thread">One relation, checked against every rule from this week simultaneously.</div>
+
+`Enrollment(student_id, section_id, grade)` must satisfy:
+
+- **Domain:** `grade` is either empty or one of the declared letter
+  grades
+- **Key:** no two tuples share the same `{student_id, section_id}`
+- **Referential integrity:** `student_id` exists in `Student`, and
+  `section_id` exists in `Section`
+
+Every tuple ever inserted into `Enrollment` is checked against all
+three, every time, with no exceptions.
+
+---
+
+# Worked Example: What Happens When You Insert a Bad Row
+
+<div class="thread">Tracing one proposed insert through all three constraints at once.</div>
+
+Proposed tuple: `(student_id = 999, section_id = 3, grade = 'Z')`.
+
+| Constraint | Check | Result |
+|---|---|---|
+| Domain | is `'Z'` a declared grade? | **Fails** |
+| Key | does `{999, 3}` already exist? | not yet checked - domain already failed |
+| Referential integrity | does `student_id = 999` exist in `Student`? | **Fails** |
+
+This single row fails two constraints at once. Any one failure is
+already enough to reject it.
+
+---
+
+# Worked Example: Loading the Flat Table, Attempts 1 and 2
 
 <div class="thread">Same registration spreadsheet from Week 1, now a live table - and still no clean key in sight.</div>
 
 `flat_load.sql` loads Week 1's 18 messy rows into one raw MySQL table,
-`raw_registrations` - no primary key declared, on purpose. Four
-attempts to find one, each failing for a different reason:
+`raw_registrations` - no primary key declared, on purpose.
 
 | Attempt | Why it fails |
 |---|---|
 | `student_name` | "Kim Minji" is typed 3 different ways - one person looks like three rows |
 | `course_code` | repeats constantly - many students share one course |
+
+Two attempts down, both fail for opposite reasons: one attribute is
+too *inconsistent*, the other is too *common*.
+
+---
+
+# Worked Example: Loading the Flat Table, Attempts 3 and 4
+
+<div class="thread">Two more attempts, closer, but still not a real key.</div>
+
+| Attempt | Why it fails |
+|---|---|
 | `{student_name, course_code}` | closer, but a retake, or two students who happen to share a name, can still collide |
 | the entire row | only unique by luck on today's 18 rows, not by any real-world guarantee |
 
@@ -250,6 +696,140 @@ The fix - a system-generated <code>student_id</code> - doesn't exist
 in this raw table yet. Nothing here forces us to add one: deciding
 <em>how many relations, split which way</em> is next week's job.
 </div>
+
+---
+
+# Reading and Writing Schema Notation
+
+<div class="thread">One notation, used for the rest of this course.</div>
+
+- Relation name, then parentheses, comma-separated attributes:
+  `Relation(attr1, attr2, ...)`
+- **Underline** the primary key: `Student(`**`student_id`**`, name, major)`
+- *Italicize* (or mark `FK`) a foreign key:
+  `Section(section_id, `*`course_code`*`, `*`instructor_id`*`, room, semester)`
+- A composite primary key gets its own line:
+  `PRIMARY KEY (student_id, section_id)`
+
+---
+
+# Worked Example: A Library Membership Schema
+
+<div class="thread">Applying this week's whole vocabulary to a system outside the registration office.</div>
+
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Book</span></div>
+<div class="row"><span class="pk">isbn</span>, title, author</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Member</span></div>
+<div class="row"><span class="pk">member_id</span>, name</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Loan</span></div>
+<div class="row"><span class="pk fk">isbn</span>, <span class="pk fk">member_id</span>, due_date</div>
+</div>
+</div>
+
+Three relations, the same rules apply: every attribute has a domain,
+every relation has a key, every foreign key must resolve.
+
+---
+
+# Worked Example: Keys and Foreign Keys in the Library Schema
+
+<div class="thread">Naming exactly what makes each row in this schema unique.</div>
+
+| Relation | Candidate key | Foreign key(s) |
+|---|---|---|
+| Book | {isbn} | none |
+| Member | {member_id} | none |
+| Loan | {isbn, member_id} | `isbn` &rarr; `Book.isbn`; `member_id` &rarr; `Member.member_id` |
+
+A `Loan` row with an `isbn` pointing at a book removed from `Book`
+last year violates referential integrity, the exact same failure shape
+as the registration system's dangling `Enrollment` row.
+
+---
+
+# Worked Example: An Online Store Schema
+
+<div class="thread">A fourth domain, same vocabulary, one new wrinkle.</div>
+
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Product</span></div>
+<div class="row"><span class="pk">sku</span>, name, price</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Customer</span></div>
+<div class="row"><span class="pk">customer_id</span>, name</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Order</span></div>
+<div class="row"><span class="pk">order_id</span>, <span class="fk">customer_id</span>, <span class="fk">sku</span>, quantity</div>
+</div>
+</div>
+
+`Order` has its own surrogate key, `order_id`, instead of a composite
+key built from its two foreign keys.
+
+---
+
+# Worked Example: Why Order Gets Its Own order_id
+
+<div class="thread">The wrinkle from the previous slide, resolved.</div>
+
+Why not `PRIMARY KEY (customer_id, sku)`, the way `Enrollment` uses
+`{student_id, section_id}`? Because a customer placing the **same
+product** in two separate orders (today, then again next month) is
+completely normal - `{customer_id, sku}` would forbid it outright.
+
+<div class="why">
+`order_id` as a surrogate key sidesteps the restriction entirely. This
+is a real design choice, not a rule this week hands you automatically
+- notice how it differs from Enrollment's composite key, and why.
+</div>
+
+---
+
+# Worked Example: A Movie Streaming Schema
+
+<div class="thread">One more domain, the same three-step process every time.</div>
+
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Member</span></div>
+<div class="row"><span class="pk">member_id</span>, name</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Movie</span></div>
+<div class="row"><span class="pk">movie_id</span>, title</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Watch</span></div>
+<div class="row"><span class="pk fk">member_id</span>, <span class="pk fk">movie_id</span>, watched_date</div>
+</div>
+</div>
+
+Candidate key: `{member_id, movie_id}`, assuming one watch record per
+member per movie. Foreign keys: `member_id` &rarr; `Member.member_id`;
+`movie_id` &rarr; `Movie.movie_id`.
+
+---
+
+# Worked Example: Choosing Keys for the Full Schema at Once
+
+<div class="thread">Every relation from this lecture's main example, side by side, as a single reference.</div>
+
+| Relation | Candidate key | Primary key | Foreign key(s) |
+|---|---|---|---|
+| Student | {student_id} | student_id | none |
+| Course | {course_code} | course_code | none |
+| Instructor | {instructor_id}, {email} | instructor_id | none |
+| Section | {section_id} | section_id | course_code, instructor_id |
+| Enrollment | {student_id, section_id} | student_id, section_id | student_id, section_id |
 
 ---
 
@@ -262,6 +842,20 @@ in this raw table yet. Nothing here forces us to add one: deciding
 - **Forgetting referential integrity:** an `Enrollment` row pointing at
   a `student_id` that does not exist in `Student` is not "a smaller
   bug," it is an undefined, meaningless row
+
+---
+
+# Common Mistakes, Continued
+
+- **Trusting a key that "happens" to be unique on today's sample
+  data:** the entire-row "key" from `raw_registrations` works only by
+  luck on 18 rows, and breaks the moment realistic new data arrives
+- **Assuming a data type alone enforces a domain:** an `INT` column
+  still needs its own rule against negative capacities; a `TEXT`
+  column still needs its own rule against `'A99'`
+- **Leaving a primary key attribute empty:** the key constraint
+  requires every tuple to have one, "not entered yet" is never legal
+  for a primary key, even when it is legal for an ordinary attribute
 
 ---
 
@@ -285,6 +879,36 @@ in this raw table yet. Nothing here forces us to add one: deciding
    `Enrollment` must match an existing primary key value in `Student`.
 3. **Domain constraint.** "next Tuesday" is not a calendar date value;
    it violates the declared domain of the `due_date` attribute.
+
+---
+
+# Check Yourself, Round Two
+
+1. `Member(member_id, name)`, `Class(class_id, name, day_of_week)`,
+   `Checkin(member_id, class_id, checkin_time)`. A member can attend
+   the same weekly class more than once, on different weeks. Name a
+   candidate key for `Checkin` that actually works, and explain why
+   `{member_id, class_id}` alone is not enough.
+2. A `Section` row references `instructor_id = 12`, but Instructor 12
+   was deleted last month. Which constraint is violated, and why is
+   the row "meaningless," not just wrong?
+3. `Product(sku, name, price)` has `price = -12`, in a column whose
+   domain is "a non-negative amount of money." Which constraint
+   catches this?
+
+---
+
+# Answers, Round Two
+
+1. **{member_id, class_id, checkin_time}.** The same member-class pair
+   legitimately repeats across different weeks, so `checkin_time` (or
+   a date) is required to tell those check-ins apart.
+2. **Referential integrity.** The row points at a primary key value
+   that no longer exists anywhere - "instructor 12" is not a stale
+   fact, it refers to nothing at all.
+3. **Domain constraint.** `-12` is not a member of "non-negative
+   amounts of money," regardless of whether the column's data type
+   (a plain number) would technically allow it.
 
 ---
 

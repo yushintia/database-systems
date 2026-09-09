@@ -242,5 +242,5 @@ attendance, not this lab).
 
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed.,
   Ch. 1 "Introduction" (skim only — no exercises due)
-- `../introduction.md` — how this lab manual fits with the slide decks
-- `../setup/mysql-workbench.md` — set this up before Week 2
+- [`../introduction.md`](../introduction.md) — how this lab manual fits with the slide decks
+- [`../setup/mysql-workbench.md`](../setup/mysql-workbench.md) — set this up before Week 2

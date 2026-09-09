@@ -176,6 +176,60 @@ taught by an instructor, in a specific room."
 
 ---
 
+# Worked Example: Entities in a Library System
+
+<div class="thread">The same test, applied outside the registration system.</div>
+
+Requirement: "A library holds many copies of a book. A member can
+borrow a copy, but only one member at a time per copy."
+
+| Candidate noun | Entity? | Why |
+|---|---|---|
+| book | Yes | tracked over time, has its own title and author |
+| copy | Yes | a specific physical item, distinguishable from other copies of the same book |
+| member | Yes | tracked over time, has borrowing history |
+
+`copy` is the interesting case: it is not the same thing as `book`, a
+single title can have many physical copies, and only one of them can
+be lent out to a given member at a time.
+
+---
+
+# Worked Example: Entities in a Food Delivery App
+
+<div class="thread">A third system, the same discipline every time.</div>
+
+Requirement: "A food delivery app has restaurants, menu items, and
+orders. A customer's order can contain several menu items, from only
+one restaurant."
+
+| Candidate noun | Entity? | Why |
+|---|---|---|
+| restaurant | Yes | tracked over time, has its own menu |
+| menu item | Yes | tracked over time, has its own name and price |
+| order | Yes | a specific event, distinguishable from every other order |
+| customer | Yes | tracked over time, places many orders |
+
+---
+
+# When a Noun Is NOT an Entity, More Examples
+
+<div class="thread">The negative case matters as much as the positive one.</div>
+
+| Candidate noun | Entity? | Why |
+|---|---|---|
+| grade | No | one property of one `Enrollment`, not tracked on its own |
+| semester | No | one property of one `Section`, not a thing with its own history |
+| room (from the opening slide) | No, for now | just an attribute of Section |
+
+<div class="why">
+The test never changes: does this noun need to be tracked
+independently, with its own attributes and its own history, or does it
+only ever describe something else?
+</div>
+
+---
+
 # Three Kinds of Attribute
 
 <div class="thread">Not every attribute is the same kind.</div>
@@ -188,6 +242,99 @@ taught by an instructor, in a specific room."
 - **Key:** uniquely identifies the entity, exactly last week's primary
   key idea, one design stage earlier - `student_id` is Student's key
   attribute, not yet a formal `PRIMARY KEY` (that's Week 9)
+
+---
+
+# Worked Example: Simple vs. Composite, Drawn
+
+<div class="thread">The same split from the previous slide, as an actual diagram.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 350" width="520" height="260">
+<title>Diagram showing a Student entity's composite attribute name splitting, via two link lines, into two simple attributes: first_name and last_name.</title>
+<line class="link" x1="350" y1="100" x2="350" y2="148"/>
+<line class="link" x1="330" y1="208" x2="230" y2="258"/>
+<line class="link" x1="370" y1="208" x2="470" y2="258"/>
+<ellipse class="attr" cx="350" cy="178" rx="95" ry="30"/>
+<ellipse class="attr" cx="230" cy="288" rx="80" ry="30"/>
+<ellipse class="attr" cx="470" cy="288" rx="80" ry="30"/>
+<rect class="ent" x="265" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="350" y="70">Student</text>
+<text x="350" y="182">name</text>
+<text x="230" y="292">first_name</text>
+<text x="470" y="292">last_name</text>
+</svg>
+</div>
+
+`name` stays a single composite attribute until the system actually
+needs `first_name` and `last_name` separately - drawing the split is
+optional, and only done when it matters.
+
+---
+
+# Worked Example: Classifying Every Attribute of Section
+
+<div class="thread">Applying the three kinds to one entity, completely.</div>
+
+| Attribute | Kind | Why |
+|---|---|---|
+| section_id | Key | uniquely identifies this Section |
+| room | Simple | one atomic value, no meaningful smaller parts |
+| semester | Simple | one atomic value (e.g. `2026-2`) |
+
+Every attribute of `Section` classified, no attribute left unlabeled -
+exactly the discipline this notation demands.
+
+---
+
+# Worked Example: Classifying Every Attribute of Instructor
+
+<div class="thread">The same discipline, on an entity with a genuine judgment call.</div>
+
+| Attribute | Kind | Why |
+|---|---|---|
+| instructor_id | Key | uniquely identifies this Instructor |
+| name | Simple, *or* composite | simple if never split; composite the moment the system needs `first_name`/`last_name` separately |
+| office_number | Simple | one atomic value, no meaningful smaller parts |
+
+<div class="why">
+Simple vs. composite is not a fixed property of a word like "name" -
+it depends on whether <em>this system</em> ever needs the parts
+separately. Two different systems can classify the same attribute two
+different ways, correctly.
+</div>
+
+---
+
+# Worked Example: Classifying Every Attribute of Course
+
+<div class="thread">A short one - not every entity needs a long table.</div>
+
+| Attribute | Kind | Why |
+|---|---|---|
+| course_code | Key | uniquely identifies this Course |
+| title | Simple | one atomic value, no meaningful smaller parts |
+
+Two attributes, both classified. A small entity is not an excuse to
+skip the classification step.
+
+---
+
+# Key Attributes Across the Whole Diagram
+
+<div class="thread">Every key attribute from this lecture's main example, in one place.</div>
+
+| Entity | Key attribute(s) |
+|---|---|
+| Student | student_id |
+| Course | course_code |
+| Instructor | instructor_id |
+| Section | section_id |
+| Enrollment (weak) | borrowed: {student_id, section_id} |
+
+Four strong entities, each with its own key attribute. One weak
+entity, with no key attribute of its own - the next section explains
+exactly why.
 
 ---
 
@@ -210,6 +357,119 @@ taught by an instructor, in a specific room."
 <div class="why">
 M:N cannot be represented by a single foreign key on either side -
 exactly why Week 2's Enrollment relation had to exist in the first place.
+</div>
+
+---
+
+# Worked Example: 1:1 Cardinality, A Concrete Case
+
+<div class="thread">The rare case, made concrete instead of left as "(rare in this system)."</div>
+
+A small department rule: one Student is assigned exactly one Advisor,
+and one Advisor advises exactly one Student. Neither side can relate
+to more than one instance of the other.
+
+<div class="why">
+This is illustrative only, not part of the registration system's
+actual schema - the real system's Instructor-Section relationship is
+1:N, one instructor teaches many sections. 1:1 exists in the notation,
+even when this particular system rarely needs it.
+</div>
+
+---
+
+# Worked Example: 1:1 Cardinality, Diagrammed
+
+<div class="thread">The advising rule from the previous slide, drawn.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 200" width="520" height="149">
+<title>Diagram of a one-to-one relationship: one Student has exactly one assigned Advisor, and one Advisor advises exactly one Student. Illustrative only, not part of the registration system's actual schema.</title>
+<line class="link" x1="115" y1="65" x2="350" y2="80"/>
+<line class="link" x1="350" y1="80" x2="585" y2="65"/>
+<polygon class="rel" points="350,40 425,80 350,120 275,80"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="500" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Student</text>
+<text class="lbl" x="585" y="70">Advisor</text>
+<text class="lbl" x="350" y="84">advised by</text>
+<text class="card" x="220" y="65">1</text>
+<text class="card" x="480" y="65">1</text>
+</svg>
+</div>
+
+A 1 on both ends: exactly one Advisor per Student, exactly one Student
+per Advisor.
+
+---
+
+# Worked Example: 1:N Cardinality, Isolated
+
+<div class="thread">One relationship pulled out of the full diagram, so the reasoning is easier to see.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 260" width="520" height="193">
+<title>Diagram of the one-to-many relationship between Course and Section: Course relates to Section as 1 to N, with the relationship diamond labeled belongs to.</title>
+<line class="link" x1="115" y1="65" x2="350" y2="120"/>
+<line class="link" x1="350" y1="120" x2="585" y2="65"/>
+<polygon class="rel" points="350,80 425,120 350,160 275,120"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="500" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Course</text>
+<text class="lbl" x="585" y="70">Section</text>
+<text class="lbl" x="350" y="124">belongs to</text>
+<text class="card" x="220" y="105">1</text>
+<text class="card" x="480" y="105">N</text>
+</svg>
+</div>
+
+One Course can have many Sections (CSE301's Monday section and its
+Wednesday section are both "CSE301"). Each Section belongs to exactly
+one Course - the "N" always sits on the side that can repeat.
+
+---
+
+# Worked Example: M:N Cardinality, A Second Case
+
+<div class="thread">The same shape as Student-Section, in a different system.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 260" width="520" height="193">
+<title>Diagram of the many-to-many relationship between Order and MenuItem in a food delivery app: an Order can contain several menu items, and a MenuItem can appear on several orders, cardinality M to N.</title>
+<line class="link" x1="115" y1="65" x2="350" y2="120"/>
+<line class="link" x1="350" y1="120" x2="585" y2="65"/>
+<polygon class="rel" points="350,80 425,120 350,160 275,120"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="500" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Order</text>
+<text class="lbl" x="585" y="70">MenuItem</text>
+<text class="lbl" x="350" y="124">contains</text>
+<text class="card" x="220" y="105">M</text>
+<text class="card" x="480" y="105">N</text>
+</svg>
+</div>
+
+An Order can contain several menu items; a MenuItem (say, "Kimchi
+Fried Rice") can appear on many different orders. Both directions
+repeat, exactly the definition of M:N.
+
+---
+
+# Why Cardinality Must Be Stated on Both Sides
+
+<div class="thread">A one-directional habit that quietly recreates last week's ambiguity.</div>
+
+Look back at the registration diagram's Section-Instructor
+relationship: **N** on the Section end, **1** on the Instructor end.
+Stating only "many Sections per Instructor" and leaving the other end
+implied is exactly the kind of gap this notation exists to close -
+read from the Instructor's side, the same relationship must also say
+"exactly one Instructor per Section," out loud, every time.
+
+<div class="why">
+Cardinality is a property of the <em>relationship</em>, not of either
+entity alone - it has to be readable correctly starting from either
+end.
 </div>
 
 ---
@@ -254,6 +514,39 @@ relation exists: M:N relationships cannot be represented any other way.
 
 ---
 
+# Worked Example: A Ride-Hailing App's Relationships
+
+<div class="thread">The Check Yourself question at the end of this lecture, answered here first, as a real diagram.</div>
+
+<div class="er">
+<svg viewBox="0 0 1050 300" width="700" height="200">
+<title>Diagram of a ride-hailing app's relationships: a Driver gives many Rides, a one-to-many relationship, and a Rider takes many Rides, a separate one-to-many relationship. Each Ride connects to exactly one Driver and one Rider.</title>
+<line class="link" x1="115" y1="65" x2="280" y2="140"/>
+<line class="link" x1="280" y1="140" x2="525" y2="150"/>
+<line class="link" x1="525" y1="150" x2="770" y2="140"/>
+<line class="link" x1="770" y1="140" x2="935" y2="65"/>
+<polygon class="rel" points="280,95 355,140 280,185 205,140"/>
+<polygon class="rel" points="770,95 845,140 770,185 695,140"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="850" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="440" y="120" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Driver</text>
+<text class="lbl" x="935" y="70">Rider</text>
+<text class="lbl" x="525" y="160">Ride</text>
+<text class="lbl" x="280" y="144">gives</text>
+<text class="lbl" x="770" y="144">taken by</text>
+<text class="card" x="70" y="120">1</text>
+<text class="card" x="395" y="168">N</text>
+<text class="card" x="655" y="168">N</text>
+<text class="card" x="860" y="120">1</text>
+</svg>
+</div>
+
+Two separate 1:N relationships meeting at `Ride`, not one M:N
+relationship - each Ride still has exactly one Driver and one Rider.
+
+---
+
 # Weak Entities
 
 <div class="thread">One entity in this system cannot stand on its own. Here is why that matters.</div>
@@ -270,6 +563,132 @@ This is a preview of Week 6: weak entities map to relations whose
 primary key includes a foreign key, exactly what Week 2 already showed
 you in the Enrollment relation.
 </div>
+
+---
+
+# Worked Example: Is This Entity Weak? A Test
+
+<div class="thread">One question, asked of every entity: "can I identify one instance using only its own attributes?"</div>
+
+**Section:** can `section_id` alone identify one instance, with no
+help from another entity? Yes. **Strong.**
+
+**Enrollment:** can any attribute of Enrollment alone identify one
+instance? No - `student_id` alone names a student, not one enrollment;
+`grade` alone names nothing. Identity requires help from both `Student`
+and `Section`. **Weak.**
+
+<div class="why">
+This test is the entire definition, applied mechanically: no borrowed
+help needed, strong; borrowed help required, weak.
+</div>
+
+---
+
+# Worked Example: A Second Weak Entity, OrderLine
+
+<div class="thread">The exact same shape as Enrollment, in the food delivery domain.</div>
+
+<div class="er">
+<svg viewBox="0 0 900 300" width="620" height="207">
+<title>Diagram of the weak entity OrderLine in a food delivery app, connecting Order and MenuItem in a many-to-many relationship. OrderLine is drawn with a double border to mark it as a weak entity, borrowing its identity from both Order and MenuItem.</title>
+<line class="link" x1="115" y1="65" x2="450" y2="80"/>
+<line class="link" x1="450" y1="80" x2="785" y2="65"/>
+<line class="link" x1="450" y1="120" x2="450" y2="175"/>
+<polygon class="rel-outer" points="450,34 531,80 450,126 369,80"/>
+<polygon class="rel" points="450,40 525,80 450,120 375,80"/>
+<rect class="ent-outer" x="359" y="169" width="182" height="82" rx="4"/>
+<rect class="ent" x="365" y="175" width="170" height="70" rx="4"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="700" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Order</text>
+<text class="lbl" x="785" y="70">MenuItem</text>
+<text class="lbl" x="450" y="215">OrderLine</text>
+<text class="lbl" x="450" y="84">contains</text>
+<text class="card" x="70" y="120">M</text>
+<text class="card" x="740" y="120">N</text>
+</svg>
+</div>
+
+`OrderLine` resolves Order M:N MenuItem, identity borrowed as
+`{order_id, menu_item_id}` - not a coincidence that this is the exact
+same shape as `Enrollment` and `Waitlist`.
+
+---
+
+# Worked Example: A Weak Entity Practice Drill
+
+<div class="thread">Three quick scenarios, weak or strong, decided fast.</div>
+
+| Scenario | Weak or strong? | Why |
+|---|---|---|
+| A library `Loan` record | Weak | needs both `Book` and `Member` to mean anything |
+| A standalone `Payment` record with its own `payment_id` | Strong | `payment_id` alone identifies it, no borrowing needed |
+| `OrderLine` (previous slide) | Weak | needs both `Order` and `MenuItem` |
+
+---
+
+# Worked Example: The Library's Copy Entity, Weak or Strong?
+
+<div class="thread">A genuine judgment call, not a formula to memorize.</div>
+
+Does `Copy` get its own `copy_id`, tracked independently (strong)? Or
+is a copy identified only as "this Book, copy number 3" - borrowed from
+`Book` (weak)? Both are defensible designs:
+
+- **Strong**, if the library needs to track one specific physical
+  copy's full history (repairs, condition) across its lifetime
+- **Weak**, if a copy only ever needs to be told apart from the
+  library's *other* copies of the *same* book
+
+<div class="why">
+The E-R notation does not hand you this answer - it forces you to
+state your choice explicitly, on the diagram, instead of leaving it
+implied.
+</div>
+
+---
+
+# Worked Example: The Library System's Relationships, Diagrammed
+
+<div class="thread">Taking the "strong Copy" choice from the previous slide, and drawing what follows from it.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 200" width="520" height="149">
+<title>Diagram of a one-to-many relationship between Book and Copy: one Book title has many physical Copies, and each Copy belongs to exactly one Book.</title>
+<line class="link" x1="115" y1="65" x2="350" y2="80"/>
+<line class="link" x1="350" y1="80" x2="585" y2="65"/>
+<polygon class="rel" points="350,40 425,80 350,120 275,80"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="500" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Book</text>
+<text class="lbl" x="585" y="70">Copy</text>
+<text class="lbl" x="350" y="84">has</text>
+<text class="card" x="220" y="65">1</text>
+<text class="card" x="480" y="65">N</text>
+</svg>
+</div>
+
+One Book has many Copies; each Copy belongs to exactly one Book -
+1:N, the same shape as Course to Section.
+
+---
+
+# Worked Example: Attributes of the Library System, Classified
+
+<div class="thread">One last pass, closing out the library example started earlier this lecture.</div>
+
+| Entity | Attribute | Kind |
+|---|---|---|
+| Book | isbn | Key |
+| Book | title | Simple |
+| Book | author | Simple |
+| Member | member_id | Key |
+| Member | name | Simple, or composite |
+
+Every entity from the library example now has entities, a
+relationship with cardinality, and classified attributes - the same
+three steps this lecture applies to the registration system.
 
 ---
 
@@ -441,6 +860,113 @@ guessing required.
 
 ---
 
+# Worked Example: Reading the Full Diagram Backward
+
+<div class="thread">Reverse-engineering the diagram: given the picture, recover the sentence that produced it.</div>
+
+| Relationship on the diagram | Plain-English requirement it came from |
+|---|---|
+| Student M:N Section (via Enrollment) | "Students enroll in many sections; a section holds many students" |
+| Section N:1 Course | "The same course code can show up in more than one section" |
+| Section N:1 Instructor | "Every section has exactly one instructor of record" |
+| Student M:N Section (via Waitlist) | "A student can join a waitlist for a full section" |
+
+If you can state the sentence behind every box and line, you have
+actually read the diagram, not just recognized its shapes.
+
+---
+
+# Worked Example: Attributes of the Waitlist Entity, Classified
+
+<div class="thread">Closing the loop on the four-step Waitlist example with the classification this lecture teaches.</div>
+
+| Attribute | Kind | Why |
+|---|---|---|
+| position | Simple | one atomic value (1st, 2nd, 3rd in line) |
+| date_joined | Simple | one atomic value |
+
+Neither attribute is a key attribute - `Waitlist`'s identity is
+borrowed entirely from `Student` and `Section`, exactly what makes it
+weak in the first place.
+
+---
+
+# Worked Example: A Second M:N Case, Fully Diagrammed
+
+<div class="thread">The TA question from this lecture's Check Yourself, drawn out in full before you're asked to answer it.</div>
+
+<div class="er">
+<svg viewBox="0 0 700 260" width="520" height="193">
+<title>Diagram of the many-to-many relationship between Section and TA: a Section can have several teaching assistants, and a TA can help with several sections, cardinality M to N.</title>
+<line class="link" x1="115" y1="65" x2="350" y2="120"/>
+<line class="link" x1="350" y1="120" x2="585" y2="65"/>
+<polygon class="rel" points="350,80 425,120 350,160 275,120"/>
+<rect class="ent" x="30" y="30" width="170" height="70" rx="4"/>
+<rect class="ent" x="500" y="30" width="170" height="70" rx="4"/>
+<text class="lbl" x="115" y="70">Section</text>
+<text class="lbl" x="585" y="70">TA</text>
+<text class="lbl" x="350" y="124">helped by</text>
+<text class="card" x="220" y="105">M</text>
+<text class="card" x="480" y="105">N</text>
+</svg>
+</div>
+
+A Section can have several TAs; a TA can help with several Sections -
+both directions repeat, M:N, the same shape as Student-Section.
+
+---
+
+# Weak Entity or Just a Relationship With Attributes?
+
+<div class="thread">A confusion worth naming directly before it happens.</div>
+
+`Enrollment.grade` lives inside the `Enrollment` relationship - it
+does not make `grade` its own entity, and it does not, on its own,
+make `Enrollment` weak. `Enrollment` is weak because it has **no key
+attribute of its own**, not merely because it has attributes at all.
+
+<div class="why">
+Every weak entity carries attributes describing the relationship it
+represents. Not every relationship's attribute turns that relationship
+into a weak entity - only the missing independent key does that.
+</div>
+
+---
+
+# Worked Example: Is Ride Weak or Strong?
+
+<div class="thread">A trap worth walking through once, explicitly.</div>
+
+`Ride` (from the ride-hailing example) has foreign keys to both
+`Driver` and `Rider` - but it also has its own `ride_id`, assigned the
+moment the ride is requested. `ride_id` alone identifies one Ride, no
+borrowing required. **Strong**, despite depending on two other
+entities for its foreign keys.
+
+<div class="why">
+Having foreign keys does not make an entity weak. Only the <em>absence
+of an independent key attribute</em> does - `Section` also has two
+foreign keys (`course_code`, `instructor_id`) and is strong for the
+exact same reason `Ride` is.
+</div>
+
+---
+
+# The Full Diagram, Annotated Checklist
+
+<div class="thread">The same checklist a classmate will use to review your diagram.</div>
+
+<div class="cardlist">
+<div class="card"><div class="h">Entities present?</div><div class="d">every entity the requirements mention, drawn</div></div>
+<div class="card"><div class="h">Cardinality typed?</div><div class="d">every relationship labeled 1:1, 1:N, or M:N, never left blank</div></div>
+<div class="card"><div class="h">Weak entities marked?</div><div class="d">double border, and it's clear whose keys are borrowed</div></div>
+<div class="card"><div class="h">Keys identified?</div><div class="d">every strong entity has at least one underlined key attribute</div></div>
+<div class="card"><div class="h">Attributes classified?</div><div class="d">at least one composite attribute shown, or marked</div></div>
+<div class="card"><div class="h">Readable alone?</div><div class="d">a stranger could reconstruct it with no verbal explanation</div></div>
+</div>
+
+---
+
 # Common Mistakes
 
 - **Making everything an entity:** `room` is an attribute of Section
@@ -452,6 +978,19 @@ guessing required.
 - **Treating a weak entity as a strong one:** giving Enrollment its own
   independent `enrollment_id` when `{student_id, section_id}` already
   uniquely identifies it adds a key with no real-world meaning
+
+---
+
+# Common Mistakes, Continued
+
+- **Confusing two separate M:N relationships between the same
+  entities:** `Enrollment` and `Waitlist` both connect Student and
+  Section, but they are two different real-world facts (already
+  happened vs. waiting to happen) and must be drawn as two separate
+  weak entities, never merged into one
+- **Leaving a relationship's own attributes unattached:** `grade`
+  belongs to the Student-Section relationship, not floating free or
+  attached to the wrong entity
 
 ---
 
@@ -477,6 +1016,35 @@ guessing required.
    rides), and an M:N relationship can never be captured by a single
    foreign key on either side, exactly the same reason Enrollment
    needs to be its own relation.
+
+---
+
+# Check Yourself, Round Two
+
+1. A designer gives `Enrollment` its own independent `enrollment_id`,
+   in addition to `student_id` and `section_id`. Is this necessary?
+   Why or why not?
+2. In the library system, is `Copy` weak or strong if it is identified
+   only as "this Book, copy number 3," with no `copy_id` of its own?
+3. A food delivery app's `OrderLine` has attributes `quantity` and
+   `special_instructions`. Do either of these attributes make
+   `OrderLine` a strong entity? Why or why not?
+
+---
+
+# Answers, Round Two
+
+1. **Not necessary.** `{student_id, section_id}` already uniquely
+   identifies every enrollment; adding `enrollment_id` gives the weak
+   entity a surrogate key it does not need, exactly the pitfall this
+   lecture's Common Mistakes slide names.
+2. **Weak.** Without its own `copy_id`, a copy can only be told apart
+   using "this Book" plus "copy number 3" together - borrowed
+   identity, the definition of a weak entity.
+3. **No.** `quantity` and `special_instructions` describe the
+   OrderLine relationship itself; they do not give it an independent
+   key. `OrderLine` stays weak, identified only as `{order_id,
+   menu_item_id}`.
 
 ---
 
@@ -520,7 +1088,7 @@ covering Weeks 1 through 4.)
   registration diagram yourself, including Waitlist, then peer-review
   a classmate's against a fixed checklist. **Assignment 1 due this
   week.**
-- **Reading:** Silberschatz et al., 7th ed., Chapter 7
+- **Reading:** Silberschatz et al., 7th ed., Chapter 6
 - **Prepare:** Quiz 1 next week covers Weeks 1 through 4. Review the
   registration system's E-R diagram until you can redraw it from memory.
 

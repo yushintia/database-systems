@@ -194,9 +194,10 @@ exact same two strong entities in a different relationship.
 Enrollment (weak), Waitlist (weak). Relationships — Student M:N
 Section via Enrollment; Student M:N Section via Waitlist (a *second*,
 separate relationship between the same two strong entities); Section
-N:1 Course; Section N:1 Instructor. This matches
-`../../slides/_shared/case-study.md`'s Week 4 snapshot exactly — this
-is the diagram Lab 06 mechanically maps into real relations.
+N:1 Course; Section N:1 Instructor. This matches the
+[case study reference](../appendix/case-study-reference.md)'s Week 4
+snapshot exactly, the diagram Lab 06 mechanically maps into real
+relations.
 
 ---
 
@@ -333,6 +334,6 @@ practice using the registration system specifically.
   of Data" (1976)
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed.,
   Ch. 6 "Database Design Using the E-R Model"
-- `../appendix/er-notation.md` — full symbol reference
-- `../../slides/_shared/case-study.md` — this diagram's snapshot, and
+- [`../appendix/er-notation.md`](../appendix/er-notation.md) — full symbol reference
+- [`../appendix/case-study-reference.md`](../appendix/case-study-reference.md) — this diagram's snapshot, and
   where it goes next (Week 6's mapping algorithm)

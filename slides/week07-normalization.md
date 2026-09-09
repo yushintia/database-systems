@@ -280,6 +280,418 @@ derived `Instructor` and `Section` relations.
 
 ---
 
+# 1NF, A Second Violation: Repeating Meeting Days
+
+<div class="thread">The comma-list trap does not only happen with student rosters.</div>
+
+```
+Section(section_id, course_code, instructor_id,
+        room, semester, meeting_days)
+```
+
+A well-meaning shortcut: `meeting_days` holds `"Mon,Wed,Fri"` in one
+cell, instead of one row per meeting day. Same failure as before: no
+way to ask "which sections meet on Monday" without parsing text by
+hand.
+
+**Fix:** a separate `SectionMeeting(section_id, day)` relation, one row
+per section per day, `PRIMARY KEY (section_id, day)`. Atomic values in
+every cell, restored.
+
+---
+
+# Visualizing a Transitive Dependency
+
+<div class="thread">The exact chain behind every 3NF violation this lecture has shown, drawn once, in general form.</div>
+
+<div class="er" style="margin:6px 0 2px 0;">
+<svg viewBox="0 0 640 210" width="620" height="203">
+<title>Functional dependency chain diagram. A box labeled student_id has an arrow to a box labeled major, and a second arrow from major to a box labeled advisor_office. A dashed arrow arcs below, directly from student_id to advisor_office, labeled "only transitively, through major". This is the shape 3NF forbids.</title>
+<defs>
+<marker id="fdA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+<path d="M0,0 L0,6 L7,3 z" fill="var(--navy)"/>
+</marker>
+<marker id="fdB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+<path d="M0,0 L0,6 L7,3 z" fill="var(--gold)"/>
+</marker>
+</defs>
+<rect class="ent" x="15" y="20" width="160" height="60" rx="6"/>
+<rect class="ent" x="240" y="20" width="140" height="60" rx="6"/>
+<rect class="ent" x="440" y="20" width="185" height="60" rx="6"/>
+<text class="lbl" x="95" y="55">student_id</text>
+<text class="lbl" x="310" y="55">major</text>
+<text class="lbl" x="532" y="55">advisor_office</text>
+<line class="link" x1="175" y1="50" x2="240" y2="50" marker-end="url(#fdA)"/>
+<line class="link" x1="380" y1="50" x2="440" y2="50" marker-end="url(#fdA)"/>
+<text x="207" y="40" text-anchor="middle" font-size="13" fill="var(--deep)">determines</text>
+<text x="410" y="40" text-anchor="middle" font-size="13" fill="var(--deep)">determines</text>
+<path d="M95,82 C95,150 532,150 532,82" fill="none" stroke="var(--gold)" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#fdB)"/>
+<text class="card" x="313" y="180" text-anchor="middle">only transitively, through major</text>
+</svg>
+</div>
+
+`student_id &rarr; major &rarr; advisor_office`, but `advisor_office`
+never depends on `student_id` directly. 3NF forbids exactly this
+shape: `advisor_office` belongs in its own relation, keyed on `major`.
+
+---
+
+# Decomposition, Visualized: Before and After
+
+<div class="thread">The pain slide's own table, split, drawn as schema cards instead of only as code.</div>
+
+<div class="two-col">
+<div>
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Section</span><span class="tag">3NF violation</span></div>
+<div class="row"><span class="pk">section_id</span>, course_code, course_title, instructor_id, instructor_name, room, semester</div>
+</div>
+</div>
+</div>
+<div>
+<div class="schema-stack">
+<div class="schema-tbl">
+<div class="hd"><span>Section</span><span class="tag">3NF</span></div>
+<div class="row"><span class="pk">section_id</span>, <span class="fk">course_code</span>, <span class="fk">instructor_id</span>, room, semester</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Course</span><span class="tag">3NF</span></div>
+<div class="row"><span class="pk">course_code</span>, title</div>
+</div>
+<div class="schema-tbl">
+<div class="hd"><span>Instructor</span><span class="tag">3NF</span></div>
+<div class="row"><span class="pk">instructor_id</span>, name</div>
+</div>
+</div>
+</div>
+</div>
+
+One denormalized relation, two transitive dependencies, becomes three
+relations, each with every non-key attribute depending directly on its
+own key. This is the entire chapter, in one picture.
+
+---
+
+<!-- _class: section -->
+
+# Keeping a Decomposition Honest
+
+<div class="driving-q">"What formal test catches these anomalies before a schema ever goes into production?"</div>
+
+<div class="thread">Splitting a relation fixes an anomaly. A careless split can create a worse one: losing information the original table held.</div>
+
+---
+
+# A Decomposition Must Stay Lossless
+
+<div class="thread">Not a nice-to-have. If this fails, the split was wrong, no matter how clean it looks.</div>
+
+> A decomposition is **lossless** if joining the resulting relations
+> back together, on the columns they share, reconstructs **exactly**
+> the original rows, no rows lost, and no extra, invented rows gained.
+
+Every decomposition on these slides keeps a real key column in both
+halves on purpose, precisely so this property holds. It is not an
+accident of which columns happened to get split where.
+
+---
+
+# Lossless: What a Bad Split Looks Like
+
+<div class="thread">A split that looks reasonable, and silently invents data.</div>
+
+Start from `Section(section_id, course_code, room)` with two real rows:
+
+| section_id | course_code | room |
+|---|---|---|
+| S1 | CS101 | R101 |
+| S2 | CS101 | R102 |
+
+Split on `course_code` instead of `section_id`: `R1(section_id,
+course_code)`, `R2(course_code, room)`. Joining `R1` and `R2` back on
+`course_code` produces **four** rows, including `(S1, CS101, R102)` and
+`(S2, CS101, R101)` — two rows that never existed.
+
+---
+
+# Lossless: The Fix
+
+<div class="thread">Split on the actual key, and the invented rows disappear.</div>
+
+Split on `section_id` instead: `R1(section_id, course_code)`,
+`R2(section_id, room)`. `section_id` is `Section`'s own primary key, so
+it appears in both halves. Joining `R1` and `R2` back on `section_id`
+reconstructs exactly the original two rows, nothing more.
+
+<div class="why">
+Every decomposition earlier in this lecture, `Section` into `Section` +
+`Course` + `Instructor`, kept a real key (<code>course_code</code>,
+<code>instructor_id</code>) in both halves for exactly this reason.
+</div>
+
+---
+
+# Demo, Step by Step: Normalizing the Waitlist
+
+<div class="thread">Week 6's clean Waitlist relation, deliberately broken, then fixed, one normal form at a time.</div>
+
+A well-meaning developer adds convenience columns for a report:
+
+```
+Waitlist(student_id, section_id, student_name, course_title, position)
+```
+
+---
+
+# Waitlist, Step 1: Check 1NF
+
+No repeating groups, no lists inside a cell. Every attribute holds one
+atomic value. **Passes.**
+
+---
+
+# Waitlist, Step 2: Check 2NF
+
+`{student_id, section_id}` is the key. Does `student_name` depend on
+the whole key, or only part of it? Only `student_id`. **Fails 2NF** — a
+partial dependency, the same violation shown earlier this lecture.
+`course_title` fails the same check, depending only on `section_id`.
+
+---
+
+# Waitlist, Step 3: Fix 2NF, Then Confirm 3NF
+
+Remove `student_name` (it belongs in `Student`, reachable through
+`student_id`) and `course_title` (it belongs in `Course`, reachable
+through `Section`). What remains:
+
+```
+Waitlist(student_id, section_id, position)
+```
+
+No non-key attribute depends on another non-key attribute. **Passes
+3NF**, because nothing was ever copied across relations to begin with.
+
+---
+
+# Waitlist, Step 4: Compare to Week 6's Original
+
+```
+Waitlist(student_id, section_id, position, date_joined)
+PRIMARY KEY (student_id, section_id)
+```
+
+Identical shape to what the mapping algorithm produced directly. Two
+different paths, deliberate mistake then fix versus correct derivation
+from the start, arriving at the same clean relation. That convergence
+is the entire point of both lectures.
+
+---
+
+# Anomaly Hunt: the Insertion Anomaly, by Inspection
+
+<div class="thread">The third anomaly from the Cost slide, not triggered live, but just as real.</div>
+
+The seed's denormalized `Section` has no row anywhere that can hold an
+instructor who is not yet teaching a section, because `instructor_id`
+and `instructor_name` only exist as columns *inside* `Section` rows.
+
+<div class="pain">
+A newly hired instructor, not yet assigned to any section, cannot be
+recorded at all: there is no <code>Section</code> row to attach their
+name to, and no separate <code>Instructor</code> table in this
+deliberately broken design. The fact "this person is now an
+instructor" has nowhere to live until an unrelated fact, a section
+assignment, exists first.
+</div>
+
+---
+
+# Capstone Worked Example: A Relation With Both Violations
+
+<div class="thread">One relation, both failures at once, decomposed fully, start to finish.</div>
+
+```
+Enrollment(student_id, section_id, grade,
+           course_title, room, room_capacity)
+```
+
+`PRIMARY KEY (student_id, section_id)`. This relation records a grade,
+but also carries the section's course title, room, and that room's
+seating capacity, copied in for a report that needed them "close by."
+
+---
+
+# Capstone: Check 1NF and 2NF
+
+**1NF:** every attribute holds one atomic value. **Passes.**
+
+**2NF:** does every non-key attribute depend on the *whole* key
+`{student_id, section_id}`? `course_title`, `room`, and `room_capacity`
+all depend only on `section_id`, not on `student_id`. **Fails 2NF** —
+three partial dependencies at once.
+
+---
+
+# Capstone: Check 3NF
+
+Even after removing the three partial dependencies above, one more
+problem hides inside them: `room_capacity` depends on `room`, and
+`room` would have depended on `section_id`, not directly on
+`section_id` itself. **A transitive dependency inside the very columns
+2NF just flagged.** Both checks catch real, separate problems here.
+
+---
+
+# Capstone: The Full Decomposition
+
+```
+Enrollment(student_id, section_id, grade)
+PRIMARY KEY (student_id, section_id)
+
+Section(section_id, course_code, room)
+Course(course_code, title)
+Room(room, capacity)
+```
+
+Every partial dependency (2NF) and every transitive dependency (3NF)
+is gone: each attribute now lives in exactly the relation whose key
+determines it directly, and only there.
+
+---
+
+# Practice: Identifying Functional Dependencies
+
+<div class="thread">Before decomposing anything, the first skill is reading dependencies out of real rows.</div>
+
+```
+section_id | instructor_id | room
+S1         | I2            | R101
+S2         | I2            | R101
+S3         | I5            | R203
+```
+
+**Question:** from this sample, does `section_id &rarr; instructor_id`
+appear to hold? Does `room &rarr; instructor_id` appear to hold? Does
+`instructor_id &rarr; section_id` appear to hold?
+
+---
+
+# Practice: Identifying Functional Dependencies, Answer
+
+- `section_id &rarr; instructor_id`: **holds**, in this sample, every
+  section_id maps to exactly one instructor_id
+- `room &rarr; instructor_id`: **appears to hold** here (`R101` always
+  pairs with `I2`), but three rows are never enough to *prove* a
+  functional dependency, only to falsify one
+- `instructor_id &rarr; section_id`: **does not hold** — `I2` appears
+  with both `S1` and `S2`, two different section_ids for the same
+  instructor
+
+<div class="why">
+A functional dependency is a promise about <em>every possible row</em>,
+forever, not just the rows currently in the table — sample data can
+disprove a claimed FD, but it can never fully prove one.
+</div>
+
+---
+
+# Quick Check: 1NF, 2NF, or 3NF?
+
+<div class="thread">A fast sort, before the lecture's official Check Yourself.</div>
+
+For each, name the **one** normal form it violates first:
+
+1. `Course(course_code, title, prerequisite_codes)` where
+   `prerequisite_codes` holds `"CS101,CS102"` in one cell.
+2. `Enrollment(student_id, section_id, grade, room)`,
+   `PRIMARY KEY(student_id, section_id)`, where `room` depends only on
+   `section_id`.
+3. `Section(section_id, instructor_id, instructor_office)`, single-key,
+   where `instructor_office` depends on `instructor_id`.
+
+---
+
+# Quick Check: Answers
+
+1. **1NF** — `prerequisite_codes` is a repeating group inside one cell,
+   not yet atomic.
+2. **2NF** — `room` depends on only part of the composite key
+   `{student_id, section_id}`, a partial dependency.
+3. **3NF** — `section_id` is a single-column key (2NF passes
+   automatically), but `instructor_office` depends on `instructor_id`,
+   a non-key attribute, not on `section_id` directly: transitive.
+
+---
+
+# Why Normalize at All? The Trade-Off
+
+<div class="thread">Normalization is not free. It is worth its cost, but the cost is real.</div>
+
+Every split this lecture has shown removes an anomaly, and also adds a
+**join** the moment someone needs both halves of the split data back
+together (Week 12's subject). A fully normalized schema is not
+automatically "the best" schema, it is the schema with the fewest
+places a single fact can silently disagree with itself.
+
+<div class="why">
+This is exactly why the last Common Mistake below exists: normalize
+until the anomalies this lecture defines are gone, then stop. Extra
+splits past that point trade a real, felt cost, more joins, for no
+anomaly actually removed.
+</div>
+
+---
+
+# Practice: Normalizing a Library Table
+
+<div class="thread">The full decomposition process, one more time, in a different domain.</div>
+
+`Loan(isbn, member_id, book_title, member_name, due_date)`,
+`PRIMARY KEY(isbn, member_id)`.
+
+**Question:** identify every violation and fix it.
+
+**Answer:** `book_title` depends on `isbn` alone (partial, 2NF);
+`member_name` depends on `member_id` alone (also partial). Fix:
+`Loan(isbn, member_id, due_date)`, with `book_title` moved to
+`Book(isbn, title)` and `member_name` moved to `Member(member_id,
+name)`.
+
+---
+
+# Practice: Spotting a Transitive Dependency
+
+<div class="thread">One more rep, focused specifically on 3NF, the form students find trickiest.</div>
+
+`Employee(employee_id, department_id, department_manager)`, where
+knowing the department tells you its manager.
+
+**Question:** name the violation and the fix.
+
+**Answer:** **3NF violation.** `employee_id &rarr; department_id &rarr;
+department_manager` is transitive. Fix: move `department_manager` into
+its own `Department(department_id, manager)` relation.
+
+---
+
+# Practice: A Gym Membership System
+
+<div class="thread">The same shape, one more domain, before this lecture's own case study takes over again.</div>
+
+`Checkin(member_id, gym_location_id, gym_location_address,
+checkin_time)`.
+
+**Question:** identify the violation and fix it.
+
+**Answer:** `gym_location_address` depends on `gym_location_id`, a
+non-key attribute, not on `member_id` or the natural key of a checkin
+event directly: **3NF violation**. Fix: move `gym_location_address`
+into its own `GymLocation(gym_location_id, address)` relation.
+
+---
+
 <!-- SLOT N-2: Worked example -->
 
 # Worked Example: Anomaly Hunt
@@ -386,6 +798,20 @@ mistake, then fix. Update Prof. Lee's name once, in one row, done.
 
 ---
 
+# Common Mistakes, Continued
+
+- **Splitting on the wrong column:** a decomposition is only lossless
+  if the shared column is a real key of at least one side, splitting
+  on any other shared column can invent rows on the join back
+- **Overlooking the insertion anomaly:** update and deletion anomalies
+  are easy to demonstrate live; insertion anomalies show up as "there
+  is nowhere to even put this fact yet," easy to miss without asking
+- **Trusting a small sample to prove a functional dependency:** three
+  rows that happen to agree do not prove `A &rarr; B` holds for every
+  row that will ever exist, only failing to find a counterexample yet
+
+---
+
 <!-- SLOT N: Check yourself -->
 
 # Check Yourself
@@ -453,7 +879,7 @@ actual tables. (Week 8 is the Midterm Exam, covering Weeks 1 through 7.)
 - **Lab page:** `book/src/labs/lab07-normalization.md`, for the live
   Anomaly Hunt (run `bad_registration_seed.sql`, trigger each
   anomaly), the 3NF decomposition exercise, and rubric.
-- **Reading:** Silberschatz et al., 7th ed., Chapter 8
+- **Reading:** Silberschatz et al., 7th ed., Chapter 7
 - **Prepare:** the Midterm Exam next week covers Weeks 1 through 7.
   Review every Check Yourself and Summary slide across those weeks.
 
