@@ -2,7 +2,7 @@
 
 Not linked from any public page. Model answer for
 `solutions/lab01/problems.md`, keyed to
-`book/src/labs/files/lab01/registrations.csv` (rows counted with the
+`book/src/labs/files/lab01/registrations.xlsx` (rows counted with the
 header as row 1, so the first data row is row 2).
 
 ## Task 1: Name Inconsistency

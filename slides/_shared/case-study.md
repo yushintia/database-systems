@@ -16,7 +16,7 @@ with which week — lab pages and slide decks both link back here.
 
 | Week | Snapshot | Lab artifact |
 |---|---|---|
-| 1 | The spreadsheet | `book/src/labs/files/lab01/registrations.csv` |
+| 1 | The spreadsheet | `book/src/labs/files/lab01/registrations.xlsx` |
 | 2 | One raw table, run-only | `book/src/labs/files/lab02/flat_load.sql` |
 | 3 | Interview + toy sandbox | `book/src/labs/files/lab03/interview_transcript.md`, `book/src/labs/files/lab03/toy_sandbox.sql` |
 | 4 | E-R diagram (drawn by students) | student-produced `lab04_er.png`/`.drawio`, no seed |

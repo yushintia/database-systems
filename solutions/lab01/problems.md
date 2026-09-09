@@ -2,14 +2,14 @@
 
 Public restatement of Lab 01's hands-on activity. Full lab page:
 `book/src/labs/lab01-intro-and-spreadsheet.md`. Seed file:
-`book/src/labs/files/lab01/registrations.csv`.
+`book/src/labs/files/lab01/registrations.xlsx`.
 
 No worksheet or quiz this week — Week 1 is the orientation variant.
 This is the only graded item for Week 1.
 
 ## Task 1: Find the Name Inconsistency
 
-One real student appears in `registrations.csv` under three different
+One real student appears in `registrations.xlsx` under three different
 spellings of the same name.
 
 1. Find all three spellings, and the row number(s) each appears in.

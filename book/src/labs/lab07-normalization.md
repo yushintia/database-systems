@@ -222,8 +222,8 @@ mistake, then fix. Update Prof. Lee's name once, in one row, done.
    it, (b) which normal form it violates, (c) what real-world fact
    was lost or corrupted.
 
-**Deliverable:** `lab07_anomalies.md` — your recorded results and
-answers to (a)-(c) for both anomalies.
+**Deliverable:** Anomaly Hunt Results (`lab07_anomalies.md`) — your
+recorded results and answers to (a)-(c) for both anomalies.
 
 ### Part 2: Decompose to 3NF (on paper)
 
@@ -245,9 +245,9 @@ Section(section_id, course_code, course_title,
    `book/src/labs/files/lab06/target_schema.sql`. If it does not,
    find which step above produced the mismatch.
 
-**Deliverable:** `lab07_normalized.md` — your answers to steps 1-4,
-and a one-sentence confirmation (or explanation of the mismatch) for
-step 5.
+**Deliverable:** Normalization Steps 1-4 (`lab07_normalized.md`) —
+your answers to steps 1-4, and a one-sentence confirmation (or
+explanation of the mismatch) for step 5.
 
 ---
 

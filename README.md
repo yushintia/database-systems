@@ -22,7 +22,7 @@ book/                       mdBook lab manual - full guided labs, rubrics
   src/
     introduction.md
     labs/                    lab01 ... lab15 (one per week)
-      files/                  seed .sql/.csv data for each lab
+      files/                  seed .sql/.xlsx data for each lab
     setup/                   MySQL & Workbench install + how a database runs
     appendix/                 style guide, rubrics, troubleshooting,
                                E-R notation, case-study reference, references

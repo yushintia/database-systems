@@ -779,7 +779,7 @@ idea - a relation, a properly defined table - built to fix it.
 - Primary text: Silberschatz et al., 7th ed. Contact:
   yushintia@deu.ac.kr.
 - **This week's lab:** `book/src/labs/lab01-intro-and-spreadsheet.md`
-  - hunt the messy `registrations.csv` for the name-inconsistency,
+  - hunt the messy `registrations.xlsx` for the name-inconsistency,
   deletion-anomaly, and concurrent-edit problems by hand. See also
   `book/src/introduction.md` for how the lab manual fits this course.
 - **Prepare:** skim Chapter 1 before Week 2. No exercises due.

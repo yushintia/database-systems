@@ -32,7 +32,7 @@ CREATE TABLE raw_registrations (
     grade         VARCHAR(5)
 );
 
--- Same 18 rows as book/src/labs/files/lab01/registrations.csv, typed
+-- Same 18 rows as book/src/labs/files/lab01/registrations.xlsx, typed
 -- in by hand -- exactly the way the registration office actually
 -- filled in this spreadsheet, spelling mistakes and all.
 INSERT INTO raw_registrations

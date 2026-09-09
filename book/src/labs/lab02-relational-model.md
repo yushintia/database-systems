@@ -180,7 +180,7 @@ mysql -u root -p < flat_load.sql
 | `DROP DATABASE IF EXISTS registration_db;` | Removes any old copy first, so re-running this script always starts from the exact same clean state |
 | `CREATE DATABASE registration_db; USE registration_db;` | Creates a fresh database and switches into it, so every statement after this runs against it |
 | `CREATE TABLE raw_registrations (...)` | Declares ONE flat table with seven columns — no primary key, no foreign key, no constraint declared anywhere, on purpose |
-| `INSERT INTO raw_registrations ... VALUES (...)` | Loads the same 18 rows from Lab 01's `registrations.csv`, exactly as messy as the original spreadsheet |
+| `INSERT INTO raw_registrations ... VALUES (...)` | Loads the same 18 rows from Lab 01's `registrations.xlsx`, exactly as messy as the original spreadsheet |
 
 ### Now look at what loaded
 

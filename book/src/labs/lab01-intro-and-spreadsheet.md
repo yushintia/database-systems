@@ -125,13 +125,13 @@ problems, not fix them.
 
 ## Hands-On Activity: Hunt the Problems
 
-Open `files/lab01/registrations.csv` in a spreadsheet program (Excel,
+Open `files/lab01/registrations.xlsx` in a spreadsheet program (Excel,
 Google Sheets, LibreOffice Calc — any of them will do) or a plain text
 editor. It is the same flat, one-sheet design described above: 18
 enrollment rows for this course's running case study, the University
 Course Registration system.
 
-> [`registrations.csv`](files/lab01/registrations.csv)
+> [`registrations.xlsx`](files/lab01/registrations.xlsx)
 
 Work through the three tasks below. Write your findings directly into
 `lab01_findings.md` as you go — do not wait until the end to write
@@ -182,7 +182,7 @@ Do this part with a partner.
 
 ---
 
-## Deliverable: `lab01_findings.md`
+## Deliverable: Findings Report
 
 Submit a short plain-text or Markdown report named `lab01_findings.md`,
 using this template:

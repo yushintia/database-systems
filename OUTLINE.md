@@ -58,7 +58,7 @@ the "Lab artifact map" at the top of `slides/_shared/case-study.md`.
 - `book/` — the mdBook lab manual: `src/introduction.md`, `src/setup/`
   (MySQL & Workbench install, how a database runs), `src/labs/`
   (`lab01`..`lab15`, one per week, plus `src/labs/files/` for seed
-  `.sql`/`.csv` data), `src/appendix/` (SQL style guide, grading rubric,
+  `.sql`/`.xlsx` data), `src/appendix/` (SQL style guide, grading rubric,
   troubleshooting, E-R notation reference, case-study reference,
   further reading).
 - `solutions/labNN/` — `problems.md` (public restatement of that lab's

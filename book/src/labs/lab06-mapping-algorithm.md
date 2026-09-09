@@ -306,9 +306,9 @@ submitting.
 > answer is. Comparing your rule *application* against a known-correct
 > example is normal engineering practice, not a shortcut.
 
-**Deliverable:** `lab06_mapping.md`, containing your Part C mapping
-(every entity/relationship from your own Lab 4 diagram, the rule
-applied, and the resulting relation).
+**Deliverable:** Your Part C Mapping Writeup (`lab06_mapping.md`),
+containing your Part C mapping (every entity/relationship from your
+own Lab 4 diagram, the rule applied, and the resulting relation).
 
 ---
 
