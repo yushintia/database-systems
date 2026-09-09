@@ -63,9 +63,8 @@ This exam assesses all outcomes from Weeks 1 through 7:
 
 > These are **not** the actual exam questions, but they are
 > representative in scope and style. Full worked explanations for
-> these and more are in the Week 8 review guide
-> (`materials/week08/review-guide.md`); a consolidated answer key is
-> in `solutions/lab08/answer-key/`.
+> these and more are below, in this same review guide; your instructor
+> will share a consolidated answer key after the exam.
 
 **Practice 1 (Week 1/2).** Two of Week 1's seven failures of
 file-based systems — atomicity problems and concurrent-access
@@ -139,6 +138,5 @@ top of — revisit Lab 06 and Lab 07 before Week 9.
 ## Further Reading
 
 - Review Lab 01 through Lab 07, especially each lab's Worked Example
-  and Common Pitfalls sections.
-- `materials/week08/review-guide.md` — the full review guide, with
-  worked explanations for every practice problem above.
+  and Common Pitfalls sections. This page's own worked explanations,
+  above, cover every practice problem in full.

@@ -60,10 +60,9 @@ the same habit the Week 5 slides walk through.
 
 ## Review Questions
 
-These are the same questions as the Week 5 review guide
-(`materials/week05/review-guide.md`)'s "Check Yourself" set, with the
-full worked explanation kept alongside each answer. Cover the answer
-and try to re-derive it before reading on.
+These are the same questions from Weeks 2-4's "Check Yourself" sets,
+collected here with the full worked explanation kept alongside each
+answer. Cover the answer and try to re-derive it before reading on.
 
 ### Q1 (Week 2). A relation `Student(name, name, major)` lists the `name` attribute twice by mistake. Which rule does this violate, and why?
 
@@ -131,9 +130,9 @@ skipping cardinality entirely and drawing a bare line.
 
 These are the same self-check quizzes you saw at the end of Weeks 2,
 3, and 4 (ungraded then, still ungraded now), collected in one place.
-Try them closed-book. The full answer key is in
-`solutions/lab05/answer-key/quiz1-key.md` — do not open it until
-you've written down an answer for every question.
+Try them closed-book. Your instructor will share the full worked answer key after this
+session — do not look ahead; write down an answer for every question
+first.
 
 **Week 2 (Relational Model):**
 
@@ -194,6 +193,7 @@ you've written down an answer for every question.
 ## Further Reading
 
 - Re-read the "Check Yourself" and "Summary" slides from
-  `slides/week01-introduction.md` through `slides/week04-er-diagram.md`.
+  [Week 1](../../slides/week01-introduction.html) through
+  [Week 4](../../slides/week04-er-diagram.html).
 - [Lab 01](lab01-intro-and-spreadsheet.md) through
   [Lab 04](lab04-er-diagram.md), especially each lab's Worked Example.

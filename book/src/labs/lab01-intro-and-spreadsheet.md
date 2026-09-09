@@ -26,7 +26,7 @@ lab page covers only the one hands-on activity attached to Week 1.
 
 | Part | Min | Activity |
 |--------|-----|----------|
-| A (Course contract) | 100 | Course description, schedule, grading, policies — see the handbook and `../introduction.md` |
+| A (Course contract) | 100 | Course description, schedule, grading, policies — see the handbook and the [Introduction](../introduction.md) |
 | B (Hands-on) | 50 | The spreadsheet problem: hunt for name inconsistency, a deletion anomaly, and a concurrent-edit race, by hand |
 
 ---
@@ -52,8 +52,8 @@ By the end of this lab, you will be able to:
 There is no "last week" — this is Week 1. By the end of this course,
 in Week 15, you will have taken this same registration data all the
 way from a broken spreadsheet to a real MySQL database that you built
-yourself. Today you only meet the mess. `../setup/mysql-workbench.md`
-and `../setup/how-a-database-runs.md` are worth skimming this week too,
+yourself. Today you only meet the mess. [Setup: MySQL & Workbench](../setup/mysql-workbench.md)
+and [Setup: How a Database Runs](../setup/how-a-database-runs.md) are worth skimming this week too,
 so your laptop is ready before Week 2 needs it.
 
 ---
@@ -242,5 +242,5 @@ attendance, not this lab).
 
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed.,
   Ch. 1 "Introduction" (skim only — no exercises due)
-- [`../introduction.md`](../introduction.md) — how this lab manual fits with the slide decks
-- [`../setup/mysql-workbench.md`](../setup/mysql-workbench.md) — set this up before Week 2
+- [The Introduction](../introduction.md) — how this lab manual fits with the slide decks
+- [Setup: MySQL & Workbench](../setup/mysql-workbench.md) — set this up before Week 2

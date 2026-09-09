@@ -393,5 +393,5 @@ primary key.
 
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th
   ed., Ch. 7.
-- `slides/week06-mapping-algorithm.md` — the full lecture, including
+- [The full Week 6 lecture slides](../../slides/week06-mapping-algorithm.html) — including
   Rules 5-10 for constructs beyond this lab's four core rules.

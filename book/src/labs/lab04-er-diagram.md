@@ -62,7 +62,7 @@ subject.
 
 This lab's diagram notation itself — the exact symbols for entities,
 attributes, relationships, and cardinality — is documented in
-[`../appendix/er-notation.md`](../appendix/er-notation.md). Read that
+the [E-R Notation Reference](../appendix/er-notation.md). Read that
 page first if you have never drawn an E-R diagram before; this section
 only covers the vocabulary you need before this week's worked example,
 not the symbol reference itself.
@@ -205,7 +205,7 @@ relations.
 
 ### Part 1: Draw it yourself
 
-Using everything above and `../appendix/er-notation.md`'s symbol
+Using everything above and the [E-R Notation Reference](../appendix/er-notation.md)'s symbol
 reference, draw the **complete** registration system E-R diagram,
 including the Waitlist thread, from scratch — on paper, or in a tool
 like [draw.io](https://app.diagrams.net/). Both are acceptable; a
@@ -334,6 +334,6 @@ practice using the registration system specifically.
   of Data" (1976)
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed.,
   Ch. 6 "Database Design Using the E-R Model"
-- [`../appendix/er-notation.md`](../appendix/er-notation.md) — full symbol reference
-- [`../appendix/case-study-reference.md`](../appendix/case-study-reference.md) — this diagram's snapshot, and
+- [E-R Notation Reference](../appendix/er-notation.md) — full symbol reference
+- [Case Study Reference](../appendix/case-study-reference.md) — this diagram's snapshot, and
   where it goes next (Week 6's mapping algorithm)
