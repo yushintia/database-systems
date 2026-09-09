@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database Systems (511783-001)</title>
+<style>
+  :root{ --navy:#242852; --brand:#4A66AC; --pale:#DCEAF0; --ink:#1A1A1A; }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Aptos','Calibri',system-ui,-apple-system,'Malgun Gothic',sans-serif;color:var(--ink);background:#F6F8FA;}
+  header{background:var(--navy);color:#fff;padding:2.5rem 1.5rem;}
+  header .brandrow{display:flex;align-items:center;gap:.9rem;max-width:820px;margin:0 auto;}
+  header img{height:34px;width:auto;background:#fff;border-radius:6px;padding:4px 8px;}
+  header h1{margin:0 0 .4rem;font-family:Cambria,Georgia,'Noto Serif KR',serif;font-size:1.7rem;}
+  header p{margin:0;opacity:.85;font-size:.95rem;}
+  header .titlecol{max-width:820px;margin:1rem auto 0;}
+  main{max-width:820px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  @media (max-width:680px){ .cards{grid-template-columns:1fr;} }
+  .card{display:block;background:#fff;border:1px solid #D7E1E8;border-radius:10px;padding:1.1rem 1.3rem;text-decoration:none;color:var(--ink);transition:border-color .15s;}
+  .card:hover{border-color:var(--brand);}
+  .card .icon{font-size:1.5rem;}
+  .card h2{margin:.3rem 0 .25rem;font-size:1.1rem;font-family:Cambria,Georgia,'Noto Serif KR',serif;color:var(--navy);}
+  .card p{margin:0;color:#5B6B78;font-size:.88rem;}
+
+  h3.section{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:#5B6B78;margin:2rem 0 .75rem;}
+  ul{list-style:none;margin:0;padding:0;display:grid;gap:.6rem;}
+  li a{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.9rem 1.1rem;background:#fff;border:1px solid #D7E1E8;border-radius:8px;text-decoration:none;color:var(--ink);transition:border-color .15s;}
+  li a:hover{border-color:var(--brand);}
+  .wk{font-family:Cambria,Georgia,'Noto Serif KR',serif;color:var(--brand);font-weight:700;min-width:3.2rem;}
+  .fmt{font-size:.78rem;color:#5B6B78;background:var(--pale);padding:.2rem .55rem;border-radius:12px;white-space:nowrap;}
+  .pptx-row{display:flex;gap:.5rem;margin:.4rem 0 0;flex-wrap:wrap;}
+  .pptx-row a{font-size:.78rem;color:var(--brand);text-decoration:none;background:var(--pale);padding:.2rem .6rem;border-radius:10px;}
+  .pptx-row a:hover{text-decoration:underline;}
+  footer{max-width:820px;margin:0 auto;padding:0 1.5rem 3rem;color:#5B6B78;font-size:.85rem;}
+  footer a{color:var(--brand);}
+</style>
+</head>
+<body>
+<header>
+  <div class="brandrow">
+    <img src="./assets/deu-logo.png" alt="Dong-eui University">
+  </div>
+  <div class="titlecol">
+    <h1>데이터베이스시스템 · Database Systems</h1>
+    <p>511783-001 · DEU 2026-2 · Mon 4-6교시 · Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing</p>
+  </div>
+</header>
+<main>
+
+<div class="cards">
+  <a class="card" href="./book/">
+    <span class="icon">📘</span>
+    <h2>Lab Manual (Book)</h2>
+    <p>Full guided labs: MySQL setup, worked examples, guided exercises, challenge problems, and submission rubrics for every week.</p>
+  </a>
+  <a class="card" href="./slides/week01-introduction.html">
+    <span class="icon">🎞️</span>
+    <h2>Lecture Slides</h2>
+    <p>Pain, concept, mechanics, limits — chained week to week. Each deck teaches only the lab's Part A. See <code>SPINE.md</code>.</p>
+  </a>
+</div>
+<p style="margin:0 0 2rem;font-size:.85rem;color:#5B6B78;">Prefer PDF? The lab manual is also released <a href="./book/pdf/">chapter by chapter</a>.</p>
+
+<h3 class="section">All Lecture Decks</h3>
+<ul>
+<li><a href="./slides/week01-introduction.html"><span class="wk">01</span> Introduction</a>
+<div class="pptx-row"><a href="./slides/week01-introduction.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week02-relational-model.html"><span class="wk">02</span> Relational Model</a>
+<div class="pptx-row"><a href="./slides/week02-relational-model.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week03-data-modelling.html"><span class="wk">03</span> Data Modelling</a>
+<div class="pptx-row"><a href="./slides/week03-data-modelling.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week04-er-diagram.html"><span class="wk">04</span> E-R Diagram <span class="fmt">Assignment 1</span></a>
+<div class="pptx-row"><a href="./slides/week04-er-diagram.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week05-quiz1-review.html"><span class="wk">05</span> Quiz 1 Review <span class="fmt">review</span></a>
+<div class="pptx-row"><a href="./slides/week05-quiz1-review.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week06-mapping-algorithm.html"><span class="wk">06</span> Mapping Algorithm</a>
+<div class="pptx-row"><a href="./slides/week06-mapping-algorithm.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week07-normalization.html"><span class="wk">07</span> Normalization</a>
+<div class="pptx-row"><a href="./slides/week07-normalization.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week08-midterm-review.html"><span class="wk">08</span> Midterm Review <span class="fmt">review</span></a>
+<div class="pptx-row"><a href="./slides/week08-midterm-review.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week09-ddl.html"><span class="wk">09</span> DDL <span class="fmt">MySQL</span></a>
+<div class="pptx-row"><a href="./slides/week09-ddl.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week10-dml.html"><span class="wk">10</span> DML <span class="fmt">MySQL</span></a>
+<div class="pptx-row"><a href="./slides/week10-dml.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week11-single-table-queries.html"><span class="wk">11</span> Single-table Queries</a>
+<div class="pptx-row"><a href="./slides/week11-single-table-queries.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week12-multi-table-queries.html"><span class="wk">12</span> Multi-table Queries <span class="fmt">Assignment 2</span></a>
+<div class="pptx-row"><a href="./slides/week12-multi-table-queries.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week13-quiz2-review.html"><span class="wk">13</span> Quiz 2 Review <span class="fmt">review</span></a>
+<div class="pptx-row"><a href="./slides/week13-quiz2-review.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week14-case-study-presentation.html"><span class="wk">14</span> Case Study Presentation</a>
+<div class="pptx-row"><a href="./slides/week14-case-study-presentation.pptx">📊 PPTX</a></div>
+</li>
+<li><a href="./slides/week15-final-review.html"><span class="wk">15</span> Final Exam Review <span class="fmt">review</span></a>
+<div class="pptx-row"><a href="./slides/week15-final-review.pptx">📊 PPTX</a></div>
+</li>
+</ul>
+
+</main>
+<footer>Built with mdBook + Marp. Source: <code>book/src/labs/</code> + <code>slides/*.md</code>.</footer>
+</body>
+</html>

@@ -151,28 +151,6 @@ almost like the plain-language question it answers.
 
 <!-- Act 3 / BUILD -->
 
-# Illustration: A Query and Its Match
-
-<div class="thread">The exact mechanic behind WHERE, made visible.</div>
-
-```sql
-SELECT name, grade FROM Enrollment
-JOIN Student USING (student_id)
-WHERE grade = 'A0';
-```
-
-| name | grade |
-|---|---|
-| <span style="color:#C0392B;font-weight:700">Kim Minji</span> | <span style="color:#C0392B;font-weight:700">A0</span> |
-| Park Jiho | B+ |
-| <span style="color:#C0392B;font-weight:700">Han Somin</span> | <span style="color:#C0392B;font-weight:700">A0</span> |
-
-`WHERE grade = 'A0'` is a yes/no test applied to every row; only the
-rows that pass appear in the result. (This example previews a join,
-formally taught next week; today, focus on the `WHERE` test itself.)
-
----
-
 # Comparison Operators
 
 <div class="thread">WHERE needs a test. These are the tests available.</div>
@@ -206,24 +184,6 @@ WHERE title LIKE '%Data%';
 Matches "Database Systems," "Data Structures," and "Big Data
 Analytics," any title containing "Data" anywhere, because `%` on both
 sides means "anything can come before, anything can come after."
-
----
-
-# Illustration: A Course Search and Its Matches
-
-<div class="thread">The exact rows the previous slide's query returns.</div>
-
-**`Course`:**
-
-| course_code | title |
-|---|---|
-| CSE301 | Databases |
-| CSE305 | Data Structures |
-| CSE210 | Operating Systems |
-
-**`WHERE title LIKE '%Data%'`** matches `Databases` and `Data
-Structures`, `Operating Systems` does not contain "Data" anywhere and
-is correctly excluded.
 
 ---
 
@@ -301,25 +261,6 @@ open range `(3, 4)`.
 
 ---
 
-# NOT LIKE and NOT BETWEEN: Negating a Match
-
-<div class="thread">Every positive test from this section has a negated counterpart.</div>
-
-```sql
-SELECT title FROM Course
-WHERE title NOT LIKE '%Lab%';
-
-SELECT course_code FROM Course
-WHERE credits NOT BETWEEN 3 AND 4;
-```
-
-`NOT LIKE` keeps rows that fail the pattern; `NOT BETWEEN` keeps rows
-strictly outside the range, so `credits NOT BETWEEN 3 AND 4` excludes
-exactly the `3` and `4` rows the previous slide included, the boundary
-values flip sides along with everything else.
-
----
-
 # Logical Operators: Combining Conditions
 
 <div class="thread">One WHERE test is rarely enough. Combine them.</div>
@@ -384,8 +325,7 @@ majors exist?") getting a direct answer.
 SELECT name, major FROM Student
 ORDER BY name ASC;
 
-SELECT name, grade FROM Enrollment
-JOIN Student USING (student_id)
+SELECT student_id, grade FROM Enrollment
 ORDER BY grade DESC;
 ```
 
@@ -401,8 +341,7 @@ order," now visible in query results too.
 <div class="thread">One more clause, useful the moment a table gets large.</div>
 
 ```sql
-SELECT name, grade FROM Enrollment
-JOIN Student USING (student_id)
+SELECT student_id, grade FROM Enrollment
 ORDER BY grade DESC
 LIMIT 5;
 ```
@@ -414,13 +353,14 @@ shows.
 
 ---
 
-# Arithmetic Expressions in SELECT
+# Arithmetic Expressions and Aliasing With AS
 
-<div class="thread">SELECT can return a computed value, not only a stored column.</div>
+<div class="thread">SELECT can return a computed value, not only a stored column, and AS gives that value a readable name.</div>
 
 > `SELECT` can list an arithmetic expression, built from columns,
 > numbers, and operators (`+ - * /`), anywhere it could list a column
-> name.
+> name. `AS` renames a column or expression in the result set only; it
+> never changes anything in the underlying table.
 
 ```sql
 SELECT title, credits, credits * 16 AS total_class_hours
@@ -428,66 +368,9 @@ FROM Course;
 ```
 
 `credits * 16` is computed fresh for every row as the query runs, it
-is not stored anywhere in `Course`, `SELECT` is free to compute new
-values, not just fetch existing ones.
-
----
-
-# Column Aliasing With AS
-
-<div class="thread">The previous slide's computed column needed a name. AS is how you give it one.</div>
-
-> `AS` renames a column or expression in the result set only; it never
-> changes anything in the underlying table.
-
-```sql
-SELECT name AS student_name, major AS program
-FROM Student;
-```
-
-Without `AS`, a computed expression's column header is the expression
-itself, `credits * 16`, unreadable in a report. `AS` gives it a name a
-person, or a spreadsheet import, can actually use.
-
----
-
-# Worked Example: Days Until a Deadline
-
-<div class="thread">A concrete use for both of the last two slides at once.</div>
-
-Suppose `Section` gains a `withdraw_deadline DATE` column:
-
-```sql
-SELECT course_code, withdraw_deadline,
-       DATEDIFF(withdraw_deadline, CURDATE()) AS days_left
-FROM Section;
-```
-
-`DATEDIFF` subtracts one date from another, returning a number of
-days. Aliased as `days_left`, this single expression turns a raw date
-into exactly the number a student actually wants to see.
-
----
-
-# Illustration: Raw Columns vs. a Computed Column
-
-<div class="thread">What the previous slide's query actually adds to the result.</div>
-
-**`Section` (stored):**
-
-| course_code | withdraw_deadline |
-|---|---|
-| CSE301 | 2026-09-20 |
-
-**Result of the previous query**, run on 2026-09-06:
-
-| course_code | withdraw_deadline | days_left |
-|---|---|---|
-| CSE301 | 2026-09-20 | 14 |
-
-`days_left` exists only in the result, computed the moment the query
-ran; run it again tomorrow and `14` becomes `13`, nothing in `Section`
-itself changed.
+is not stored anywhere in `Course`. Without `AS`, its column header
+would be the expression itself, `credits * 16`, unreadable in a
+report, `AS` gives it a name a person can actually use.
 
 ---
 
@@ -499,73 +382,18 @@ itself changed.
 > to the first one that is true, or `ELSE`'s value if none are.
 
 ```sql
-SELECT name,
-    CASE
-        WHEN major = 'Computer Science' THEN 'CS'
-        WHEN major = 'Software Engineering' THEN 'SE'
-        ELSE 'Other'
-    END AS major_code
-FROM Student;
-```
-
-Every row gets exactly one output value, chosen by whichever `WHEN`
-matched first, `ELSE` is the fallback when nothing else did.
-
----
-
-# Worked Example: Classifying Enrollment Status
-
-<div class="thread">CASE, applied directly to the running case study.</div>
-
-```sql
 SELECT student_id, section_id,
     CASE
         WHEN grade IS NULL THEN 'In Progress'
-        WHEN grade IN ('F') THEN 'Failed'
+        WHEN grade = 'F0' THEN 'Failed'
         ELSE 'Completed'
     END AS status
 FROM Enrollment;
 ```
 
-One column, three possible outputs, computed from the same `grade`
-column Week 11's `IS NULL` slide already introduced, `CASE` just adds
-a label a human reads more easily than a raw grade value.
-
----
-
-# Illustration: What CASE Actually Produces
-
-<div class="thread">Three rows, three different WHEN branches, one column of labels.</div>
-
-| student_id | section_id | grade | status |
-|---|---|---|---|
-| 1 | 3 | A0 | Completed |
-| 7 | 3 | NULL | In Progress |
-| 9 | 3 | F | Failed |
-
-Each row is evaluated independently: `CASE` never compares one row to
-another, only one row's own columns against its own `WHEN` conditions.
-
----
-
-# CASE With Multiple WHEN Branches
-
-<div class="thread">Nothing limits CASE to two or three branches, or to equality tests.</div>
-
-```sql
-SELECT name, credits,
-    CASE
-        WHEN credits >= 4 THEN 'Heavy Load'
-        WHEN credits = 3 THEN 'Standard Load'
-        WHEN credits <= 2 THEN 'Light Load'
-        ELSE 'Unspecified'
-    END AS load_category
-FROM Course;
-```
-
-Each `WHEN` can test a different condition, not just a different value
-of the same column, `CASE` is a full conditional, not merely a
-lookup table.
+Every row gets exactly one output value, chosen by whichever `WHEN`
+matched first, `ELSE` is the fallback when nothing else did. Each row
+is evaluated independently, `CASE` never compares one row to another.
 
 ---
 
@@ -578,100 +406,26 @@ lookup table.
 > single summary row.
 
 ```sql
-SELECT COUNT(*) AS total_enrollments
-FROM Enrollment;
-```
-
-One row back, one number, the count of every row `Enrollment` has.
-Next week's `GROUP BY` reuses these exact same functions, but produces
-one summary row **per category** instead of one for the whole table.
-
----
-
-# Worked Example: Summarizing All of Enrollment
-
-<div class="thread">All five aggregate functions, over the whole table at once.</div>
-
-```sql
-SELECT COUNT(*) AS total,
-       MIN(grade) AS lowest_alpha,
-       MAX(grade) AS highest_alpha
-FROM Enrollment
-WHERE grade IS NOT NULL;
-```
-
-`COUNT(*)` counts every graded row, `MIN` and `MAX` find the
-alphabetically lowest and highest grade text. Three numbers, one row,
-a summary a registrar could read in one glance instead of scrolling
-the whole table.
-
----
-
-# Illustration: One Row Summarizing Every Row
-
-<div class="thread">Many rows go in, exactly one row comes back.</div>
-
-**`Enrollment`** (4 graded rows, one ungraded row omitted by `WHERE`):
-
-| student_id | grade |
-|---|---|
-| 1 | A0 |
-| 2 | B+ |
-| 3 | A0 |
-| 4 | C+ |
-
-**Result:**
-
-| total | lowest_alpha | highest_alpha |
-|---|---|---|
-| 4 | C+ | A0 |
-
-Four input rows collapse into one output row, exactly what "no
-`GROUP BY`" means: the whole table is treated as a single group.
-
----
-
-# Aggregates and NULL: What COUNT(*) vs. COUNT(column) Actually Count
-
-<div class="thread">The one distinction that trips up every aggregate function eventually.</div>
-
-```sql
 SELECT COUNT(*) AS all_rows,
        COUNT(grade) AS graded_rows
 FROM Enrollment;
 ```
 
 `COUNT(*)` counts every row, `NULL` or not. `COUNT(grade)` counts only
-rows where `grade` is **not** `NULL`, `AVG`, `SUM`, `MIN`, and `MAX`
-all silently skip `NULL` values the same way `COUNT(column)` does,
-an ungraded enrollment never distorts an average grade.
-
----
-
-# Multiple Aggregates, One Query, No GROUP BY Yet
-
-<div class="thread">Real reports combine several of these at once, even before grouping enters the picture.</div>
-
-```sql
-SELECT COUNT(*) AS enrollments,
-       COUNT(grade) AS graded,
-       COUNT(*) - COUNT(grade) AS still_pending
-FROM Enrollment;
-```
-
-Three related numbers from one table scan, no `WHERE`, no `GROUP BY`,
-just the whole table summarized three different ways in one
-statement. Next week, `GROUP BY major` turns this exact query into one
-row per major instead of one row overall.
+rows where `grade` is **not** `NULL`, `SUM`, `AVG`, `MIN`, and `MAX`
+all silently skip `NULL` the same way, an ungraded enrollment never
+distorts an average grade. Next week's `GROUP BY` reuses these exact
+same functions, producing one summary row **per category** instead of
+one for the whole table.
 
 ---
 
 # Demo, Step by Step: Answering the Pain Slide's Question
 
-<div class="thread">Every clause from this lecture, built up one at a time, live, not handed over finished.</div>
+<div class="thread">This lab's own Worked Example, built up one clause at a time, live, not handed over finished.</div>
 
-"Which of my students got an A this semester?" Five steps, each one
-adding exactly one clause from today's lecture, run in order.
+"Which of my students got an A this semester?" Every step below adds
+exactly one clause from today's lecture, run in order.
 
 ---
 
@@ -706,59 +460,51 @@ WHERE grade = 'A0';
 | 3 | 3 | A0 |
 
 Two rows survive the filter. Correct, but `student_id` is not a name,
-not yet answerable by a human reading it.
+not yet answerable by a human reading it, turning an ID into a name
+needs `Student`, a second table, next week's `JOIN`.
 
 ---
 
-# Step 3: Add JOIN
+# Step 3: DISTINCT on a Single-Table Question
 
 ```sql
-SELECT Student.name, Enrollment.grade FROM Enrollment
-JOIN Student USING (student_id)
-WHERE grade = 'A0';
+SELECT DISTINCT grade FROM Enrollment
+WHERE section_id = 3
+ORDER BY grade ASC;
 ```
 
-| name | grade |
-|---|---|
-| Kim Minji | A0 |
-| Han Somin | A0 |
-
-Names now, not IDs. This is already a real, readable answer, but the
-next two steps make it robust.
-
----
-
-# Step 4: Add DISTINCT
-
-```sql
-SELECT DISTINCT Student.name FROM Enrollment
-JOIN Student USING (student_id)
-WHERE grade = 'A0';
-```
-
-If a student earned an A0 in two different sections, the previous
-step would list them twice. `DISTINCT` guarantees one line per
-student, no matter how many A0 grades they have.
-
----
-
-# Step 5: Add ORDER BY, Done
-
-```sql
-SELECT DISTINCT Student.name FROM Enrollment
-JOIN Student USING (student_id)
-WHERE grade = 'A0'
-ORDER BY Student.name ASC;
-```
-
-| name |
+| grade |
 |---|
-| Han Somin |
-| Kim Minji |
+| A+ |
+| A0 |
+| B+ |
+| B0 |
+| C+ |
 
-Five steps, five clauses from this lecture, one final answer, sorted,
-deduplicated, readable, in under a second. Exactly Week 1's 3-hour bar
-shrinking to the tiny one, now actually true, not just promised.
+`WHERE` narrows to one section before `DISTINCT` even runs, filtering
+happens before deduplication. Each grade value appears exactly once,
+sorted, no matter how many rows in section 3 share it.
+
+---
+
+# Step 4: A Whole-Table Aggregate
+
+```sql
+SELECT COUNT(*) AS total,
+       MIN(grade) AS lowest_alpha,
+       MAX(grade) AS highest_alpha
+FROM Enrollment
+WHERE grade IS NOT NULL;
+```
+
+| total | lowest_alpha | highest_alpha |
+|---|---|---|
+| 157 | A- | F0 |
+
+`COUNT(*)` counts rows already filtered by `WHERE`, not the whole
+table, `WHERE` and aggregates compose, they do not conflict. `MIN`/
+`MAX` compare grade text alphabetically, not academic rank, `'A-'`
+sorts before `'A0'` because `-` sorts before `0`.
 
 ---
 
@@ -780,155 +526,40 @@ clauses from this lecture.
 
 # Common Mistakes
 
-- **Forgetting `WHERE` narrows rows, not columns:** `SELECT name FROM
-  Student WHERE major = 'CS'` still returns every matching row, just
-  with one column, `WHERE` and `SELECT` do different jobs
+- **Confusing `=` with `LIKE`:** `name = 'Kim'` matches only the exact
+  text "Kim"; `LIKE 'Kim%'` is what makes a prefix match possible
+- **Writing `WHERE grade = NULL`:** silently returns zero rows, even
+  for genuinely ungraded rows; always use `IS NULL` / `IS NOT NULL`
 - **Assuming result order without `ORDER BY`:** never rely on rows
   "usually" coming back in a certain order; state it explicitly
-- **Confusing `=` with `LIKE`:** `name = 'Kim'` matches only the exact
-  text "Kim"; `name LIKE 'Kim%'` matches "Kim Minji," "Kim," and more
-
----
-
-# Common Mistakes, Continued
-
-- **Leaving a wildcard out of a LIKE pattern entirely:** `title LIKE
-  'Data'` behaves exactly like `title = 'Data'`, the `%` or `_` is
-  what makes `LIKE` different from `=` in the first place
 - **Treating `BETWEEN` as exclusive:** `credits BETWEEN 3 AND 4`
-  includes both `3` and `4`; a range that should exclude an endpoint
-  needs `>` or `<` written out instead
-- **Mixing an aggregate and a bare column with no `GROUP BY`:**
-  `SELECT major, COUNT(*) FROM Student;` is invalid without
-  `GROUP BY major`, MySQL cannot show one row per student's `major`
-  next to one number for the whole table at the same time
-
----
-
-# Practice: A Library Catalog Search
-
-<div class="thread">Same clauses, a different domain, the library example from Weeks 4, 6, and 7, finally queried.</div>
-
-**Question:** write a query returning every `Book` whose title
-contains "Database," sorted alphabetically.
-
-**Answer:**
-```sql
-SELECT title FROM Book
-WHERE title LIKE '%Database%'
-ORDER BY title ASC;
-```
-
----
-
-# Practice: Finding Incomplete Records
-
-<div class="thread">IS NULL, applied to a genuinely useful real question.</div>
-
-**Question:** write a query listing every enrollment that has not yet
-been graded.
-
-**Answer:**
-```sql
-SELECT student_id, section_id FROM Enrollment
-WHERE grade IS NULL;
-```
-This is the exact query a registrar would run at the end of a
-semester to find missing grades before releasing transcripts.
-
----
-
-# Practice: Arithmetic and Aliasing on the Library Domain
-
-<div class="thread">The same computed-column pattern, a different table.</div>
-
-**Question:** `Book` has an `acquired_on DATE` column. Write a query
-returning each title with an aliased column showing how many days ago
-it was acquired.
-
-**Answer:**
-```sql
-SELECT title, DATEDIFF(CURDATE(), acquired_on) AS days_owned
-FROM Book;
-```
-
----
-
-# Practice: CASE on the Library Domain
-
-<div class="thread">The same conditional-labeling pattern, applied to a loan record.</div>
-
-**Question:** `Loan` has a `due_date DATE` column. Write a query
-labeling each loan `'Overdue'` if `due_date` is before today, or
-`'On Time'` otherwise.
-
-**Answer:**
-```sql
-SELECT loan_id,
-    CASE
-        WHEN due_date < CURDATE() THEN 'Overdue'
-        ELSE 'On Time'
-    END AS status
-FROM Loan;
-```
-
----
-
-# Check Yourself: New Query Patterns
-
-1. Write a query returning every `Course` whose `title` ends with the
-   word "Systems," using `LIKE`.
-2. Write a query returning the total number of rows in `Student`
-   (a whole-table aggregate, no `GROUP BY`).
-3. Write a query returning each student's `name` alongside a `CASE`
-   column labeled `'CS'` for Computer Science majors and `'Other'`
-   for everyone else.
-
----
-
-# Answers: New Query Patterns
-
-1. ```sql
-   SELECT title FROM Course
-   WHERE title LIKE '%Systems';
-   ```
-2. ```sql
-   SELECT COUNT(*) AS total_students FROM Student;
-   ```
-3. ```sql
-   SELECT name,
-       CASE WHEN major = 'Computer Science' THEN 'CS'
-            ELSE 'Other'
-       END AS major_label
-   FROM Student;
-   ```
+  includes both `3` and `4`, not just the values strictly between them
 
 ---
 
 # Check Yourself
 
-1. Write a query returning every distinct `room` used by any `Section`.
-2. Write a query returning the 3 most recent enrollments by
-   `student_id`, highest first.
-3. Write a query returning every student whose major is either
-   "Computer Science" or "Software Engineering," using `IN`.
+1. What does `WHERE grade = NULL` actually return, and why does
+   `IS NULL` behave differently?
+2. Write a query returning every distinct `major` in `Student`,
+   sorted alphabetically.
+3. In `SELECT COUNT(*) AS all_rows, COUNT(grade) AS graded_rows FROM
+   Enrollment;`, why can the two counts differ?
 
 ---
 
 # Answers
 
-1. ```sql
-   SELECT DISTINCT room FROM Section;
-   ```
+1. `NULL` means "unknown"; nothing equals unknown, not even another
+   unknown, so `= NULL` never matches anything. `IS NULL` is the only
+   correct test for a missing value.
 2. ```sql
-   SELECT * FROM Enrollment
-   ORDER BY student_id DESC
-   LIMIT 3;
+   SELECT DISTINCT major FROM Student
+   ORDER BY major ASC;
    ```
-3. ```sql
-   SELECT name FROM Student
-   WHERE major IN ('Computer Science', 'Software Engineering');
-   ```
+3. `COUNT(*)` counts every row, `NULL` or not. `COUNT(grade)` counts
+   only rows where `grade` is not `NULL`, so the two counts differ by
+   exactly the number of still-ungraded rows.
 
 ---
 
@@ -968,20 +599,11 @@ aggregation, the commands that pull related tables back together.
   removes duplicates; `ORDER BY` and `LIMIT` control result order and size.
 - A single-table query finally pays off Week 1's promise: the
   3-hour manual scroll, replaced by one statement, in under a second.
+- **Lab page:** `book/src/labs/lab11-single-table-queries.md`, for the
+  Guided Exercises, Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3 (SQL Queries)
 - **Prepare:** write, on paper, a query answering "which sections meet
   in room 성파 702?" before Week 12.
-
----
-
-# A Note on This Week's Sources
-
-Some topics in this deck (`LIKE`/`BETWEEN` pattern and range matching,
-computed columns and aliasing, `CASE` expressions, whole-table
-aggregate functions) follow the standard SQL topic organization used
-by course reference texts such as *Database System Concepts*, 7th ed.
-(Silberschatz, Korth, Sudarshan). All wording, examples, and the
-registration-system case study on these slides are original.
 
 ---
 

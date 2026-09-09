@@ -37,7 +37,7 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · <Date>
 
 <!-- SLOT 4: The pain (Act 1 / MOTIVATE), ZERO jargon -->
 
-# <Concrete broken scenario>
+# <Concrete broken scenario, from this week's lab's own hook>
 
 <div class="pain">
 
@@ -75,7 +75,7 @@ study, in plain language. No technical terms yet.>
 
 # By the End of This Week, You Can
 
-1. <verb + object, tied to syllabus objective>
+1. <verb + object, tied to the lab's own learning outcomes>
 2. <verb + object>
 3. <verb + object>
 
@@ -111,9 +111,11 @@ study, in plain language. No technical terms yet.>
 
 <!-- SLOT N-2: Worked example -->
 
-# Case Study: <what changes this week>
+# Worked Example: <this week's lab's own example>
 
-<apply this week's technique to the registration schema>
+<walk through the lab's Worked Example section, applied to the
+registration case study, exactly as far as the lab itself goes — never
+introduce content the lab page doesn't have>
 
 ---
 
@@ -164,6 +166,7 @@ Week XX leaves **<gap>** unsolved. **Week XX+1** addresses it: <next topic>.
 # Summary
 
 - <takeaway>
+- **Lab page:** <this week's `book/src/labs/labNN-*.md`, for the Guided Exercises, Challenge Problem, and rubric>
 - **Reading:** <textbook chapter>
 - **Prepare:** <what to bring/read before next week>
 

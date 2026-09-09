@@ -59,14 +59,11 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 <div class="pain">
 
-The registration system's schema is done. Five relations, every
-foreign key justified, every anomaly from Week 7 eliminated. It has
-been checked, reviewed, and approved.
-
-It is completely useless right now. Open MySQL, and there is nothing
-there. No `Student` table. No `Enrollment` table. Nothing to insert
-data into, nothing to query. A design, however correct, stored only in
-a notebook and a set of slides, cannot answer a single real question.
+We now have a schema, fully normalized, provably free of the
+anomalies that started last week. It exists on paper, in last week's
+slides and your own notes. No database anywhere actually has these
+tables. There is still no way to create them, or put a single row of
+data in. A clean design is not the same as a running system.
 
 </div>
 
@@ -109,9 +106,9 @@ DDL, version-controlled and applied over time.
 
 <div class="cardlist">
 <div class="card"><div class="h">CREATE TABLE</div><div class="d">Write <code>CREATE TABLE</code> statements with correct MySQL data types</div></div>
-<div class="card"><div class="h">Keys &amp; Constraints</div><div class="d">Declare primary keys, foreign keys, and <code>NOT NULL</code> constraints</div></div>
-<div class="card"><div class="h">ALTER TABLE</div><div class="d">Use <code>ALTER TABLE</code> to change an existing table's structure</div></div>
-<div class="card"><div class="h">Full Schema in MySQL</div><div class="d">Create the registration system's full schema in MySQL</div></div>
+<div class="card"><div class="h">Keys &amp; Constraints</div><div class="d">Declare <code>PRIMARY KEY</code>, <code>FOREIGN KEY</code>, <code>NOT NULL</code>, <code>UNIQUE</code>, and <code>AUTO_INCREMENT</code> correctly</div></div>
+<div class="card"><div class="h">Creation Order</div><div class="d">Explain, and apply, why table creation order matters when foreign keys are involved</div></div>
+<div class="card"><div class="h">Full Schema in MySQL</div><div class="d">Build the complete five-table registration schema, in the correct dependency order</div></div>
 </div>
 
 ---
@@ -148,45 +145,50 @@ DDL, version-controlled and applied over time.
 
 <!-- Act 3 / BUILD -->
 
-# MySQL Data Types, the Ones You Need Now
+# MySQL Data Types You Need Now
 
 <div class="thread">Every attribute from Week 2 needs a concrete type before it can become a real column.</div>
 
 | Type | Use for | Example |
 |---|---|---|
-| `INT` | whole numbers | `student_id` |
-| `VARCHAR(n)` | text, up to n characters | `name VARCHAR(100)` |
-| `DECIMAL(p,s)` | exact decimal numbers | prices, GPAs |
-| `DATE` | calendar dates | enrollment date |
-
-`VARCHAR(100)` directly maps back to Week 2's **domain** for a text
-attribute: "text, up to 100 characters" is the domain, spelled in SQL.
-
----
-
-# More MySQL Data Types
-
-<div class="thread">The four from the last slide cover most of the registration schema. A few more you will meet soon.</div>
-
-| Type | Use for | Example |
-|---|---|---|
-| `BOOLEAN` | true/false flags | `is_active` |
-| `ENUM(...)` | a fixed, short list of values | `ENUM('A0','B+','B0','C+')` |
-| `TEXT` | long, unbounded text | an essay-length comment |
-| `TIMESTAMP` | date and time together | when a row was created |
+| `INT` | whole numbers | `student_id INT` |
+| `VARCHAR(n)` | text, up to `n` characters | `name VARCHAR(100)` |
+| `DECIMAL(p,s)` | exact decimal numbers (money, GPA) | `DECIMAL(3,2)` |
+| `DATE` | calendar dates | `enrollment_date DATE` |
+| `ENUM(...)` | a fixed, short list of allowed values | `ENUM('A0','B+','B0')` |
+| `BOOLEAN` | true/false flags | `is_active BOOLEAN` |
+| `TIMESTAMP` | date and time together | `created_at TIMESTAMP` |
 
 <div class="why">
-`ENUM` is a domain constraint spelled directly into the type itself:
+<code>VARCHAR(100)</code> is Week 2's <strong>domain</strong> for a text
+attribute, spelled in SQL. <code>ENUM</code> goes one step further:
 declare a grade column as <code>ENUM('A0','B+','B0','C+','F')</code>,
-and MySQL rejects "A99" without a separate rule, the constraint and
-the type are the same statement.
+and MySQL rejects <code>'A99'</code> on its own, no separate rule needed.
 </div>
 
 ---
 
-# DEFAULT and UNIQUE
+# Keys and Constraints
 
-<div class="thread">Two more constraints, common enough to know before the first CREATE TABLE example.</div>
+<div class="thread">A constraint is a rule MySQL enforces automatically, not a rule you have to remember to check by hand.</div>
+
+> **Constraint:** any rule MySQL enforces on a column or table
+> automatically, every time a row is inserted, updated, or deleted.
+
+| Constraint | What it enforces |
+|---|---|
+| `PRIMARY KEY` | uniquely identifies each row; Week 2's key concept, now enforced |
+| `FOREIGN KEY` | ties a column to another table's primary key; Week 2's referential integrity, now active |
+| `NOT NULL` | this column can never be left empty |
+| `UNIQUE` | no two rows may share this column's value (but it is not the primary key) |
+| `AUTO_INCREMENT` | MySQL generates the next whole number automatically |
+| `DEFAULT` | fills a value automatically when none is given |
+
+---
+
+# CREATE TABLE: Putting the Pieces Together
+
+<div class="thread">Five of the six constraints from the last slide, in one real table.</div>
 
 ```sql
 CREATE TABLE Student (
@@ -197,39 +199,11 @@ CREATE TABLE Student (
 );
 ```
 
-`DEFAULT` fills a value automatically when none is given. `UNIQUE`
-enforces Week 2's key constraint on a column that is not the primary
-key, no two students can share one email address.
-
----
-
-<!-- _class: section -->
-
-# Constraints Beyond What We've Built
-
-> "What exact commands turn a schema on paper into real, running tables?" This week's question, still.
-
-<div class="thread">DEFAULT and UNIQUE cover two constraints. A few more make the registration schema actually enforce its own rules, not just its shape.</div>
-
----
-
-# NOT NULL: Making a Column Required
-
-<div class="thread">Week 2's integrity constraints, spelled out as its own explicit rule here.</div>
-
-```sql
-CREATE TABLE Section (
-    section_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_code VARCHAR(10) NOT NULL,
-    room VARCHAR(20) NOT NULL,
-    semester VARCHAR(20)
-);
-```
-
-`NOT NULL` rejects any `INSERT` or `UPDATE` that would leave that
-column empty. `course_code` and `room` are required facts about every
-section; `semester` is left nullable here on purpose, a section whose
-term has not yet been assigned can still be entered.
+`AUTO_INCREMENT` is the practical fix for Week 2's warning against
+using a name as a primary key: no one ever types `student_id` by hand,
+so it can never repeat. `DEFAULT 'Undeclared'` fills `major`
+automatically when it's left out; `UNIQUE` means no two students can
+share an email address.
 
 ---
 
@@ -249,63 +223,70 @@ term has not yet been assigned can still be entered.
 
 ---
 
-# CHECK Constraint: Enforcing a Value Range
+# Table Creation Order: Why It Matters
 
-<div class="thread">Not just "is a value present," but "is this value actually valid."</div>
+<div class="thread">A FOREIGN KEY can only reference a table that already exists.</div>
 
-```sql
-CREATE TABLE Course (
-    course_code VARCHAR(10) PRIMARY KEY,
-    title VARCHAR(150) NOT NULL,
-    credit_hours INT CHECK (credit_hours BETWEEN 1 AND 6)
-);
-```
+Tables with no foreign keys must be created before any table that
+references them. A table like `Enrollment`, with foreign keys to two
+other tables, must be created after both.
 
-`CHECK` rejects any row where the condition evaluates false. Insert a
-course with `credit_hours = 12`, and MySQL refuses it before the row
-ever exists, exactly like a domain constraint from Week 2, now
-enforced by the database itself instead of trusted to application code.
+<svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 320" style="max-width:460px;display:block;margin:0.8em auto;">
+  <title>Dependency graph for the five registration tables. Student, Course, and Instructor have no foreign keys and must be created first, in any order. Section references Course and Instructor, so it must be created after both. Enrollment references Student and Section, so it must be created last of all five.</title>
+  <defs>
+    <marker id="arr-lab09" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L7,3 z" fill="#0b3d66"/>
+    </marker>
+  </defs>
+  <rect x="20" y="20" width="150" height="55" rx="8" fill="#eef4fa" stroke="#0b3d66" stroke-width="2"/>
+  <text x="95" y="53" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0b3d66" text-anchor="middle">Student</text>
+  <rect x="235" y="20" width="150" height="55" rx="8" fill="#eef4fa" stroke="#0b3d66" stroke-width="2"/>
+  <text x="310" y="53" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0b3d66" text-anchor="middle">Course</text>
+  <rect x="450" y="20" width="150" height="55" rx="8" fill="#eef4fa" stroke="#0b3d66" stroke-width="2"/>
+  <text x="525" y="53" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0b3d66" text-anchor="middle">Instructor</text>
+  <text x="310" y="100" font-family="sans-serif" font-size="11" fill="#555" text-anchor="middle">no foreign keys -- create these three first, any order</text>
+  <rect x="235" y="140" width="150" height="55" rx="8" fill="#fff8e6" stroke="#c07000" stroke-width="2"/>
+  <text x="310" y="173" font-family="sans-serif" font-size="13" font-weight="bold" fill="#c07000" text-anchor="middle">Section</text>
+  <line x1="310" y1="75" x2="310" y2="138" stroke="#0b3d66" stroke-width="2" marker-end="url(#arr-lab09)"/>
+  <line x1="500" y1="75" x2="360" y2="140" stroke="#0b3d66" stroke-width="2" marker-end="url(#arr-lab09)"/>
+  <text x="310" y="220" font-family="sans-serif" font-size="11" fill="#555" text-anchor="middle">depends on Course and Instructor</text>
+  <rect x="235" y="255" width="150" height="55" rx="8" fill="#fdeaea" stroke="#a03030" stroke-width="2"/>
+  <text x="310" y="288" font-family="sans-serif" font-size="13" font-weight="bold" fill="#a03030" text-anchor="middle">Enrollment</text>
+  <line x1="95" y1="75" x2="270" y2="257" stroke="#0b3d66" stroke-width="2" marker-end="url(#arr-lab09)"/>
+  <line x1="310" y1="195" x2="310" y2="253" stroke="#0b3d66" stroke-width="2" marker-end="url(#arr-lab09)"/>
+</svg>
 
 ---
 
-# CHECK Constraint: A MySQL Version Caveat
+# Composite Primary Key
 
-<div class="thread">A real-world gotcha this course's practice environment will not hide from you.</div>
+<div class="thread">Enrollment's key needs two columns, not one.</div>
 
-<div class="pain">
-Before MySQL 8.0.16, <code>CHECK</code> was accepted by the syntax
-parser but silently <strong>never enforced</strong>. A table could be
-created with a <code>CHECK</code> clause, and MySQL would happily
-insert rows that violated it anyway. Always confirm the MySQL version
-in a real deployment before relying on <code>CHECK</code> to actually
-reject bad data; this course's practice environment enforces it
-correctly.
-</div>
+> **Composite primary key:** a primary key made of two or more columns
+> together, not just one.
+
+`Enrollment`'s primary key is `(student_id, section_id)`: neither
+column alone identifies one enrollment (a student has many
+enrollments, a section has many students), but the *pair* always does.
+This is exactly Rule 4 of the mapping algorithm from Week 6.
 
 ---
 
-# CREATE TABLE: Basic Syntax
+# Worked Example: The Three Independent Tables
 
-<div class="thread">The one command that turns a relation schema into a real table.</div>
+<div class="thread">Student, Course, and Instructor have no foreign keys — create them first, in any order.</div>
 
 ```sql
 CREATE TABLE Course (
     course_code VARCHAR(10) PRIMARY KEY,
     title VARCHAR(150) NOT NULL
 );
-```
 
-`PRIMARY KEY` marks the primary key, exactly Week 2's concept, now
-enforced by MySQL itself. `NOT NULL` means this column can never be
-left empty, one more of Week 2's integrity constraints, made real.
+CREATE TABLE Instructor (
+    instructor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
 
----
-
-# AUTO_INCREMENT: Keys MySQL Generates for You
-
-<div class="thread">Week 2 already warned against using a name as a primary key. Here is the practical fix.</div>
-
-```sql
 CREATE TABLE Student (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -313,40 +294,28 @@ CREATE TABLE Student (
 );
 ```
 
-`AUTO_INCREMENT` tells MySQL to generate the next integer automatically
-on every insert. No one ever types a `student_id` by hand, which is
-exactly why it can never repeat, and never needs to be "Kim Minji"
-spelled three different ways.
+`Course`'s primary key is a natural key, a real code, not a generated
+number, fine as long as course codes truly never repeat. `major` has
+no `NOT NULL` on purpose: unlike a name, a student's major is allowed
+to be unrecorded.
 
 ---
 
-# FOREIGN KEY: Enforcing Week 2's Referential Integrity
+# Worked Example: Foreign Keys, Then the Composite Key
 
-<div class="thread">Not just documentation. MySQL actively enforces this rule once declared.</div>
+<div class="thread">Section depends on the three tables above. Enrollment depends on Section — so it comes last of all five.</div>
 
 ```sql
 CREATE TABLE Section (
     section_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_code VARCHAR(10),
+    course_code VARCHAR(10) NOT NULL,
     instructor_id INT,
-    room VARCHAR(20),
+    room VARCHAR(20) NOT NULL,
     semester VARCHAR(20),
     FOREIGN KEY (course_code) REFERENCES Course(course_code),
     FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
 );
-```
 
-Try to insert a `Section` with a `course_code` that does not exist in
-`Course`, and MySQL rejects it. This is Week 2's referential integrity,
-no longer a rule you have to remember to follow by hand.
-
----
-
-# Composite Primary Key: Enrollment in Real MySQL
-
-<div class="thread">Week 6 and Week 7's most important relation, finally created for real.</div>
-
-```sql
 CREATE TABLE Enrollment (
     student_id INT,
     section_id INT,
@@ -357,364 +326,31 @@ CREATE TABLE Enrollment (
 );
 ```
 
-`PRIMARY KEY (student_id, section_id)` on its own line declares the
-composite key, exactly what Rule 4 of the mapping algorithm required.
+`instructor_id` allows `NULL` on purpose: a section can briefly exist
+with no instructor assigned yet. Both `Course` and `Instructor` must
+already exist before `Section` can be created; both `Student` and
+`Section` must already exist before `Enrollment` can.
 
 ---
 
-# ON DELETE and ON UPDATE: What Happens When a Referenced Row Changes
+# Demo: A Mistake, on Purpose
 
-<div class="thread">A foreign key says a value must exist elsewhere. It says nothing yet about what to do when that "elsewhere" row disappears or changes.</div>
-
-Every foreign key can declare a **referential action**, telling MySQL
-exactly what to do to the dependent rows when the referenced row is
-deleted or updated:
-
-```sql
-FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
-    ON DELETE ... ON UPDATE ...
-```
-
-Four standard actions exist: `CASCADE`, `SET NULL`, `RESTRICT`, and
-`NO ACTION`. Each fits a different real requirement.
-
----
-
-# ON DELETE CASCADE: Worked Example
-
-<div class="thread">Delete the parent, and its dependents disappear with it, on purpose.</div>
-
-```sql
-FOREIGN KEY (section_id) REFERENCES Section(section_id)
-    ON DELETE CASCADE
-```
-
-Applied to `Enrollment.section_id`: if a `Section` is cancelled and
-deleted, every `Enrollment` row for that section is deleted
-automatically. This is the right choice here: an enrollment in a
-section that no longer exists is not useful data to keep around.
-
----
-
-# ON DELETE SET NULL: Worked Example
-
-<div class="thread">Delete the parent, keep the dependent, just mark the link as unknown.</div>
-
-```sql
-instructor_id INT,
-FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
-    ON DELETE SET NULL
-```
-
-Applied to `Section.instructor_id` (requires the column to allow
-`NULL`): if an `Instructor` leaves and their row is deleted, every
-`Section` they taught keeps existing, only its `instructor_id` becomes
-`NULL`, ready for reassignment. Deleting the instructor never silently
-deletes the sections they once taught.
-
----
-
-# ON DELETE RESTRICT / NO ACTION: Worked Example
-
-<div class="thread">The safest default: refuse the delete outright.</div>
-
-```sql
-FOREIGN KEY (course_code) REFERENCES Course(course_code)
-    ON DELETE RESTRICT
-```
-
-Applied to `Section.course_code`: attempting to delete a `Course` that
-still has `Section` rows referencing it is **rejected outright**, with
-an error, until every dependent `Section` is removed or reassigned
-first. `RESTRICT` and `NO ACTION` behave the same way in MySQL; this is
-also MySQL's default when no action is specified at all.
-
----
-
-# ON UPDATE CASCADE: Worked Example
-
-<div class="thread">The same four choices apply when a key's value changes, not just when a row is deleted.</div>
-
-```sql
-FOREIGN KEY (student_id) REFERENCES Student(student_id)
-    ON UPDATE CASCADE
-```
-
-Applied to `Enrollment.student_id`: if a `Student`'s `student_id` ever
-had to change (a rare event, since it is `AUTO_INCREMENT`, but the same
-rule applies to any key that could), every `Enrollment` row
-referencing that student updates automatically, staying consistent
-without a separate manual `UPDATE` statement.
-
----
-
-# Choosing the Right Referential Action
-
-<div class="thread">Applying all four actions to the registration schema's actual foreign keys, in one place.</div>
-
-| Foreign key | Action on delete | Why |
-|---|---|---|
-| `Enrollment.section_id -> Section` | `CASCADE` | an enrollment in a deleted section is meaningless |
-| `Enrollment.student_id -> Student` | `RESTRICT` | never silently erase enrollment history by deleting a student |
-| `Section.instructor_id -> Instructor` | `SET NULL` | keep the section, clear the assignment |
-| `Section.course_code -> Course` | `RESTRICT` | a course with active sections should not vanish |
-
-There is no single "correct" action for every foreign key: each one
-answers a different real question about what the data should mean.
-
----
-
-# The Full Registration Schema: Independent Tables First
-
-<div class="thread">Student and Course, already shown in full above. Instructor is the last of the three tables with no foreign keys.</div>
-
-```sql
-CREATE TABLE Instructor (
-    instructor_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
-```
-
-<div class="why">
-`Student`, `Course`, and `Instructor` all have no foreign keys, so they
-can be created in any order, before anything that depends on them. All
-three are shown in full across this lecture's earlier slides.
-</div>
-
----
-
-# The Full Registration Schema: Dependent Tables Last
-
-<div class="thread">Section and Enrollment, already shown individually, now placed in the order they must actually run.</div>
-
-`Section` depends on `Course` and `Instructor`, already created.
-`Enrollment` depends on `Student` and `Section`. Both were written out
-in full two slides ago; here is the order that makes them valid:
-
-1. `Student`, `Course`, `Instructor` (no dependencies)
-2. `Section` (depends on `Course`, `Instructor`)
-3. `Enrollment` (depends on `Student`, `Section`)
-
-Run all five in this order, and the complete registration schema
-exists in MySQL, exactly as designed in Week 7.
-
----
-
-# ALTER TABLE: Changing an Existing Table
-
-<div class="thread">Requirements change after launch. ALTER is how the schema keeps up without starting over.</div>
-
-```sql
--- add a new column
-ALTER TABLE Student ADD COLUMN email VARCHAR(100);
-
--- change a column's type or constraint
-ALTER TABLE Student MODIFY COLUMN major VARCHAR(150);
-
--- remove a column entirely
-ALTER TABLE Student DROP COLUMN email;
-```
-
-Each of these is still DDL, structure is changing, not data.
-
----
-
-# DROP TABLE: Removing Structure Entirely
-
-<div class="thread">The most dangerous DDL command in this lecture. Handle with care.</div>
-
-```sql
-DROP TABLE Enrollment;
-```
-
-This deletes the table **and every row of data inside it**,
-permanently. In a real system, this command is almost never run
-directly against production data without a backup, and often requires
-explicit sign-off. Today, only run it against a practice database.
-
----
-
-# Demo, Step by Step: Building the Schema Live
-
-<div class="thread">What actually happens in MySQL, one CREATE TABLE at a time, mistakes included.</div>
-
-Five steps, watching `SHOW TABLES` grow, one mistake deliberately
-included, exactly the kind Week 9's dependency-order rule prevents.
-
----
-
-# Step 1: Nothing Yet
-
-```
-mysql> SHOW TABLES;
-Empty set (0.00 sec)
-```
-
-The starting point of this lecture's very first pain slide, now on a
-real terminal.
-
----
-
-# Step 2: Create and Confirm
-
-```
-mysql> CREATE TABLE Course (
-    ->     course_code VARCHAR(10) PRIMARY KEY,
-    ->     title VARCHAR(150) NOT NULL
-    -> );
-Query OK, 0 rows affected (0.02 sec)
-
-mysql> DESCRIBE Course;
-+-------------+--------------+------+-----+
-| Field       | Type         | Key  | ... |
-+-------------+--------------+------+-----+
-| course_code | varchar(10)  | PRI  |     |
-| title       | varchar(150) |      |     |
-+-------------+--------------+------+-----+
-```
-
-`DESCRIBE` is MySQL's own confirmation, not just "no error," the exact
-structure just declared, echoed back.
-
----
-
-# Step 3: A Mistake, on Purpose
+<div class="thread">Worth seeing once, deliberately, before it happens to you by accident.</div>
 
 ```
 mysql> CREATE TABLE Section (
     ->     section_id INT AUTO_INCREMENT PRIMARY KEY,
-    ->     course_code VARCHAR(10),
     ->     instructor_id INT,
     ->     FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
     -> );
 ERROR 1824 (HY000): Failed to open the referenced table 'instructor'
 ```
 
-Exactly the ordering rule from earlier in this lecture, now as a real
-error message. `Instructor` does not exist yet.
-
----
-
-# Step 4: Fix the Order
-
-```
-mysql> CREATE TABLE Instructor (
-    ->     instructor_id INT AUTO_INCREMENT PRIMARY KEY,
-    ->     name VARCHAR(100) NOT NULL
-    -> );
-Query OK, 0 rows affected (0.01 sec)
-
-mysql> CREATE TABLE Section ( ... );
-Query OK, 0 rows affected (0.02 sec)
-```
-
-Same `Section` statement as Step 3, now succeeds, once its
-dependency, `Instructor`, exists first.
-
----
-
-# Step 5: The Finished Schema
-
-```
-mysql> SHOW TABLES;
-+----------------------------+
-| Tables_in_registration     |
-+----------------------------+
-| Course                     |
-| Enrollment                 |
-| Instructor                 |
-| Section                    |
-| Student                    |
-+----------------------------+
-```
-
-Five tables, in a database that had nothing five steps ago. Every one
-of them exists because of a `CREATE TABLE` statement from this lecture.
-
-<div class="why">
-<strong>Optional tool:</strong> Visual Paradigm CE can auto-generate
-DDL like this from a paper design.
-</div>
-
----
-
-# Demo, Continued: Adding Constraints to the Live Schema
-
-<div class="thread">The five tables from Step 5 exist. Two more commands make them enforce the rules from this section, not just hold data.</div>
-
-Two follow-up statements, run against the schema `SHOW TABLES` already
-confirmed, adding exactly the constraints just covered.
-
----
-
-# Step 6: Add a CHECK Constraint After the Fact
-
-```
-mysql> ALTER TABLE Course
-    -> ADD COLUMN credit_hours INT CHECK (credit_hours BETWEEN 1 AND 6);
-Query OK, 0 rows affected (0.03 sec)
-
-mysql> INSERT INTO Course VALUES ('CS999', 'Overloaded', 12);
-ERROR 3819 (HY000): Check constraint 'course_chk_1' is violated.
-```
-
-The `CHECK` clause did exactly what the earlier slide claimed: reject
-the invalid row before it was ever stored.
-
----
-
-# Step 7: Add a Referential Action After the Fact
-
-```
-mysql> ALTER TABLE Section
-    -> ADD CONSTRAINT fk_section_instructor
-    -> FOREIGN KEY (instructor_id) REFERENCES Instructor(instructor_id)
-    -> ON DELETE SET NULL;
-Query OK, 5 rows affected (0.04 sec)
-```
-
-A named constraint (`fk_section_instructor`) makes it possible to
-`DROP` or modify just this one referential action later, without
-touching the rest of `Section`'s definition.
-
----
-
-# DDL in the Wild
-
-<div class="thread">This exact syntax family, running behind apps you already use.</div>
-
-<div class="appgrid">
-<div class="app"><div class="name">Coupang</div><div class="desc">a Products table, ENUM for order status</div></div>
-<div class="app"><div class="name">토스 (Toss)</div><div class="desc">DECIMAL for every won amount, never FLOAT</div></div>
-<div class="app"><div class="name">인스타그램</div><div class="desc">TIMESTAMP on every post, UNIQUE on username</div></div>
-</div>
-
-<div class="why">
-Money is always <code>DECIMAL</code> in a real schema, never
-<code>FLOAT</code>: floating-point rounding errors on currency are a
-real, well-known class of bug. This is exactly the kind of type choice
-this lecture's data type slides prepare you to make correctly.
-</div>
-
----
-
-# Schema Evolution and Naming Conventions
-
-<div class="thread">Practical habits that matter the moment a schema goes from a class exercise to a real, changing system.</div>
-
-- **Name tables and columns consistently:** singular nouns
-  (`Student`, not `Students`), `snake_case` for multi-word columns
-  (`student_id`, not `StudentID` or `studentId`): pick one convention
-  and never mix it within a schema
-- **Name every foreign key column after what it references:**
-  `instructor_id` referencing `Instructor.instructor_id`, not a vague
-  `owner` or `ref1`
-- **Prefer additive changes in production:** adding a new nullable
-  column is safe to run any time; renaming or dropping a column that
-  existing code still reads from is not
-- **Keep every DDL change in a version-controlled migration file:** a
-  running system's true schema history should be reconstructable from
-  those files alone, not from memory of who ran what
+Not a syntax mistake, the statement is written correctly. It fails
+because `Instructor` does not exist yet. Create `Instructor` first, and
+the exact same `Section` statement succeeds. `DESCRIBE Course;` and
+`SHOW TABLES;` afterward are MySQL's own confirmation that a statement
+did what you intended, not just "no error."
 
 ---
 
@@ -727,87 +363,6 @@ this lecture's data type slides prepare you to make correctly.
 - **Using `VARCHAR` for numbers you will do math on:** `grade
   VARCHAR(2)` is correct here because grades like "A0" are not numeric;
   a GPA average should be `DECIMAL`, not text
-
----
-
-# Practice: A Library System in MySQL
-
-<div class="thread">Week 6 and 7's library example, finally as real DDL.</div>
-
-**Question:** write `CREATE TABLE` for `Book(isbn, title)`, where
-`isbn` is a 13-character code, not an auto-incrementing integer.
-
-**Answer:**
-```sql
-CREATE TABLE Book (
-    isbn VARCHAR(13) PRIMARY KEY,
-    title VARCHAR(200) NOT NULL
-);
-```
-A primary key does not have to be `AUTO_INCREMENT`; a naturally unique
-value like an ISBN can serve directly, as long as it truly never repeats.
-
----
-
-# Practice: Adding a Constraint After the Fact
-
-<div class="thread">ALTER TABLE, applied to a real requirement change.</div>
-
-**Question:** `Section.room` was created with no constraint. Write the
-`ALTER TABLE` statement making it required (`NOT NULL`).
-
-**Answer:**
-```sql
-ALTER TABLE Section MODIFY COLUMN room VARCHAR(20) NOT NULL;
-```
-`MODIFY COLUMN` restates the full column definition; the constraint
-must be included, not just the change.
-
----
-
-# Practice: CHECK Constraint in a Library System
-
-<div class="thread">The same CHECK pattern from Course.credit_hours, in a new domain.</div>
-
-**Question:** `Book.copies_available` should never go negative. Write
-the column definition enforcing that.
-
-**Answer:**
-```sql
-copies_available INT NOT NULL CHECK (copies_available >= 0)
-```
-`NOT NULL` and `CHECK` are not competitors here, they enforce two
-different rules: one that a value must exist, one that whatever value
-exists must be valid.
-
----
-
-# Practice: ON DELETE Behavior for a Ride-Hailing App
-
-<div class="thread">Choosing among the four referential actions for a new schema, not the registration one.</div>
-
-**Question:** `Ride.driver_id` references `Driver.driver_id`. A driver
-account can be deactivated and removed. Should the foreign key use
-`CASCADE`, `SET NULL`, or `RESTRICT`? Justify your choice.
-
-**Answer:** **`SET NULL`.** Deleting a driver's account should not
-erase the historical record that a ride happened (`CASCADE` would be
-too destructive to trip history and billing records), but the ride row
-still needs to exist even once the driver reference is cleared,
-exactly the same reasoning as `Section.instructor_id` earlier.
-
----
-
-# Common Mistakes, Continued
-
-- **Leaving every foreign key at MySQL's default (`RESTRICT`) without
-  thinking:** it is often the safest choice, but not always the
-  correct one; `Section.instructor_id` needed `SET NULL` instead
-- **Assuming `CHECK` works identically on every MySQL version:**
-  confirm 8.0.16 or later before relying on it in production
-- **Renaming a live column instead of adding a new one and migrating
-  gradually:** a rename breaks every piece of application code still
-  written against the old name, all at once
 
 ---
 
@@ -836,47 +391,6 @@ exactly the same reasoning as `Section.instructor_id` earlier.
 3. Grades like "A0" and "B+" are not numbers, they are values from a
    fixed, known list, exactly what `ENUM` (or `VARCHAR`, if the list
    might grow) represents. `DECIMAL` would reject "A0" outright.
-
----
-
-# Check Yourself: New Constraints
-
-1. Write the column definition for `Enrollment.grade` so it can never
-   be left empty.
-2. `Section.room` should never be reused by two different sections at
-   the same time and semester: is this a job for `CHECK`, `UNIQUE`,
-   or `NOT NULL`? Which columns would it involve?
-3. A `Department` is deleted. Its `Course` rows should be **prevented**
-   from being silently orphaned or deleted. Which referential action
-   belongs on `Course.department_id`?
-
----
-
-# Answers
-
-1. ```sql
-   grade VARCHAR(2) NOT NULL
-   ```
-2. **`UNIQUE`**, on the combination `(room, semester, meeting_time)`
-   together (a composite `UNIQUE` constraint): this is about
-   preventing a duplicate combination, not about validating one
-   column's range (`CHECK`) or requiring a value be present
-   (`NOT NULL`).
-3. **`RESTRICT`** (or `NO ACTION`): deleting a `Department` that still
-   has `Course` rows referencing it should fail outright, forcing those
-   courses to be reassigned or removed first, exactly like
-   `Section.course_code` earlier.
-
----
-
-# A Note on Course References
-
-This week's topics, `CHECK` and `NOT NULL` constraints, `ON DELETE`
-and `ON UPDATE` referential actions, and schema-evolution practice,
-follow the standard topic organization used in *Database System
-Concepts*, 7th ed. (Silberschatz, Korth, Sudarshan), this course's
-reference text. The wording, examples, and worked SQL on these slides
-are original, written for this course and this case study.
 
 ---
 
@@ -909,12 +423,16 @@ that actually put data in, change it, and remove it.
 
 # Summary
 
-- DDL defines structure: `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE`,
-  as opposed to DML, which manipulates data inside that structure.
-- `PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`, and `AUTO_INCREMENT` are
-  MySQL's concrete enforcement of Week 2's integrity constraints.
-- Table creation order matters: a table cannot reference another table
-  that does not exist yet.
+- DDL defines structure: `CREATE`, `ALTER`, and `DROP` all belong to
+  this family, as opposed to DML, which manipulates data inside that
+  structure (next week).
+- `PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`, `UNIQUE`, `AUTO_INCREMENT`,
+  and `DEFAULT` are MySQL's concrete enforcement of Week 2's integrity
+  constraints.
+- Table creation order matters: independent tables first, then
+  `Section`, then `Enrollment` last of all five.
+- **Lab page:** `book/src/labs/lab09-ddl.md`, for the Guided Exercises,
+  Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3-4 (SQL DDL)
 - **Prepare:** write out, on paper, the `CREATE TABLE` statement for
   `Enrollment` from memory before Week 10.

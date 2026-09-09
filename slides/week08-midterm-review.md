@@ -248,6 +248,8 @@ around.
   mapping algorithm, and normalization.
 - This is the complete design half of the course. Weeks 9 through 12
   build on top of it, in MySQL, starting next week.
+- **Lab page:** `book/src/labs/lab08-midterm-review.md`, for the
+  sample practice problems and exam-logistics detail.
 - **Prepare:** review every Worked Example slide across Weeks 1-7; the
   exam draws heavily on applying rules to the registration system.
 

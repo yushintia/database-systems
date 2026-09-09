@@ -48,8 +48,13 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 # Last Week, This Week
 
-- **Last week delivered:** the course contract - what this course covers, how you're graded, and how the semester runs
-- **Last week left broken:** we still don't know why a plain spreadsheet or file breaks, or what a database promises instead. What tables? What columns? What connects to what?
+- **Last week delivered:** the course contract, plus a hands-on look
+  at the registration office's actual messy spreadsheet - three
+  spellings of one name, a deletion that erases a whole course, two
+  people's saves colliding.
+- **Last week left broken:** we still don't know why a plain
+  spreadsheet or file breaks, or what a database promises instead.
+  What tables? What columns? What connects to what?
 
 ---
 
@@ -150,26 +155,11 @@ class on Earth. That precision is the entire point.
 
 ---
 
-# A Relation Is One Sheet, Not the Whole Workbook
-
-<div class="thread">Before the formal build begins, a picture worth keeping for the rest of the semester.</div>
-
-<div class="why">
-Open your phone's Contacts app. Every contact has the same fields,
-name, number, email, that is one relation's schema. Your Photos app is
-a completely different relation, different attributes entirely. A
-single Excel <strong>workbook</strong> can hold many sheets; a relation
-is one sheet, with one fixed shape. The registration system will turn
-out to need five separate "sheets," not one.
-</div>
-
----
-
 <!-- Act 3 / BUILD -->
 
 # Relation Schema vs. Relation Instance
 
-<div class="thread">You met schema and instance last week with an ID card. Same idea, now with formal names.</div>
+<div class="thread">The fixed shape, and the data that fills it, are two different things.</div>
 
 **Relation schema:** the fixed shape, written `Student(student_id, name, major)`.
 **Relation instance:** the actual set of tuples right now.
@@ -202,21 +192,7 @@ accident, it is the fix for redundancy from Week 1.
 
 ---
 
-# Why a Relation Cannot Have Duplicate Rows
-
-<div class="pain">
-If two identical `Student` tuples existed, updating one "Kim Minji" row
-and not the other recreates last week's redundancy and inconsistency
-problem inside the relational model itself. Forbidding duplicates by
-definition closes that door before it opens.
-</div>
-
-This is also exactly why we need the next idea: something that
-guarantees no two tuples can ever be identical, even by accident.
-
----
-
-# Superkeys and Candidate Keys
+# Superkeys, Candidate Keys, and Primary Key
 
 <div class="thread">The formal answer to "what makes a row unique."</div>
 
@@ -224,494 +200,56 @@ guarantees no two tuples can ever be identical, even by accident.
 tuple in the relation.
 **Candidate key:** a superkey with no unnecessary attributes, remove
 any one attribute and it stops being unique.
+**Primary key:** the candidate key the designer picks as the main way
+to identify a tuple, underlined in schema notation.
 
 <div class="why">
-`{student_id}` uniquely identifies a student, it is a candidate key.
-`{student_id, name}` also uniquely identifies a student, but `name` is
-unnecessary weight, so it is a superkey, not a candidate key.
+`{student_id}` uniquely identifies a student, a candidate key.
+`{student_id, name}` also works, but `name` is unnecessary weight, so
+it's a superkey only. `{name}` alone looks fine until "Kim Minji"
+enrolls twice under two different spellings, exactly Week 1's problem
+- which is why a system-assigned ID, never typed by hand, is almost
+always the primary key in practice.
 </div>
 
 ---
 
-# Primary Key
+# Foreign Keys and the Three Integrity Constraints
 
-<div class="thread">A relation can have several candidate keys. One gets a special job.</div>
+<div class="thread">A primary key identifies rows within one relation. Four more rules connect and protect every relation.</div>
 
-**Primary key:** the candidate key the schema designer chooses as the
-main way to identify a tuple, underlined in schema notation:
-`Student(`**`student_id`**`, name, major)`.
+**Foreign key:** an attribute in one relation that must match the
+primary key of a tuple in another relation, or be empty - the formal
+version of "linked spreadsheets," now enforced.
 
-<div class="why">
-`{name}` looks like a candidate key for one student, until "Kim Minji"
-enrolls twice under two different names, exactly Week 1's problem. A
-system-assigned `student_id`, never typed by hand, cannot repeat that
-mistake. That is why real systems almost never use a person's name as
-a primary key.
-</div>
-
----
-
-# Foreign Key: Connecting Two Relations
-
-<div class="thread">A primary key identifies rows within one relation. A foreign key points across two.</div>
-
-**Foreign key:** an attribute (or set of attributes) in one relation
-that must match the primary key of a tuple in another relation, or be
-empty.
-
-```
-Enrollment(student_id, course_code, grade)
-```
-
-Here `student_id` is a **foreign key** referencing `Student.student_id`.
-This is the formal version of the "linked spreadsheets" idea from
-Week 1's case study, now with a rule enforcing the link.
-
----
-
-# Three Integrity Constraints
-
-<div class="thread">Three specific rules a relation must obey, closing three of Week 1's seven failures. One slide each.</div>
-
-Every relation, no matter its schema, must obey three rules at once.
-The next three slides take them one at a time, each with the exact
-Week 1 failure it closes.
-
----
-
-# Constraint 1: Domain Constraint
-
-<div class="thread">The simplest rule: a value must be the kind of thing its column claims to be.</div>
-
-> Every value in a tuple must belong to its attribute's declared
-> **domain**.
-
-<div class="pain">
-A grade column with domain "A0 through F" should never accept "A99."
-Week 1's integrity-problem anomaly, a spreadsheet cell that accepts
-anything typed into it, is exactly what a domain constraint forbids by
-definition, not by someone remembering to double-check.
-</div>
-
----
-
-# Constraint 2: Key Constraint
-
-<div class="thread">The rule this whole lecture has been building toward.</div>
-
-> No two tuples in a relation may share the same primary key value.
-
-<div class="pain">
-Two `Student` rows both claiming `student_id = 1` would make "which
-one is the real student 1" an unanswerable question. The key
-constraint makes this situation impossible to create in the first
-place, not just unlikely.
-</div>
-
----
-
-# Constraint 3: Referential Integrity
-
-<div class="thread">The rule connecting two relations, not just one.</div>
-
-> Every foreign key value must match an existing primary key value in
-> the referenced relation, or be left empty.
-
-<div class="pain">
-An `Enrollment` row pointing at <code>student_id = 999</code>, where no
-such student exists in `Student`, is an orphaned, meaningless row.
-Referential integrity is the direct fix for orphaned data exactly like
-this, enforced automatically once declared.
-</div>
-
----
-
-# Where Keys Show Up: Every App You Use
-
-<div class="thread">Not a registration-system-only idea. This vocabulary is everywhere.</div>
-
-<div class="appgrid">
-<div class="app"><div class="name">Instagram</div><div class="desc">every post has a post_id primary key</div></div>
-<div class="app"><div class="name">Amazon</div><div class="desc">order_id ties your cart to your address</div></div>
-<div class="app"><div class="name">KakaoTalk</div><div class="desc">user_id is the foreign key on every message</div></div>
-<div class="app"><div class="name">Banking app</div><div class="desc">account_number is a candidate key, never the owner's name</div></div>
-</div>
-
-Every one of these apps would break in exactly Week 1's ways without
-the three constraints from the last three slides.
-
----
-
-# Demo, Step by Step: From Messy Row to Real Relation
-
-<div class="thread">Not handed over finished. Week 1's actual spreadsheet mess, turned into a relation, one decision at a time.</div>
-
-Week 1's spreadsheet had "Kim Minji, Computer Sci., CSE301, Prof. Lee,
-A0" in one flat row. Four steps turn that into a real relation.
-
----
-
-# Step 1: Separate the Facts
-
-Kim Minji, Computer Sci., CSE301, Prof. Lee, A0
-
-Five facts, tangled into one row, about at least three different real
-things: a student, a course, an enrollment. This step alone is why
-Week 4 exists, choosing which facts belong together is a design
-decision, not a formatting one.
-
----
-
-# Step 2: Pick the Attributes for One Relation
-
-For just the student's own facts: `name`, `major`. Not `course_code`,
-not `grade`, those belong to a different relation entirely (Week 4
-formalizes exactly this separation).
-
----
-
-# Step 3: Assign Domains
-
-`name`: text, up to 100 characters. `major`: text, drawn from the
-university's list of real majors, not any arbitrary string.
-
-```
-Student(name, major)
-```
-
-A schema now exists, but nothing yet prevents two "Kim Minji" tuples
-from being indistinguishable.
-
----
-
-# Step 4: Add the Key
-
-```
-Student(student_id, name, major)
-```
-
-`student_id`, system-generated, added specifically so
-`{student_id}` is a candidate key. Four steps: one messy row becomes
-one properly formed relation, every rule from this lecture applied in
-the order a real designer actually applies them.
-
----
-
-# Worked Example: The Registration System, as Relations
-
-<div class="thread">Every rule above, applied at once, to the system you already know.</div>
-
-```
-Student(student_id, name, major)
-Course(course_code, title)
-Instructor(instructor_id, name)
-```
-
-- `Student.student_id`, `Course.course_code`, `Instructor.instructor_id`
-  are each a primary key, underlined by convention
-- Every attribute has a domain: `student_id` is an integer, `name` is
-  text, `major` is text drawn from a limited list of real majors
-- No table here has a duplicate primary key value, by definition
-
-This is not yet the full schema, Section and Enrollment are still
-missing. Week 4 fills in the rest, formally.
-
----
-
-# Beyond Storage: Asking Questions of a Relation
-
-<div class="thread">Everything so far describes what a relation holds. Nothing yet describes how to ask it a question.</div>
-
-`Student(student_id, name, major)` can hold thousands of rows. "Who
-majors in Computer Science?" and "list every student's name and major,
-with no ID column" are both questions about that same relation, and
-neither is answered by anything defined so far. A formal way to ask
-questions of a relation, and get back another relation as the answer,
-is what the rest of this section builds.
-
----
-
-# Relational Algebra: Definition
-
-<div class="thread">A small set of operators, each one taking relations in and producing a relation out.</div>
-
-> **Relational algebra** is a formal query language: a small set of
-> operators that take one or two relations as input and produce a new
-> relation as output.
-
-Because the output of every operator is itself a relation, operators
-can be chained, the output of one becomes the input of the next,
-exactly like function composition. The next six slides cover one
-operator each, using a small four-row `Student` instance.
-
-<div class="why">
-<strong>The running example:</strong> Student(1, Kim Minji, Computer Science),
-(2, Park Jiho, Software Engineering), (3, Lee Somin, Computer Science),
-(4, Choi Yuna, Data Science).
-</div>
-
----
-
-# Selection (σ): Picking Rows
-
-<div class="thread">Answers "which rows?" Nothing about columns changes.</div>
-
-> **σ**<sub>condition</sub>**(R)** returns every tuple of R that
-> satisfies the condition, with every column intact.
-
-**σ**<sub>major = "Computer Science"</sub>**(Student)**:
-
-| student_id | name | major |
+| Constraint | Rule | The Week 1 failure it closes |
 |---|---|---|
-| 1 | Kim Minji | Computer Science |
-| 3 | Lee Somin | Computer Science |
-
-Park Jiho and Choi Yuna are filtered out; every remaining row still has
-all three original columns.
+| **Domain** | every value belongs to its attribute's domain | a grade column accepting "A99" |
+| **Key** | no two tuples share a primary key value | two indistinguishable "Kim Minji" rows |
+| **Referential integrity** | every foreign key matches an existing primary key, or is empty | an enrollment pointing at a student who doesn't exist |
 
 ---
 
-# Projection (π): Picking Columns
+# Worked Example: Loading the Flat Table, and Hunting for a Key
 
-<div class="thread">Answers "which columns?" The row count can shrink, because a relation is a set.</div>
+<div class="thread">Same registration spreadsheet from Week 1, now a live table - and still no clean key in sight.</div>
 
-> **π**<sub>attribute list</sub>**(R)** returns only the listed
-> columns of every tuple of R, with duplicate resulting tuples merged
-> into one.
+`flat_load.sql` loads Week 1's 18 messy rows into one raw MySQL table,
+`raw_registrations` - no primary key declared, on purpose. Four
+attempts to find one, each failing for a different reason:
 
-**π**<sub>major</sub>**(Student)**:
-
-| major |
-|---|
-| Computer Science |
-| Software Engineering |
-| Data Science |
-
-Four students, three rows: Kim Minji and Lee Somin both project to
-`Computer Science`, and a relation cannot contain that duplicate twice.
-
----
-
-# Union (∪): Combining Two Relations
-
-<div class="thread">Requires the two relations to have the exact same schema, "union-compatible."</div>
-
-> **R ∪ S** returns every tuple in R, in S, or in both, with duplicates
-> merged, only defined when R and S share the same attributes.
-
-`EnrolledCSE301 = {1, 3}`, `EnrolledCSE302 = {2, 3}` (each just a
-single-column `student_id` relation).
-
-**EnrolledCSE301 ∪ EnrolledCSE302 = {1, 2, 3}**
-
-Student 3 appears in both source relations but only once in the
-union, exactly the set property from Week 2's core definition.
-
----
-
-# Set Difference (−): What's in One, Not the Other
-
-<div class="thread">Same union-compatibility rule as ∪, opposite question.</div>
-
-> **R − S** returns every tuple in R that does **not** also appear in S.
-
-Using the same two enrollment relations:
-
-**EnrolledCSE301 − EnrolledCSE302 = {1}**
-
-Student 1 is in CSE301 only. Student 3 is removed, because it appears
-in both; order matters here, unlike union:
-**EnrolledCSE302 − EnrolledCSE301 = {2}**, a different relation.
-
----
-
-# Cartesian Product (×): Every Pairing
-
-<div class="thread">No condition, no filtering, just every combination.</div>
-
-> **R × S** returns every tuple of R paired with every tuple of S: if R
-> has *m* tuples and S has *n*, the result has *m* × *n* tuples.
-
-A tiny `Course(course_code, title)` with 2 rows, times a 4-row
-`Student`, produces **4 × 2 = 8** rows, one pairing Kim Minji with a
-course she has never taken, alongside every pairing that happens to be
-real.
-
----
-
-# Cartesian Product: Why It Is Rarely Used Alone
-
-<div class="pain">
-Eight rows out of a 4-student, 2-course Cartesian product, and only the
-rows matching a real `Enrollment` fact mean anything. Used by itself,
-× manufactures far more meaningless combinations than real ones, and
-that ratio only gets worse as tables grow. It is almost always paired
-immediately with a σ that filters back down to the rows that actually
-correspond to a fact, exactly the pattern Week 12's joins formalize.
-</div>
-
----
-
-# Rename (ρ): Giving a Relation or Column a New Name
-
-<div class="thread">Not a filter, not a transform, just a label.</div>
-
-> **ρ**<sub>newname</sub>**(R)** returns exactly R's tuples, under a
-> new relation name (or new attribute names).
-
-`ρ`<sub>S1</sub>`(Student)` and `ρ`<sub>S2</sub>`(Student)` produce two
-independently named copies of the same rows. Without renaming, an
-expression that needs to refer to "two students" in one query has no
-way to tell the two copies apart, they would both still be called
-`Student`.
-
----
-
-# Combining Operators: One Expression, Several Steps
-
-<div class="thread">Every operator's output is a relation, so operators chain, exactly like nested function calls.</div>
-
-**π**<sub>name</sub>**(σ**<sub>major = "Computer Science"</sub>**(Student))**
-
-Read inside-out: first σ narrows `Student` to its two Computer Science
-rows, then π keeps only the `name` column of that result.
-
-**Result:** `{Kim Minji, Lee Somin}`. Neither operator alone answers
-"names of Computer Science majors"; composed, together they do.
-
----
-
-# The Six Operators, at a Glance
-
-| Symbol | Name | What it does |
-|---|---|---|
-| σ | Selection | keeps rows matching a condition |
-| π | Projection | keeps listed columns, drops duplicate rows |
-| ∪ | Union | rows in either union-compatible relation |
-| − | Set difference | rows in one relation but not the other |
-| × | Cartesian product | every row of one paired with every row of the other |
-| ρ | Rename | relabels a relation or its attributes |
-
----
-
-# Relational Algebra: SQL's Theoretical Foundation
-
-<div class="thread">Every one of these six operators has a direct SQL counterpart, waiting for Week 9-12.</div>
-
-| Algebra | SQL |
+| Attempt | Why it fails |
 |---|---|
-| σ (selection) | `WHERE` clause |
-| π (projection) | column list after `SELECT` |
-| ∪ (union) | `UNION` |
-| − (set difference) | `EXCEPT` / `MINUS` |
-| × (Cartesian product) | comma-separated tables in `FROM` |
-| ρ (rename) | `AS` alias |
+| `student_name` | "Kim Minji" is typed 3 different ways - one person looks like three rows |
+| `course_code` | repeats constantly - many students share one course |
+| `{student_name, course_code}` | closer, but a retake, or two students who happen to share a name, can still collide |
+| the entire row | only unique by luck on today's 18 rows, not by any real-world guarantee |
 
 <div class="why">
-This is not a coincidence. SQL's designers built its query engine
-directly on relational algebra, so that every SQL query has a precise,
-checkable algebra expression behind it, not just a English-like
-sentence.
+The fix - a system-generated <code>student_id</code> - doesn't exist
+in this raw table yet. Nothing here forces us to add one: deciding
+<em>how many relations, split which way</em> is next week's job.
 </div>
-
----
-
-# NULL: The Value That Isn't There
-
-<div class="thread">One more idea the relational model needs, before this week closes.</div>
-
-> **NULL** represents a missing or unknown value: not zero, not an
-> empty string, not any value in the attribute's domain at all.
-
-A student who enrolled yesterday has no `grade` yet:
-`Enrollment(1, CSE301, NULL)`. The domain constraint from earlier this
-week still holds, `NULL` is a special marker outside every domain, not
-a violation of it.
-
-<div class="why">
-<strong>Why this matters:</strong> `grade = NULL` is not true and not
-false, it is <em>unknown</em>, because comparing "unknown" to anything
-can only produce "unknown." Even `NULL = NULL` evaluates to unknown,
-not true, two missing values are not known to be equal. Week 11's SQL
-queries inherit this exact behavior.
-</div>
-
----
-
-# Common Mistakes with Relational Algebra
-
-- **Treating π like `SELECT *`:** projection actively removes duplicate
-  rows from its result; picking columns is only half of what it does
-- **Unioning relations that are not union-compatible:** `Student ∪
-  Course` is undefined, the two relations do not share a schema
-- **Using × and expecting a meaningful answer:** a bare Cartesian
-  product answers no real question until a σ narrows it back down
-
----
-
-# Practice: Relational Algebra on a Library System
-
-<div class="thread">Same operators, `Loan(isbn, member_id, due_date)` from earlier this week.</div>
-
-**Question:** write a relational algebra expression for "the ISBNs of
-every book currently loaned to member 5."
-
-**Answer:** **π**<sub>isbn</sub>**(σ**<sub>member_id = 5</sub>**(Loan))** -
-selection narrows to member 5's rows, projection keeps only `isbn`.
-
----
-
-# Practice: Relational Algebra on a Ride-Hailing App
-
-<div class="thread">One more domain, the same two operators composed together.</div>
-
-`Ride(ride_id, driver_id, rider_id, fare)`.
-
-**Question:** write an expression returning the `ride_id` and `fare`
-of every ride given by `driver_id = 12`.
-
-**Answer:** **π**<sub>ride_id, fare</sub>**(σ**<sub>driver_id = 12</sub>**(Ride))**.
-
----
-
-# Practice: Relational Algebra on a Fitness App
-
-<div class="thread">Union-compatible relations, tested with set difference this time.</div>
-
-`WorkoutsJan(user_id)` and `WorkoutsFeb(user_id)`, each just the users
-who logged at least one workout that month.
-
-**Question:** which single operator finds users who worked out in
-January but stopped by February?
-
-**Answer:** **set difference**, `WorkoutsJan − WorkoutsFeb`. Union
-would combine both months together instead of isolating who dropped off.
-
----
-
-# Check Yourself: Relational Algebra
-
-1. Using the four-row `Student` table, what does
-   **σ**<sub>major = "Data Science"</sub>**(Student)** return?
-2. True or false: `π_major(Student)` can return fewer rows than
-   `Student` has, even though projection never removes a row outright.
-   Why?
-3. Why is a bare Cartesian product almost never the final step of a
-   real query?
-
----
-
-# Answers
-
-1. **One row:** `(4, Choi Yuna, Data Science)`, the only student whose
-   major matches.
-2. **True.** Projection drops columns first; if two tuples become
-   identical once those columns are gone, the set property merges
-   them into one row, shrinking the count without "removing" anything.
-3. Because × pairs every row of one relation with every row of the
-   other, producing mostly combinations with no basis in reality; it
-   is almost always followed immediately by a σ that filters back down
-   to the pairings that correspond to an actual fact.
 
 ---
 
@@ -724,39 +262,6 @@ would combine both months together instead of isolating who dropped off.
 - **Forgetting referential integrity:** an `Enrollment` row pointing at
   a `student_id` that does not exist in `Student` is not "a smaller
   bug," it is an undefined, meaningless row
-
----
-
-# Practice: A Library System
-
-<div class="thread">Same vocabulary, a different domain, so it is clearly the vocabulary that generalizes, not the registration example.</div>
-
-`Book(isbn, title, author)`, `Member(member_id, name)`,
-`Loan(isbn, member_id, due_date)`.
-
-**Question:** name a candidate key for `Loan`, and identify both of its
-foreign keys.
-
-**Answer:** `{isbn, member_id}` is a candidate key, one member cannot
-borrow the exact same book twice at once. `isbn` and `member_id` are
-each foreign keys, referencing `Book.isbn` and `Member.member_id`.
-
----
-
-# Practice: An Online Store
-
-<div class="thread">One more domain, one more rep, before moving to full-speed check yourself.</div>
-
-`Product(sku, name, price)`, `Customer(customer_id, name)`,
-`Order(order_id, customer_id, sku, quantity)`.
-
-**Question:** `Order` has its own `order_id`. Why might a designer
-choose that over a composite key of `{customer_id, sku}`?
-
-**Answer:** A customer can order the same product twice, in two
-separate orders (`quantity` two different times), so
-`{customer_id, sku}` is not actually unique. A dedicated `order_id`
-solves it directly, exactly why real e-commerce systems use one.
 
 ---
 
@@ -783,7 +288,7 @@ solves it directly, exactly why real e-commerce systems use one.
 
 ---
 
-<!-- SLOT 14: Limits, becomes Week 3 slot 4 -->
+<!-- SLOT N+1: Limits, becomes Week 3 slot 4 -->
 
 # What Precise Vocabulary Cannot Do
 
@@ -797,7 +302,7 @@ table must follow is not the same as knowing which tables to build.
 
 ---
 
-<!-- SLOT 15: Bridge -->
+<!-- SLOT N+2: Bridge -->
 
 # Next Week
 
@@ -807,7 +312,7 @@ answer stops being a guess.
 
 ---
 
-<!-- SLOT 16: Summary -->
+<!-- SLOT N+3: Summary -->
 
 # Summary
 
@@ -816,27 +321,16 @@ answer stops being a guess.
 - Superkey, candidate key, and primary key formalize what makes a row
   unique. Foreign key formalizes how relations connect.
 - Three integrity constraints, domain, key, referential, close three of
-  Week 1's seven failure categories by definition, not by discipline.
+  Week 1's failure categories by definition, not by discipline.
+- **Lab page:** `book/src/labs/lab02-relational-model.md` - load the
+  raw table yourself, and hunt for a primary key that actually holds.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 2
 - **Prepare:** think about the registration system's Section and
   Enrollment relations. What would their primary keys be?
 
 ---
 
-# A Note on Sources
-
-<div class="thread">One line of attribution, stated once.</div>
-
-This week's topic list, including relational algebra and NULL
-handling, follows the standard chapter organization of Silberschatz,
-Korth, and Sudarshan's *Database System Concepts*, 7th ed., this
-course's primary reference text. Every example, table, and explanation
-on these slides is original, built around this course's own
-registration case study.
-
----
-
-<!-- SLOT 17: Thank You -->
+<!-- SLOT N+4: Thank You -->
 <!-- _class: end -->
 
 # Thank You

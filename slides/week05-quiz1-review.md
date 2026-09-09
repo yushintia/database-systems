@@ -271,6 +271,8 @@ turns it into a relational schema, one deterministic rule at a time.
   model's vocabulary, the data modeling process, and E-R diagrams.
 - The four weeks are one argument: why a DBMS exists, what a table
   precisely is, how to design one, and how to notate that design.
+- **Lab page:** `book/src/labs/lab05-quiz1-review.md`, for the full
+  review-question set and the multiple-choice self-test answer key.
 - **Prepare:** review all four weeks' Check Yourself slides before the
   quiz; they are representative of today's sample questions.
 

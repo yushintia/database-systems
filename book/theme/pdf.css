@@ -1,0 +1,71 @@
+/* PDF / print stylesheet for mdBook → Chromium print-to-pdf
+   Applied via book.toml: additional-css = ["theme/pdf.css"]
+   This stylesheet is also served in the browser but uses @media print
+   so it only takes effect when printing. */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+  }
+
+  /* Start every top-level chapter on a new page */
+  .chapter h1 {
+    page-break-before: always;
+  }
+
+  /* Never break inside a code block or a table */
+  pre, table {
+    page-break-inside: avoid;
+  }
+
+  /* Avoid orphaned headings */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* Hide the sidebar, nav arrows, and search in print */
+  #sidebar,
+  .nav-wide-wrapper,
+  .mobile-nav-chapters,
+  #search-wrapper,
+  .search-results-outer,
+  .theme-popup,
+  #menu-bar,
+  .menu-bar {
+    display: none !important;
+  }
+
+  /* Full-width content area */
+  .content-wrapper,
+  .content main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Slightly smaller body text for print density */
+  body {
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+
+  /* Code blocks */
+  pre code {
+    font-size: 9pt;
+  }
+
+  /* "Under the Hood" aside boxes — keep together */
+  blockquote {
+    page-break-inside: avoid;
+    border-left: 3px solid #0b3d66;
+    margin-left: 0;
+    padding-left: 12px;
+    color: #333;
+  }
+
+  /* Links — show URL inline for printed copy */
+  a[href]:after {
+    content: none; /* suppress for lab manual; URLs are too noisy */
+  }
+}

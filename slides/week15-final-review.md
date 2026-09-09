@@ -16,7 +16,7 @@ footer: 'Department of Intelligent Computing'
 Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · 성파 702
 </div>
 
-<!-- notes: Short-review variant. Covers the entire semester, Weeks 1-14. -->
+<!-- notes: Short-review variant. Covers the entire semester, Weeks 1-14. Lab page: book/src/labs/lab15-final-review.md -->
 
 ---
 
@@ -48,7 +48,7 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 # The Whole Semester, One Argument
 
-<div class="thread">Fourteen weeks, not fourteen topics. One continuous chain, start to finish.</div>
+<div class="thread">Week 14 closed with: students present, instructor closes remaining gaps. Week 15 is that closing — a comprehensive review before the exam, not a new topic.</div>
 
 <div class="pipeline">
 <div class="stage"><div class="h">Why</div><div class="s">Wk 1</div></div>
@@ -162,14 +162,13 @@ instructors teach more than one section, busiest first?"
 
 ---
 
-# Review: Closing the Loop (Week 14)
+# Review: Week 14 Was Application, Not New Material
 
-- A **transaction**: a sequence of operations that either fully
-  completes or has no effect at all
-- **ACID**: atomicity, consistency, isolation, durability, the four
-  guarantees a transaction manager provides
-- **Concurrency control** (locks) and **recovery** (logs) are the
-  mechanisms behind isolation and durability
+- Week 14 introduced no new testable concept — it was the design-
+  through-query arc, applied once by your team to a system of your
+  own choosing
+- Nothing from Week 14 is a separate exam topic; it is practice for
+  exactly the kind of multi-step tracing question on the next slides
 
 ---
 
@@ -243,18 +242,6 @@ matching primary key in the referenced table.
 
 ---
 
-# Sample Question 6
-
-**Question:** Explain, using Week 14's vocabulary, why a `수강신청`
-system needs a transaction manager and not just correct DML syntax.
-
-**Answer:** Correct `INSERT`/`UPDATE` syntax (Weeks 9-10) says
-**what** change to make; it says nothing about **isolation**, two
-students racing for the last seat at the same instant. A transaction
-manager's locking (Week 14) is what prevents both from succeeding.
-
----
-
 # Common Final Exam Mistakes to Avoid
 
 - **Treating each week as an island:** the exam rewards tracing one
@@ -286,9 +273,11 @@ the way from a real-world sentence to a working SQL query.
 
 - The Final Exam covers the entire semester: why databases exist, the
   relational model, design and notation, mapping and normalization,
-  DDL, DML, queries, and a brief closing look at transactions.
+  DDL, DML, and queries — applied once, by you, in Week 14.
 - Every week's Limits slide became the next week's Pain slide; the
   whole course is one traceable argument, not independent topics.
+- **Lab page:** `book/src/labs/lab15-final-review.md`, for the full
+  practice questions and worked explanations.
 - **Prepare:** work through the registration system one more time,
   start to finish, from Week 1's pain slide to Week 12's final query.
 

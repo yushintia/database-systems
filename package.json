@@ -2,13 +2,13 @@
   "name": "database-systems-slides",
   "private": true,
   "version": "0.1.0",
-  "description": "Marp slide deck for Database Systems (511783-001)",
+  "description": "Marp slide deck + mdBook lab manual for Database Systems (511783-001)",
   "scripts": {
-    "preview": "marp -s slides --theme-set themes/shintia.css --html",
-    "build:html": "marp -I slides --theme-set themes/shintia.css --html --allow-local-files -o dist",
-    "build:pdf": "marp -I slides --theme-set themes/shintia.css --html --pdf --allow-local-files -o dist",
-    "build:pptx": "marp -I slides --theme-set themes/shintia.css --html --pptx --pptx-editable --allow-local-files -o dist",
-    "build:materials": "node scripts/build-materials.js dist"
+    "preview": "npx --yes @marp-team/marp-cli -s slides --theme-set themes/shintia.css --html",
+    "build:html": "npx --yes @marp-team/marp-cli -I slides --theme-set themes/shintia.css --html --allow-local-files -o dist/slides",
+    "build:pdf": "npx --yes @marp-team/marp-cli -I slides --theme-set themes/shintia.css --html --pdf --allow-local-files -o dist/slides",
+    "build:pptx": "npx --yes @marp-team/marp-cli -I slides --theme-set themes/shintia.css --html --pptx --pptx-editable --allow-local-files -o dist/slides",
+    "build:book-pdfs": "mdbook build book && node scripts/build-book-pdfs.js"
   },
   "devDependencies": {
     "@marp-team/marp-cli": "^4.0.1"

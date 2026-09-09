@@ -4,6 +4,26 @@ Database Systems (511783-001), 2026-2. This document is the standard. Every
 week's deck (`slides/weekNN-*.md`) must follow it. If a deck and this
 document disagree, fix the deck.
 
+## Slides teach the lab's Part A, nothing more
+
+This course now runs as a practice-heavy lab course (see `book/`, the
+mdBook lab manual). Every week's deck is the **lecture version of that
+week's lab's Part A** (`book/src/labs/labNN-*.md`) — the concept intro
+and one worked-example demo, ~50 minutes. The lab page owns everything
+else: Guided In-Lab Exercises (Parts B/C), the Challenge Problem, the
+Practice Problems, and the Submission & Rubric. A deck must never
+introduce content the matching lab page doesn't have; if a deck needs a
+new example or explanation, add it to the lab page first, then bring it
+into the deck. Concretely, per slot:
+
+- Slot 4 (Pain) = the lab's own hook / "Why this lab matters" framing.
+- Slot 7 (Learning outcomes) = the lab's own Learning Outcomes.
+- Slot N-2 (Worked example) = one of the lab's own Worked Examples,
+  walked the same way (line by line where the lab does).
+- Slot N-1 (Common mistakes) = a subset of the lab's Common Pitfalls table.
+- Slot N+3 (Summary) names the lab page path so students know where the
+  exercises live.
+
 ## Principle
 
 **Motivation always precedes definition.** A student should never meet a
@@ -91,16 +111,20 @@ Act 3 slot "Check yourself" (expanded into full review questions) + Act 4
 Ground acts: there is no new concept to motivate.
 
 Week 1 uses the **orientation variant**: a pure course-contract session
-(department standard, matching the sibling course-algorithms deck). It is
-course description, objectives, prerequisites, textbook, schedule,
-grading, assignments, and policy - near-zero technical content, a light
+(department standard, matching the sibling courses). It is course
+description, objectives, prerequisites, textbook, schedule, grading,
+assignments, and policy - near-zero technical content, a light
 non-technical tease of the running case study, and a discussion-prompt
 slide (not answered) that Week 2 opens by answering. It closes with the
 standard Limits → Next Week → Summary → Thank You, same as every other
 week, so the chain into Week 2 still holds. It has no Pain/Cost/Origin/
-Build/Worked-example/Common-mistakes/Check-yourself acts, no worksheet,
-and no quiz - handout only (the handout is now a course handbook, not a
-technical glossary).
+Build/Worked-example/Common-mistakes/Check-yourself acts in the deck. It
+still gets one hands-on tie-in in the book: `book/src/labs/
+lab01-intro-and-spreadsheet.md` has students hunt for the spreadsheet's
+own problems (inconsistent names, a deletion anomaly, a concurrent-edit
+overwrite) by hand, no SQL yet. `book/src/introduction.md` carries the
+course handbook content (schedule, grading, policy) that used to live in
+a standalone Week 1 handout.
 
 ## Enforcement
 

@@ -3,7 +3,28 @@ Running case study: University Course Registration.
 Grows across the semester. Update this file whenever a week changes the
 schema, and copy the *current* snapshot into that week's worked-example
 slide so decks stay self-contained (Marp has no live includes).
+
+Each snapshot below now also names the lab artifact that makes it real
+for students to touch, not just read. Seed files live under
+`book/src/labs/files/labNN/`; every seed is idempotent
+(`DROP DATABASE IF EXISTS ...; CREATE DATABASE ...; USE ...;`) so it can
+be re-run safely. This is the single source of truth for which seed goes
+with which week — lab pages and slide decks both link back here.
 -->
+
+## Lab artifact map
+
+| Week | Snapshot | Lab artifact |
+|---|---|---|
+| 1 | The spreadsheet | `book/src/labs/files/lab01/registrations.csv` |
+| 2 | One raw table, run-only | `book/src/labs/files/lab02/flat_load.sql` |
+| 3 | Interview + toy sandbox | `book/src/labs/files/lab03/interview_transcript.md`, `book/src/labs/files/lab03/toy_sandbox.sql` |
+| 4 | E-R diagram (drawn by students) | student-produced `lab04_er.png`/`.drawio`, no seed |
+| 6 | Mechanically mapped (reference) | `book/src/labs/files/lab06/target_schema.sql` |
+| 7 | Denormalized teaching example | `book/src/labs/files/lab07/bad_registration_seed.sql` |
+| 9 | Empty database, students write DDL | `book/src/labs/files/lab09/reset.sql` |
+| 10 | Catch-up schema for failed Week 9 builds | `book/src/labs/files/lab10/catchup_schema.sql` |
+| 11+ | Full populated schema (~200+ rows) | `book/src/labs/files/lab11/full_seed.sql` (Lab 12 reuses this file) |
 
 ## State after Week 1: the spreadsheet
 

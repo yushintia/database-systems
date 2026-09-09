@@ -16,7 +16,7 @@ footer: 'Department of Intelligent Computing'
 Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · 성파 702
 </div>
 
-<!-- notes: Short-review variant. Covers Weeks 9-12, the entire MySQL/SQL half of the course. -->
+<!-- notes: Short-review variant. Covers Weeks 9-12, the entire MySQL/SQL half of the course. Lab page: book/src/labs/lab13-quiz2-review.md -->
 
 ---
 
@@ -48,7 +48,7 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 # Four Weeks, From Empty Tables to Real Answers
 
-<div class="thread">The complete SQL arc, one line each.</div>
+<div class="thread">Last week (12) delivered correct multi-table answers. Last week left open: applying all of it, once, end to end — that starts next week. Today is the checkpoint in between.</div>
 
 <div class="pipeline">
 <div class="stage"><div class="h">DDL</div><div class="s">Wk 9: build structure</div></div>
@@ -141,7 +141,7 @@ query, in exactly this order.
 
 ---
 
-# Sample Question 1
+# Check Yourself: Sample Question 1
 
 **Question:** `UPDATE Section SET room = '성파 615' WHERE
 instructor_id = 1;` is run without checking how many rows match first.
@@ -154,7 +154,7 @@ which rows the `UPDATE` will affect, before running it.
 
 ---
 
-# Sample Question 2
+# Check Yourself: Sample Question 2
 
 **Question:** Write a query returning each instructor's name and how
 many sections they teach, including instructors currently teaching
@@ -173,7 +173,7 @@ GROUP BY Instructor.name;
 
 ---
 
-# Sample Question 3
+# Check Yourself: Sample Question 3
 
 **Question:** `INSERT INTO Section (course_code, instructor_id) VALUES
 ('CSE999', 1);` fails. `CSE999` does not exist in `Course`. Which
@@ -185,7 +185,7 @@ before it could ever be written to the database.
 
 ---
 
-# Sample Question 4
+# Check Yourself: Sample Question 4
 
 **Question:** Write a query listing every course title and the average
 grade point of students enrolled in it, for courses with more than 5
@@ -204,7 +204,7 @@ HAVING COUNT(*) > 5;
 
 ---
 
-# Sample Question 5
+# Check Yourself: Sample Question 5
 
 **Question:** What is the difference between `DELETE FROM Enrollment;`
 and `DELETE FROM Enrollment WHERE student_id = 1;`?
@@ -255,6 +255,8 @@ queried with everything from this entire semester.
   and multi-table queries, the complete SQL half of the course.
 - Together, these four weeks turn a normalized paper schema into a
   real, running, queryable MySQL database.
+- **Lab page:** `book/src/labs/lab13-quiz2-review.md`, for the full
+  self-check questions and worked explanations.
 - **Prepare:** review every Worked Example and Check Yourself slide
   across Weeks 9-12; the quiz draws directly on the registration schema.
 

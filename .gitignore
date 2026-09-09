@@ -1,3 +1,6 @@
 node_modules/
 dist/
-site/
+book/book/
+book/pdf/
+_site/
+graphify-out/

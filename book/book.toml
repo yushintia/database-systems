@@ -1,0 +1,17 @@
+[book]
+title = "Database Systems — Lab Manual"
+authors = ["Yushintia Pramitarini, Ph.D."]
+description = "Hands-on MySQL lab manual for 511783-001 Database Systems (2026-2)"
+language = "en"
+src = "src"
+
+[output.html]
+additional-css = ["theme/pdf.css"]
+no-section-label = false
+fold.enable = false
+playground.editable = false
+playground.copyable = true
+
+[output.html.search]
+enable = true
+limit-results = 20

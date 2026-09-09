@@ -16,7 +16,7 @@ footer: 'Department of Intelligent Computing'
 Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · 성파 702
 </div>
 
-<!-- notes: This week is not a standard spine lecture. Short closing-the-loop content, then presentations. Budget most of the 150 minutes for the presentations themselves. -->
+<!-- notes: Presentation-day format, not a standard spine lecture. Nominal Act 0, then presentation logistics + rubric summary only — no new lecture content. Budget most of the 150 minutes for the presentations themselves. Lab page: book/src/labs/lab14-case-study-presentation.md -->
 
 ---
 
@@ -44,137 +44,20 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 ---
 
-<!-- Recap of whole semester arc -->
+<!-- SLOT 3: Recap + open wound -->
 
-# Thirteen Weeks, One Argument
+# Last Week, This Week
 
-<div class="thread">Every week's Limits slide became the next week's Pain slide. Here is the whole chain, at once.</div>
+- **Last week (13) delivered:** a checkpoint review of Weeks 9-12,
+  the entire build-and-ask SQL arc, and Quiz 2
+- **Last week left open:** everything built and reviewed so far has
+  only ever been applied to the instructor's own registration case
+  study — never to a system your team chose and designed yourselves
 
-<div class="pipeline">
-<div class="stage"><div class="h">Why</div><div class="s">a DBMS at all</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Design</div><div class="s">model, diagram, map, normalize</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Build</div><div class="s">DDL, DML</div></div>
-<div class="arrow">&rsaquo;</div>
-<div class="stage"><div class="h">Ask</div><div class="s">single and multi-table queries</div></div>
-</div>
-
-Today, you present a system of your own, carried through that exact
-same arc, from a real-world problem to running SQL.
+Today closes that gap: thirteen weeks of one argument — why a DBMS
+at all, design, build, ask — applied once, end to end, by you.
 
 ---
-
-<!-- Closing the loop on Week 1's third objective -->
-
-<!-- _class: section -->
-
-# Before Presentations: Closing a Promise From Week 1
-<div class="driving-q">Objective 3: transaction management, concurrency control, recovery.</div>
-
----
-
-# The Gap Week 12 Left Open
-
-<div class="thread">Week 12's own Limits slide named this exactly. Time to close it, briefly, before you present.</div>
-
-<div class="limits">
-Every query since Week 9 has assumed a quiet system: one user, no
-crashes, small data. Week 1 previewed three DBMS-engine components,
-storage manager, query processor, transaction manager, but only ever
-demonstrated the first two. The transaction manager, and the 수강신청
-concurrency risk from Week 1's own bar chart, were promised, not shown.
-</div>
-
----
-
-# Transaction: Definition
-
-<div class="thread">One word, for an idea you have already seen twice: Week 1's bank transfer, and Week 10's UPDATE warnings.</div>
-
-> A **transaction** is a sequence of database operations treated as a
-> single unit: it either completes entirely, or has no effect at all.
-
-```sql
-START TRANSACTION;
-UPDATE Account SET balance = balance - 50000 WHERE account_id = 1;
-UPDATE Account SET balance = balance + 50000 WHERE account_id = 2;
-COMMIT;
-```
-
-This is Week 1's 계좌이체 example, in actual SQL, for the first time.
-
----
-
-# ACID, in One Slide Each: Atomicity & Consistency
-
-<div class="thread">Four properties every transaction manager guarantees. Two now, two next slide.</div>
-
-- **Atomicity:** both `UPDATE` statements above happen, or neither does.
-  A crash between them leaves the database as if neither ran, exactly
-  Week 1's atomicity-problem anomaly, permanently fixed
-- **Consistency:** a transaction takes the database from one valid
-  state to another, never violating Week 2's integrity constraints
-  mid-transaction
-
----
-
-# ACID, Continued: Isolation & Durability
-
-<div class="thread">The two properties that answer Week 1's concurrency bar chart directly.</div>
-
-- **Isolation:** concurrent transactions do not see each other's
-  incomplete work; two people booking the last 수강신청 seat cannot
-  both succeed, one transaction's changes stay invisible to the other
-  until it commits
-- **Durability:** once a transaction commits, it survives even a crash
-  immediately afterward, stored permanently before the system reports
-  success
-
----
-
-# Concurrency Control, in Brief
-
-<div class="thread">How isolation is actually enforced, not just promised.</div>
-
-A **lock** prevents two transactions from modifying the same row at
-once; a second transaction requesting the last 수강신청 seat waits
-until the first transaction commits or rolls back, then sees the
-correct, final state, never a half-finished one.
-
-<div class="why">
-This is the literal mechanism behind Week 1's concurrency risk bars:
-the "guaranteed conflict" bar exists specifically because, without
-locks, two transactions can both read "1 seat left" before either
-writes, and both believe they succeeded.
-</div>
-
----
-
-# Recovery, in Brief
-
-<div class="thread">Durability's partner: what happens after a crash, not just during normal operation.</div>
-
-A DBMS keeps a **log** of every change before applying it. After a
-crash, recovery replays committed transactions from the log and undoes
-anything left incomplete, restoring exactly the last consistent state,
-Week 1's "no half-saved data" promise, made concrete.
-
----
-
-# Why This Stayed Brief
-
-<div class="why">
-Transaction management, concurrency control, and recovery are each
-full courses on their own at the graduate level. This course's promise,
-stated honestly back in Week 1, was to explain <em>why</em> they exist
-and preview <em>what</em> they guarantee, not to implement them by
-hand. That promise is now kept.
-</div>
-
----
-
-<!-- Presentation logistics -->
 
 <!-- _class: section -->
 
@@ -200,17 +83,34 @@ hand. That promise is now kept.
 - Slides optional, a live MySQL demo is strongly encouraged
 - Every team member must speak; the presentation is graded as this
   course's 발표 (presentation) component, 10% of the final grade
+- Deliverable: presentation + a working demo database — no individual
+  `.sql` file required from every student, one team backup script is
+  enough
 
 ---
 
-# Grading Rubric
+# Before You Present: Quick Checklist
 
-| Criterion | What we are looking for |
-|---|---|
-| Clarity of the pain | Would a beginner, with zero database background, understand the problem in one sentence? |
-| Design correctness | Is the E-R diagram consistent with the final schema? |
-| Normalization | Is at least one real anomaly identified and fixed? |
-| Working SQL | Does the query actually run, against real data, and answer the stated question? |
+- [ ] One-sentence pain, rehearsed
+- [ ] E-R diagram, normalized schema, and `CREATE TABLE` statements
+      all agreeing with each other
+- [ ] One real anomaly your normalization step caught, ready to point to
+- [ ] A working demo database with a real, non-empty payoff query result
+- [ ] A backup script, in case the live demo connection fails
+
+---
+
+# Grading Rubric Summary
+
+| Criterion | Points | What we are looking for |
+|---|---:|---|
+| Clarity of the pain | 25 | Would a beginner, zero database background, understand the problem in one sentence? |
+| Schema design accuracy | 35 | Does the E-R diagram agree with the final schema, with a real anomaly caught and fixed? |
+| Vocabulary/terms | 15 | Are this semester's terms used, and used correctly? |
+| Q&A handling | 25 | Does every question get a direct, honest answer? |
+
+Full point-band descriptions: **`book/src/appendix/grading-rubric.md`**
+(section 3) — this slide is a summary only.
 
 ---
 
@@ -226,15 +126,37 @@ hand. That promise is now kept.
 
 ---
 
+<!-- SLOT N+1: Limits -->
+
+# What Today Does Not Close
+
+<div class="limits">
+Students present; instructor closes remaining gaps. Ten minutes per
+team, including Q&A, is not enough time to resolve every question a
+presentation raises — some are answered on the spot, others are
+noted and left open.
+</div>
+
+---
+
+<!-- SLOT N+2: Bridge -->
+
+# Next Week
+
+Week 14 leaves **whatever each team's Q&A could not fully resolve**
+open. **Week 15** addresses it: a comprehensive review of the whole
+semester, Weeks 1 through 14, before the Final Exam.
+
+---
+
 # Summary
 
-- Transactions, ACID, concurrency control, and recovery close the
-  third objective this course stated back in Week 1, briefly, as
-  promised, not as a substitute for a full course on the subject.
 - Today's presentations are the entire semester's arc, applied once,
   end to end, by you: pain, design, build, and a real, working query.
-- **Prepare:** Week 15's Final Exam covers the whole semester, Weeks 1
-  through 14. Review every week's Summary slide as a starting outline.
+- **Lab page:** `book/src/labs/lab14-case-study-presentation.md`, for
+  the full prep checklist and deliverable details.
+- **Prepare:** keep your own team's unanswered Q&A questions — Week
+  15's review is comprehensive, Weeks 1 through 14.
 
 ---
 
