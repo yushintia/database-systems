@@ -276,7 +276,7 @@ the way from a real-world sentence to a working SQL query.
   DDL, DML, and queries — applied once, by you, in Week 14.
 - Every week's Limits slide became the next week's Pain slide; the
   whole course is one traceable argument, not independent topics.
-- **Lab page:** `book/src/labs/lab15-final-review.md`, for the full
+- **Lab page:** [Lab 15 in the online Lab Manual](../book/labs/lab15-final-review.html), for the full
   practice questions and worked explanations.
 - **Prepare:** work through the registration system one more time,
   start to finish, from Week 1's pain slide to Week 12's final query.

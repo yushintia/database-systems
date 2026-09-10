@@ -129,13 +129,13 @@ four tests catch what Lab 02's rules cannot:
 
 ## Worked Example: Extracting Entities from a Real Interview
 
-`files/lab03/interview_transcript.md` is a realistic (if invented)
-conversation between a data modeler and the university's registrar.
-It is deliberately *not* organized for you — real requirements never
-arrive pre-sorted into "entities" and "relationships." Here is how to
-pull them out, one pass at a time.
+[The interview transcript](files/lab03/interview_transcript.md) is a
+realistic (if invented) conversation between a data modeler and the
+university's registrar. It is deliberately *not* organized for you —
+real requirements never arrive pre-sorted into "entities" and
+"relationships." Here is how to pull them out, one pass at a time.
 
-> [`interview_transcript.md`](files/lab03/interview_transcript.md)
+> [Read the full interview transcript](files/lab03/interview_transcript.md)
 
 ### Pass 1: circle every noun that might be an entity
 
@@ -292,7 +292,7 @@ row. Which of the four "good design" tests does this fail, and why?
 ### Exercise 4: The Waitlist, From Your Own Reading
 
 Without re-reading the model answer above: from
-`interview_transcript.md`, name the one new entity the waitlist
+[the interview transcript](files/lab03/interview_transcript.md), name the one new entity the waitlist
 feature introduces, and the two facts connecting it to Student and
 Section. Then check your answer against the Worked Example section
 above.
@@ -306,7 +306,7 @@ indexes later if it's slow." Using the Common Pitfalls table below,
 write 2-3 sentences explaining why this is riskier than it sounds —
 specifically, why "add it later" is not free the way it might sound in
 a team meeting. Then, separately: name one requirement from
-`interview_transcript.md` that a design could satisfy on paper (pass
+[the interview transcript](files/lab03/interview_transcript.md) that a design could satisfy on paper (pass
 all four tests) and still implement *incorrectly* in practice, if the
 implementer only skimmed the transcript instead of reading it twice.
 

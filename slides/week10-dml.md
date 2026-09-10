@@ -1063,7 +1063,7 @@ enrolled in CSE301?" directly.
   against orphaned foreign keys, both follow Week 9's dependency order.
 - `WHERE` is not optional on `UPDATE` or `DELETE` in practice: without
   it, the statement silently applies to every row in the table.
-- **Lab page:** `book/src/labs/lab10-dml.md`, for the Guided Exercises,
+- **Lab page:** [Lab 10 in the online Lab Manual](../book/labs/lab10-dml.html), for the Guided Exercises,
   Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3-4 (SQL DML)
 - **Prepare:** write, on paper, the `INSERT` statements needed to add

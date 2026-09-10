@@ -1084,7 +1084,7 @@ covering Weeks 1 through 4.)
   exactly how many instances connect, out loud, on the diagram.
 - A weak entity has no independent key; it borrows identity from the
   entities it connects, a direct preview of Week 6's mapping rules.
-- **Lab page:** `book/src/labs/lab04-er-diagram.md` - draw the full
+- **Lab page:** [Lab 4 in the online Lab Manual](../book/labs/lab04-er-diagram.html) - draw the full
   registration diagram yourself, including Waitlist, then peer-review
   a classmate's against a fixed checklist. **Assignment 1 due this
   week.**

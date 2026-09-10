@@ -1001,7 +1001,7 @@ kind of problem, and a procedure to fix it.
   from the identical diagram, closing this week's pain slide by design.
 - A mechanically correct schema is not automatically an anomaly-free
   one, next week's entire subject.
-- **Lab page:** `book/src/labs/lab06-mapping-algorithm.md`, for the
+- **Lab page:** [Lab 6 in the online Lab Manual](../book/labs/lab06-mapping-algorithm.html), for the
   Guided Exercises (mapping your own Lab 4 diagram), Challenge
   Problem, and rubric.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 6

@@ -255,7 +255,7 @@ queried with everything from this entire semester.
   and multi-table queries, the complete SQL half of the course.
 - Together, these four weeks turn a normalized paper schema into a
   real, running, queryable MySQL database.
-- **Lab page:** `book/src/labs/lab13-quiz2-review.md`, for the full
+- **Lab page:** [Lab 13 in the online Lab Manual](../book/labs/lab13-quiz2-review.html), for the full
   self-check questions and worked explanations.
 - **Prepare:** review every Worked Example and Check Yourself slide
   across Weeks 9-12; the quiz draws directly on the registration schema.

@@ -877,7 +877,7 @@ notation precise enough that a disagreement becomes visible on paper.
   first read missed.
 - The four "good design" tests catch problems Week 2's rules cannot:
   completeness, correctness, minimal redundancy, understandability.
-- **Lab page:** `book/src/labs/lab03-data-modelling.md` - extract
+- **Lab page:** [Lab 3 in the online Lab Manual](../book/labs/lab03-data-modelling.html) - extract
   entities from a full registrar interview transcript, and watch an
   unconstrained toy schema accept contradictory data.
 - **Reading:** Silberschatz et al., 7th ed., Ch. 6 (conceptual design

@@ -1112,7 +1112,7 @@ concurrency control, and recovery.
   (`COUNT`, `SUM`, `AVG`, `MAX`, `MIN`) summarize each cluster.
 - `HAVING` filters groups after aggregation; `WHERE` filters rows
   before it, they are never interchangeable.
-- **Lab page:** `book/src/labs/lab12-multi-table-queries.md`, for the
+- **Lab page:** [Lab 12 in the online Lab Manual](../book/labs/lab12-multi-table-queries.html), for the
   Guided Exercises, Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3, 5 (Joins, Aggregation)
 - **Prepare:** Quiz 2 next week covers Weeks 9-12. Review every Check

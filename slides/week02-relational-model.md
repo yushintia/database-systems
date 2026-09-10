@@ -946,7 +946,7 @@ answer stops being a guess.
   unique. Foreign key formalizes how relations connect.
 - Three integrity constraints, domain, key, referential, close three of
   Week 1's failure categories by definition, not by discipline.
-- **Lab page:** `book/src/labs/lab02-relational-model.md` - load the
+- **Lab page:** [Lab 2 in the online Lab Manual](../book/labs/lab02-relational-model.html) - load the
   raw table yourself, and hunt for a primary key that actually holds.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 2
 - **Prepare:** think about the registration system's Section and

@@ -778,10 +778,10 @@ idea - a relation, a properly defined table - built to fix it.
   within one week, with a rubric and model answers.
 - Primary text: Silberschatz et al., 7th ed. Contact:
   yushintia@deu.ac.kr.
-- **This week's lab:** `book/src/labs/lab01-intro-and-spreadsheet.md`
+- **This week's lab:** [Lab 1 in the online Lab Manual](../book/labs/lab01-intro-and-spreadsheet.html)
   - hunt the messy `registrations.xlsx` for the name-inconsistency,
   deletion-anomaly, and concurrent-edit problems by hand. See also
-  `book/src/introduction.md` for how the lab manual fits this course.
+  [the lab manual's introduction](../book/introduction.html) for how the lab manual fits this course.
 - **Prepare:** skim Chapter 1 before Week 2. No exercises due.
 
 ---

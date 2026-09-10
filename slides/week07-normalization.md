@@ -876,7 +876,7 @@ actual tables. (Week 8 is the Midterm Exam, covering Weeks 1 through 7.)
   attributes.
 - Decomposition fixes a violation by splitting a relation so each fact
   depends directly, and only, on its own relation's key.
-- **Lab page:** `book/src/labs/lab07-normalization.md`, for the live
+- **Lab page:** [Lab 7 in the online Lab Manual](../book/labs/lab07-normalization.html), for the live
   Anomaly Hunt (run `bad_registration_seed.sql`, trigger each
   anomaly), the 3NF decomposition exercise, and rubric.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 7

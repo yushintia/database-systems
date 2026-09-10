@@ -109,7 +109,7 @@ at all, design, build, ask — applied once, end to end, by you.
 | Vocabulary/terms | 15 | Are this semester's terms used, and used correctly? |
 | Q&A handling | 25 | Does every question get a direct, honest answer? |
 
-Full point-band descriptions: **`book/src/appendix/grading-rubric.md`**
+Full point-band descriptions: **[the Grading Rubric appendix](../book/appendix/grading-rubric.html)**
 (section 3) — this slide is a summary only.
 
 ---
@@ -153,7 +153,7 @@ semester, Weeks 1 through 14, before the Final Exam.
 
 - Today's presentations are the entire semester's arc, applied once,
   end to end, by you: pain, design, build, and a real, working query.
-- **Lab page:** `book/src/labs/lab14-case-study-presentation.md`, for
+- **Lab page:** [Lab 14 in the online Lab Manual](../book/labs/lab14-case-study-presentation.html), for
   the full prep checklist and deliverable details.
 - **Prepare:** keep your own team's unanswered Q&A questions — Week
   15's review is comprehensive, Weeks 1 through 14.

@@ -1072,7 +1072,7 @@ aggregation, the commands that pull related tables back together.
   removes duplicates; `ORDER BY` and `LIMIT` control result order and size.
 - A single-table query finally pays off Week 1's promise: the
   3-hour manual scroll, replaced by one statement, in under a second.
-- **Lab page:** `book/src/labs/lab11-single-table-queries.md`, for the
+- **Lab page:** [Lab 11 in the online Lab Manual](../book/labs/lab11-single-table-queries.html), for the
   Guided Exercises, Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3 (SQL Queries)
 - **Prepare:** write, on paper, a query answering "which sections meet

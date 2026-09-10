@@ -16,6 +16,7 @@
 - [Lab 01: Introduction & the Spreadsheet Problem](labs/lab01-intro-and-spreadsheet.md)
 - [Lab 02: The Relational Model](labs/lab02-relational-model.md)
 - [Lab 03: Data Modelling](labs/lab03-data-modelling.md)
+  - [Interview Transcript (Lab 03 reading)](labs/files/lab03/interview_transcript.md)
 - [Lab 04: E-R Diagrams](labs/lab04-er-diagram.md)
 - [Lab 05: Quiz 1 Review](labs/lab05-quiz1-review.md)
 - [Lab 06: The Mapping Algorithm](labs/lab06-mapping-algorithm.md)

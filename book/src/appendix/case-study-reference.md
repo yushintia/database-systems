@@ -5,8 +5,8 @@ study used throughout this course: a university's course
 registration system. It follows the same schema shown in lecture, and
 is the reference every lab points back to. (The authoring notes
 behind this case study, including which lab seed file goes with which
-week, live in the instructor-facing `slides/_shared/case-study.md` —
-this page is the version meant for you to read and use.)
+week, live in the instructor-facing slide-authoring notes — this page
+is the version meant for you to read and use.)
 
 ---
 

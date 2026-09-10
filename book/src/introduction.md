@@ -12,10 +12,10 @@
 This course has two halves, and they are deliberately not the same
 document.
 
-- **The slide decks** (`slides/weekNN-*.md`) are Part A: the lecture.
-  Each deck opens with a concrete pain point in the running case
-  study, motivates one idea, defines it, and walks a worked example.
-  Decks are what happens in the room during lecture time.
+- **The slide decks** are Part A: the lecture. Each deck opens with a
+  concrete pain point in the running case study, motivates one idea,
+  defines it, and walks a worked example. Decks are what happens in
+  the room during lecture time.
 - **This lab manual** is Part B and beyond: the full guided exercises,
   challenge problems, worked solutions, and grading rubrics. **The
   decks do not repeat this content, and this book does not repeat the

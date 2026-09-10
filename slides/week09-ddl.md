@@ -988,7 +988,7 @@ that actually put data in, change it, and remove it.
   constraints.
 - Table creation order matters: independent tables first, then
   `Section`, then `Enrollment` last of all five.
-- **Lab page:** `book/src/labs/lab09-ddl.md`, for the Guided Exercises,
+- **Lab page:** [Lab 9 in the online Lab Manual](../book/labs/lab09-ddl.html), for the Guided Exercises,
   Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3-4 (SQL DDL)
 - **Prepare:** write out, on paper, the `CREATE TABLE` statement for

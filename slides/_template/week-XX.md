@@ -166,7 +166,12 @@ Week XX leaves **<gap>** unsolved. **Week XX+1** addresses it: <next topic>.
 # Summary
 
 - <takeaway>
-- **Lab page:** <this week's `book/src/labs/labNN-*.md`, for the Guided Exercises, Challenge Problem, and rubric>
+<!-- Link to the BUILT page, never the .md source — students only ever see the
+     deployed site. From slides/weekNN-*.md the built lab page is at
+     ../book/labs/labNN-<topic>.html (one level up to the site root, then into
+     book/labs/). Marp does not auto-convert .md links the way mdBook does, so
+     a raw `.md` path here would show up as literal, unclickable text. -->
+- **Lab page:** [Lab NN in the online Lab Manual](../book/labs/labNN-<topic>.html), for the Guided Exercises, Challenge Problem, and rubric
 - **Reading:** <textbook chapter>
 - **Prepare:** <what to bring/read before next week>
 
