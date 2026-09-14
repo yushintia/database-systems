@@ -999,6 +999,10 @@ exact same reason `Ride` is.
 **Question:** Is `office_number` an attribute of Instructor, or a
 separate entity? Justify your answer.
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **Attribute**, unless the system needs to track offices
 independently of instructors (shared offices, office assignments over
 time). As stated, it is one property of one instructor.
@@ -1010,6 +1014,10 @@ time). As stated, it is one property of one instructor.
 **Question:** A Section can have several TAs, and a TA can help with
 several Sections. What cardinality is that?
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** **M:N**, many-to-many, the same shape as Student to
 Section.
 
@@ -1020,6 +1028,10 @@ Section.
 **Question:** In a ride-hailing app, "a Driver gives many Rides; a
 Rider takes many Rides; each Ride has exactly one Driver and one
 Rider," why can't `Ride` simply be a foreign key added to `Driver`?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** Because the relationship is M:N (many drivers, many
 riders, many rides), and an M:N relationship can never be captured by
@@ -1034,6 +1046,10 @@ Enrollment needs to be its own relation.
 `enrollment_id`, in addition to `student_id` and `section_id`. Is
 this necessary? Why or why not?
 
+---
+
+# Sample Question 4: Answer
+
 **Answer:** **Not necessary.** `{student_id, section_id}` already
 uniquely identifies every enrollment; adding `enrollment_id` gives
 the weak entity a surrogate key it does not need, exactly the pitfall
@@ -1047,6 +1063,10 @@ this lecture's Common Mistakes slide names.
 identified only as "this Book, copy number 3," with no `copy_id` of
 its own?
 
+---
+
+# Sample Question 5: Answer
+
 **Answer:** **Weak.** Without its own `copy_id`, a copy can only be
 told apart using "this Book" plus "copy number 3" together, borrowed
 identity, the definition of a weak entity.
@@ -1058,6 +1078,10 @@ identity, the definition of a weak entity.
 **Question:** A food delivery app's `OrderLine` has attributes
 `quantity` and `special_instructions`. Do either of these attributes
 make `OrderLine` a strong entity? Why or why not?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **No.** `quantity` and `special_instructions` describe the
 OrderLine relationship itself; they do not give it an independent

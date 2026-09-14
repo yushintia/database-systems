@@ -661,6 +661,10 @@ changes nothing about how the resulting table is built.
 **Question:** `Section` gains a composite `meeting_time`, made of `day`
 and `start_hour`. How does Rule 6 map it?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** `Section(section_id, ..., day, start_hour)`: the composite
 name never becomes a column, only its two flattened components do.
 
@@ -670,6 +674,10 @@ name never becomes a column, only its two flattened components do.
 
 **Question:** Why does a multivalued attribute never become a single
 column, no matter how few values it usually holds?
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** A column holds one value. Storing several values in one
 column (e.g. comma-separated) makes them unqueryable without parsing
@@ -681,6 +689,10 @@ text by hand, exactly a 1NF violation waiting to happen.
 
 **Question:** `Vehicle` (in a separate system) specializes into `Car`
 and `Truck`. Name one advantage Strategy 1 has over Strategy 2.
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** Strategy 1 avoids `NULL` columns: a `Car`-only attribute
 like `trunk_capacity` never appears, even as an empty cell, on a
@@ -697,6 +709,10 @@ like `trunk_capacity` never appears, even as an empty cell, on a
 
 **Question:** map `Member(member_id, name, ...)` using Rule 6.
 
+---
+
+# Practice: A Library System, Composite Attribute (Answer)
+
 **Answer:**
 ```
 Member(member_id, first_name, last_name, ...)
@@ -712,6 +728,10 @@ No `name` column exists, only its two flattened components do.
 A `Driver` may register more than one vehicle license plate.
 
 **Question:** map this multivalued attribute using Rule 7.
+
+---
+
+# Practice: A Ride-Hailing App, Multivalued Attribute (Answer)
 
 **Answer:**
 ```
@@ -732,6 +752,10 @@ and `Motorcycle` (extra attribute: `has_sidecar`).
 
 **Question:** map this using Strategy 1 (one table per subclass).
 
+---
+
+# Practice: A Ride-Hailing App, Specialization (Answer)
+
 **Answer:**
 ```
 Vehicle(vehicle_id, plate_number, driver_id)
@@ -750,6 +774,10 @@ the `Driver`, a relationship attached to the trip as a whole, not to
 `Rider` or `Ride` alone.
 
 **Question:** what does Rule 10 add, and to which relation?
+
+---
+
+# Practice: A Ride-Hailing App, Aggregation (Answer)
 
 **Answer:** a plain foreign key, `rated_by`, added to `Ride`'s
 already-mapped relation, referencing `Driver`. No new relation is
@@ -830,6 +858,10 @@ keeps working, no matter how many new entities a diagram adds.
 `Classroom(1)` hosts many `Section(N)`, and each `Classroom` has a
 composite `location` attribute (`building`, `floor`, `room_number`).
 Which rules apply, and what does each produce?
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:** **Rule 2** (1:N): `Section` gains a foreign key,
 `classroom_id`, referencing `Classroom.classroom_id`. `Classroom`
@@ -944,6 +976,10 @@ PRIMARY KEY (student_id, section_id)
 relation gets the foreign key, what is it called, and which rule
 tells you that?
 
+---
+
+# Sample Question 5: Answer
+
 **Answer:** **Office** gets the foreign key, `building_id`,
 referencing `Building.building_id`, by **Rule 2**. The "many" side
 always holds the key.
@@ -954,6 +990,10 @@ always holds the key.
 
 **Question:** Why does `Enrollment` need a composite primary key
 instead of a single `enrollment_id`?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** Because it resolves an M:N relationship: a single
 `enrollment_id` would not, by itself, prevent the same `{student_id,
@@ -967,6 +1007,10 @@ enforces "one enrollment per student per section."
 **Question:** A `Textbook` can be used in many `Course`s, and a
 `Course` can use many `Textbook`s. Which rule applies, and what
 relation does it produce?
+
+---
+
+# Sample Question 7: Answer
 
 **Answer:** **Rule 4** (M:N). It produces a new relation,
 `CourseTextbook(course_code, textbook_id)`, with a composite primary

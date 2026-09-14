@@ -794,6 +794,10 @@ Exercises, each Exercise records reps and weight.
 title and an author; a librarian checks a returned book back in."
 Name the conceptual-stage entities.
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **Member, Book, Librarian.** Relationships: a Member
 borrows a Book; a Librarian checks a Book back in. No table names or
 keys yet.
@@ -804,6 +808,10 @@ keys yet.
 
 **Question:** Which of the four tests catches a model that two
 engineers read two different ways?
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** **Understandability.** A model two engineers read two
 different ways has failed this test, regardless of how complete or
@@ -817,6 +825,10 @@ correct it otherwise is.
 table, so a student's major is copied into every enrollment row.
 Which test does this fail?
 
+---
+
+# Sample Question 3: Answer
+
 **Answer:** **Minimal redundancy.** Storing the same fact (the
 student's major) in every enrollment row is exactly what this test
 exists to catch.
@@ -827,6 +839,10 @@ exists to catch.
 
 **Question:** "Students must be able to enroll in at most 6 courses
 per semester." Which design stage captures this fact first?
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:** **Conceptual design.** It is a real-world rule the model
 must be able to express, captured as a stated fact before any table
@@ -839,6 +855,10 @@ or constraint exists to enforce it later.
 **Question:** Name one thing Week 2's integrity constraints and this
 week's four "good design" tests have in common, and one thing that is
 different.
+
+---
+
+# Sample Question 5: Answer
 
 **Answer:** **In common:** both exist to catch a design mistake before
 it causes real damage. **Different:** Week 2's constraints are
@@ -853,6 +873,10 @@ them for you.
 **Question:** A gym design lists Member and Class, but nothing records
 a class's maximum number of spots. Which of the four tests does this
 fail?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **Completeness.** The stated requirement ("a class has a
 maximum number of spots") is not represented anywhere in the model

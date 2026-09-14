@@ -868,6 +868,10 @@ member per movie. Foreign keys: `member_id` &rarr; `Member.member_id`;
 **Question:** `Instructor(instructor_id, name, office)`. Is
 `{instructor_id}` a candidate key, a superkey, both, or neither?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **Both.** It uniquely identifies each instructor (superkey)
 and has no unnecessary attributes to remove (candidate key). A
 relation's primary key is always both.
@@ -880,6 +884,10 @@ relation's primary key is always both.
 student with ID 999 exists in `Student`. Which integrity rule is
 broken?
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** **Referential integrity.** The foreign key `student_id` in
 `Enrollment` must match an existing primary key value in `Student`.
 
@@ -890,6 +898,10 @@ broken?
 **Question:** A `Loan` row has `due_date = 'next Tuesday'` in a column
 whose domain is defined as calendar dates only. Which constraint
 catches this?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** **Domain constraint.** "next Tuesday" is not a calendar
 date value; it violates the declared domain of the `due_date`
@@ -905,6 +917,10 @@ can attend the same weekly class more than once, on different weeks.
 Name a candidate key for `Checkin` that actually works, and explain
 why `{member_id, class_id}` alone is not enough.
 
+---
+
+# Sample Question 4: Answer
+
 **Answer:** **{member_id, class_id, checkin_time}.** The same
 member-class pair legitimately repeats across different weeks, so
 `checkin_time` (or a date) is required to tell those check-ins apart.
@@ -917,6 +933,10 @@ member-class pair legitimately repeats across different weeks, so
 Instructor 12 was deleted last month. Which constraint is violated,
 and why is the row "meaningless," not just wrong?
 
+---
+
+# Sample Question 5: Answer
+
 **Answer:** **Referential integrity.** The row points at a primary key
 value that no longer exists anywhere; "instructor 12" is not a stale
 fact, it refers to nothing at all.
@@ -928,6 +948,10 @@ fact, it refers to nothing at all.
 **Question:** `Product(sku, name, price)` has `price = -12`, in a
 column whose domain is "a non-negative amount of money." Which
 constraint catches this?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **Domain constraint.** `-12` is not a member of
 "non-negative amounts of money," regardless of whether the column's

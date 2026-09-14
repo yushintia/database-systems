@@ -1005,6 +1005,10 @@ exactly one row: yours.
 **Question:** Write an `INSERT` statement adding a new `Student`,
 "Park Jiho," major "Software Engineering."
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:**
 ```sql
 INSERT INTO Student (name, major)
@@ -1018,6 +1022,10 @@ VALUES ('Park Jiho', 'Software Engineering');
 **Question:** What happens if you run `DELETE FROM Section;` with no
 `WHERE` clause, and why is this dangerous?
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** Every row in `Section` is deleted, permanently, with no
 way to selectively undo it. It is dangerous because a missing `WHERE`
 clause silently expands "delete one row" into "delete everything."
@@ -1028,6 +1036,10 @@ clause silently expands "delete one row" into "delete everything."
 
 **Question:** Why is it good practice to run a matching `SELECT`, with
 the same `WHERE`, before running an `UPDATE` or `DELETE`?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** Because it lets you see exactly which rows the `WHERE`
 clause matches before an `UPDATE` or `DELETE` changes them

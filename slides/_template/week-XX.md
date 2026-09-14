@@ -133,6 +133,10 @@ introduce content the lab page doesn't have>
 
 **Question:** <question>
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** <answer>
 
 ---
@@ -140,6 +144,10 @@ introduce content the lab page doesn't have>
 # Sample Question 2
 
 **Question:** <question>
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** <answer>
 

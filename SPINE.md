@@ -74,7 +74,7 @@ the pain slide (4) is too abstract, so fix it instead of breaking the rule.
 | 9+k+1..N-3 | Mechanics | Stepwise, as many slides as the topic needs |
 | N-2 | Worked example | Same University Course Registration case study, continued from prior weeks; see `_shared/case-study.md` |
 | N-1 | Common mistakes | Anti-patterns and why each is tempting |
-| N..N+j | Sample question(s) | 2-3 worked questions, the same reasoning shape a real quiz question takes, each titled `Sample Question <n>` with its answer shown on the *same* slide, taught through rather than quizzed |
+| N..N+j | Sample question(s) | 2-3 worked questions, the same reasoning shape a real quiz question takes, taught through rather than quizzed. Each is two consecutive slides: `Sample Question <n>` (the question) then `Sample Question <n>: Answer` (the answer immediately after), so the instructor can pause on the question during class before revealing the answer |
 
 ### Act 4: CLOSE
 

@@ -1015,6 +1015,10 @@ clauses from this lecture.
 **Question:** What does `WHERE grade = NULL` actually return, and why
 does `IS NULL` behave differently?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** `NULL` means "unknown"; nothing equals unknown, not even
 another unknown, so `= NULL` never matches anything. `IS NULL` is the
 only correct test for a missing value.
@@ -1025,6 +1029,10 @@ only correct test for a missing value.
 
 **Question:** Write a query returning every distinct `major` in
 `Student`, sorted alphabetically.
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:**
 ```sql
@@ -1038,6 +1046,10 @@ ORDER BY major ASC;
 
 **Question:** In `SELECT COUNT(*) AS all_rows, COUNT(grade) AS
 graded_rows FROM Enrollment;`, why can the two counts differ?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** `COUNT(*)` counts every row, `NULL` or not. `COUNT(grade)`
 counts only rows where `grade` is not `NULL`, so the two counts differ

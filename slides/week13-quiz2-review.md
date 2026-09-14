@@ -147,6 +147,10 @@ query, in exactly this order.
 instructor_id = 1;` is run without checking how many rows match first.
 What could go wrong, and how would you check safely beforehand?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** Every section taught by instructor 1 changes room at once,
 which may be more sections than intended. Run
 `SELECT * FROM Section WHERE instructor_id = 1;` first, to see exactly
@@ -159,6 +163,10 @@ which rows the `UPDATE` will affect, before running it.
 **Question:** Write a query returning each instructor's name and how
 many sections they teach, including instructors currently teaching
 zero sections.
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:**
 
@@ -179,6 +187,10 @@ GROUP BY Instructor.name;
 ('CSE999', 1);` fails. `CSE999` does not exist in `Course`. Which
 Week 9 constraint caused the failure, and is that a problem or a feature?
 
+---
+
+# Sample Question 3: Answer
+
 **Answer:** **Referential integrity** (a `FOREIGN KEY` constraint,
 Week 9). It is a feature: it caught an error, an orphaned reference,
 before it could ever be written to the database.
@@ -190,6 +202,10 @@ before it could ever be written to the database.
 **Question:** Write a query listing every course title and the average
 grade point of students enrolled in it, for courses with more than 5
 enrollments. (Assume a `GradePoints(grade, points)` lookup table.)
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:**
 ```sql
@@ -208,6 +224,10 @@ HAVING COUNT(*) > 5;
 
 **Question:** What is the difference between `DELETE FROM Enrollment;`
 and `DELETE FROM Enrollment WHERE student_id = 1;`?
+
+---
+
+# Sample Question 5: Answer
 
 **Answer:** The first deletes **every** row in `Enrollment`,
 permanently. The second deletes only rows matching `student_id = 1`.

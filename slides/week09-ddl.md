@@ -702,6 +702,10 @@ A course can require another course as a prerequisite.
 prereq_code)`, where both columns together form the primary key, and
 both are foreign keys to `Course(course_code)`.
 
+---
+
+# Practice: A Self-Referencing Foreign Key (Answer)
+
 **Answer:**
 ```sql
 CREATE TABLE Prerequisite (
@@ -725,6 +729,10 @@ answer two different questions about the same pair of rows.
 **Question:** write `CREATE TABLE` for `Book(isbn, title)`, where
 `isbn` is a 13-character code, not an auto-incrementing integer.
 
+---
+
+# Practice: A Library System in MySQL (Answer)
+
 **Answer:**
 ```sql
 CREATE TABLE Book (
@@ -745,6 +753,10 @@ repeats.
 **Question:** `Section.room` was created with no constraint. Write the
 `ALTER TABLE` statement making it required (`NOT NULL`).
 
+---
+
+# Practice: Adding a Constraint After the Fact (Answer)
+
 **Answer:**
 ```sql
 ALTER TABLE Section MODIFY COLUMN room VARCHAR(20) NOT NULL;
@@ -762,6 +774,10 @@ must be included, not just the change.
 account can be deactivated and removed. Should the foreign key use
 `CASCADE`, `SET NULL`, or `RESTRICT`? Justify your choice.
 
+---
+
+# Practice: ON DELETE Behavior for a Ride-Hailing App (Answer)
+
 **Answer:** **`SET NULL`.** Deleting a driver's account should not
 erase the historical record that a ride happened (`CASCADE` would
 destroy trip and billing history), but the ride row still needs to
@@ -776,6 +792,10 @@ exist even once the driver reference is cleared, the same reasoning as
 
 **Question:** `Book.copies_available` should never go negative. Write
 the column definition enforcing that.
+
+---
+
+# Practice: CHECK Constraint in a Library System (Answer)
 
 **Answer:**
 ```sql
@@ -899,6 +919,10 @@ this table right now, constraints included.
 `Instructor(instructor_id, name)`, with `instructor_id`
 auto-generated.
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:**
 ```sql
 CREATE TABLE Instructor (
@@ -914,6 +938,10 @@ CREATE TABLE Instructor (
 **Question:** Why must `Course` be created before `Section`, but
 `Enrollment` must be created last of all five?
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** `Section` has a foreign key to `Course`, so `Course` must
 exist first. `Enrollment` has foreign keys to both `Student` and
 `Section`, so both of those, and everything they depend on, must
@@ -926,6 +954,10 @@ already exist.
 **Question:** Why should a `grade` column use `ENUM` or `VARCHAR`,
 never `DECIMAL`?
 
+---
+
+# Sample Question 3: Answer
+
 **Answer:** Grades like "A0" and "B+" are not numbers, they are values
 from a fixed, known list, exactly what `ENUM` (or `VARCHAR`, if the
 list might grow) represents. `DECIMAL` would reject "A0" outright.
@@ -936,6 +968,10 @@ list might grow) represents. `DECIMAL` would reject "A0" outright.
 
 **Question:** Write the column definition for `Enrollment.grade` so it
 can never be left empty.
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:**
 ```sql
@@ -950,6 +986,10 @@ grade VARCHAR(2) NOT NULL
 sections at the same time and semester. Is this a job for `CHECK`,
 `UNIQUE`, or `NOT NULL`? Which columns would it involve?
 
+---
+
+# Sample Question 5: Answer
+
 **Answer:** **`UNIQUE`**, on the combination `(room, semester,
 meeting_time)` together, a composite `UNIQUE` constraint. This is
 about preventing a duplicate combination, not about validating one
@@ -962,6 +1002,10 @@ column's range (`CHECK`) or requiring a value be present (`NOT NULL`).
 **Question:** A `Course` is deleted. Its `Section` rows should be
 **prevented** from being silently orphaned or deleted. Which
 referential action belongs on `Section.course_code`?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **`RESTRICT`** (or `NO ACTION`, MySQL's default): deleting
 a `Course` that still has `Section` rows referencing it should fail

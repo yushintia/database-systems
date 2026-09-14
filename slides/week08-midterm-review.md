@@ -165,6 +165,10 @@ Week 6 never copied an attribute across relations.
 `room` depends only on `section_id`. Name the normal form violated, and
 fix it.
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **2NF**, a partial dependency (`room` depends on part of
 the composite key, not the whole key). Fix: move `room` into `Section`,
 where it depends on `section_id` alone, the full key of that relation.
@@ -175,6 +179,10 @@ where it depends on `section_id` alone, the full key of that relation.
 
 **Question:** Draw, in words, the mapping for a 1:N relationship
 between Department (1) and Instructor (N).
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** No new relation is created. `Instructor` receives a foreign
 key, `department_id`, referencing `Department.department_id`. The
@@ -188,6 +196,10 @@ foreign key always goes on the "many" side.
 room)` is proposed, with `course_title` copied in directly. Which
 Week 1 failure does this recreate, and which normal form catches it?
 
+---
+
+# Sample Question 3: Answer
+
 **Answer:** **Redundancy and inconsistency** (Week 1's first failure).
 **3NF** catches it: `section_id &rarr; course_code &rarr;
 course_title` is a transitive dependency.
@@ -199,6 +211,10 @@ course_title` is a transitive dependency.
 **Question:** Explain why Week 1's abstraction levels and Week 3's
 design stages use different words (view/logical/physical versus
 conceptual/logical/physical) even though they overlap conceptually.
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:** They answer different questions: abstraction levels
 describe an already-running system's three faces; design stages
@@ -212,6 +228,10 @@ different angles, running system versus building process.
 
 **Question:** Give one example of a functional dependency that is
 **not** related to the registration system.
+
+---
+
+# Sample Question 5: Answer
 
 **Answer:** Any correct example works, for instance: a national ID
 number determines exactly one legal name (`id_number &rarr; name`), or

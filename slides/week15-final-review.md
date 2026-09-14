@@ -222,6 +222,10 @@ instructors teach more than one section, busiest first?"
 entire semester: where does it live at the conceptual stage, the
 logical stage, and finally, in SQL?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** Conceptual: an attribute of the Instructor entity.
 Logical/relational: a column, `Instructor(instructor_id, name,
 office)`. SQL: `ALTER TABLE Instructor ADD COLUMN office VARCHAR(20);`
@@ -236,6 +240,10 @@ followed by `UPDATE Instructor SET office = ... WHERE instructor_id =
 instructor_id, room)` is proposed. Identify the normalization
 violation, name the anomaly it causes, and write the corrected schema.
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** `course_title` is transitively dependent on `course_code`
 (a 3NF violation), causing an update anomaly if a course is renamed.
 Corrected: move `course_title` into `Course(course_code, title)`,
@@ -247,6 +255,10 @@ leaving `Section(section_id, course_code, instructor_id, room)`.
 
 **Question:** Write a single query returning each major and its
 average grade point, for majors with more than 10 enrolled students.
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:**
 
@@ -267,6 +279,10 @@ HAVING COUNT(*) > 10;
 paper before writing a single line of SQL?" Answer in the spine's own
 terms.
 
+---
+
+# Sample Question 4: Answer
+
 **Answer:** Motivation and design must come before implementation
 (this course's own stated principle). Week 9's `CREATE TABLE` needs a
 normalized schema to already exist; skipping straight to SQL would
@@ -279,6 +295,10 @@ exactly what Weeks 6 and 7 exist to prevent.
 
 **Question:** Which single MySQL constraint, introduced in Week 9,
 enforces Week 2's referential integrity automatically?
+
+---
+
+# Sample Question 5: Answer
 
 **Answer:** `FOREIGN KEY ... REFERENCES ...`. MySQL rejects any
 `INSERT` or `UPDATE` that would create a foreign key value with no

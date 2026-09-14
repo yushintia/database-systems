@@ -199,6 +199,10 @@ says every course must belong to exactly one department, and a
 department offers many courses. Draw the cardinality between Course
 and a new Department entity.
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **N:1** from Course to Department (many courses, one
 department each); equivalently **1:N** from Department to Course.
 
@@ -208,6 +212,10 @@ department each); equivalently **1:N** from Department to Course.
 
 **Question:** Explain, in one sentence, why `Enrollment` is a weak
 entity rather than a strong entity.
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** It has no key attribute of its own; it can only be
 identified by the combination of `student_id` and `section_id`
@@ -221,6 +229,10 @@ borrowed from Student and Section.
 `name` attribute twice by mistake. Which rule from Week 2 does this
 violate, and why?
 
+---
+
+# Sample Question 3: Answer
+
 **Answer:** A relation schema is a **set** of attributes; a set cannot
 contain the same element twice. Listing `name` twice is not a minor
 typo, it violates the definition of a relation schema itself.
@@ -231,6 +243,10 @@ typo, it violates the definition of a relation schema itself.
 
 **Question:** Name one thing conceptual design (Week 3) and an E-R
 diagram (Week 4) have in common, and one thing that separates them.
+
+---
+
+# Sample Question 4: Answer
 
 **Answer:** **Common:** both describe the system before any relation
 exists. **Different:** conceptual design, in prose, is not verifiable;
@@ -245,6 +261,10 @@ driving question.
 proposes `{name, office}` as the primary key instead of
 `instructor_id`. Give one concrete reason this is a worse choice.
 
+---
+
+# Sample Question 5: Answer
+
 **Answer:** Two instructors could share an office temporarily, or a
 name could repeat, breaking the key constraint; `instructor_id` is
 system-generated and can never collide, exactly Week 2's warning
@@ -257,6 +277,10 @@ against using a name as a primary key.
 **Question:** A physical-level change (new disks) should not affect
 the view level, according to Week 1. Which Week 2 or Week 3 idea makes
 that guarantee possible in practice?
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **Data independence** (Week 2), enforced through the three
 abstraction levels (Week 1) and formalized as separate physical and

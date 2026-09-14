@@ -1049,6 +1049,10 @@ query shapes, one recurring row, confirming they all agree.
 **Question:** What is the difference between what `INNER JOIN` keeps
 and what `LEFT JOIN` keeps?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** `INNER JOIN` keeps only rows with a match on both sides.
 `LEFT JOIN` keeps every row from the left table, filling in `NULL`
 for the right table's columns where no match exists.
@@ -1060,6 +1064,10 @@ for the right table's columns where no match exists.
 **Question:** Why is `WHERE enrolled > 8` invalid immediately after
 `GROUP BY Section.section_id`, when `enrolled` is an alias for
 `COUNT(*)`?
+
+---
+
+# Sample Question 2: Answer
 
 **Answer:** `WHERE` filters individual rows **before** grouping
 happens, so `enrolled` does not exist as a value yet at that point.
@@ -1073,6 +1081,10 @@ exactly what this needs.
 **Question:** On a `LEFT JOIN`, why does putting a condition on the
 right table in `WHERE` instead of `ON` silently turn it back into an
 `INNER JOIN`?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** `WHERE` runs *after* the `LEFT JOIN` already kept the
 unmatched rows with `NULL`; a `WHERE` condition on the right table's

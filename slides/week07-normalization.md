@@ -605,6 +605,10 @@ disprove a claimed FD, but it can never fully prove one.
 `prerequisite_codes` holds `"CS101,CS102"` in one cell. Which normal
 form does this violate first?
 
+---
+
+# Sample Question 1: Answer
+
 **Answer:** **1NF.** `prerequisite_codes` is a repeating group inside
 one cell, not yet atomic.
 
@@ -616,6 +620,10 @@ one cell, not yet atomic.
 `PRIMARY KEY(student_id, section_id)`, where `room` depends only on
 `section_id`. Which normal form does this violate first?
 
+---
+
+# Sample Question 2: Answer
+
 **Answer:** **2NF.** `room` depends on only part of the composite key
 `{student_id, section_id}`, a partial dependency.
 
@@ -626,6 +634,10 @@ one cell, not yet atomic.
 **Question:** `Section(section_id, instructor_id, instructor_office)`,
 single-key, where `instructor_office` depends on `instructor_id`.
 Which normal form does this violate first?
+
+---
+
+# Sample Question 3: Answer
 
 **Answer:** **3NF.** `section_id` is a single-column key (2NF passes
 automatically), but `instructor_office` depends on `instructor_id`, a
@@ -661,6 +673,10 @@ anomaly actually removed.
 
 **Question:** identify every violation and fix it.
 
+---
+
+# Practice: Normalizing a Library Table (Answer)
+
 **Answer:** `book_title` depends on `isbn` alone (partial, 2NF);
 `member_name` depends on `member_id` alone (also partial). Fix:
 `Loan(isbn, member_id, due_date)`, with `book_title` moved to
@@ -678,6 +694,10 @@ knowing the department tells you its manager.
 
 **Question:** name the violation and the fix.
 
+---
+
+# Practice: Spotting a Transitive Dependency (Answer)
+
 **Answer:** **3NF violation.** `employee_id &rarr; department_id &rarr;
 department_manager` is transitive. Fix: move `department_manager` into
 its own `Department(department_id, manager)` relation.
@@ -692,6 +712,10 @@ its own `Department(department_id, manager)` relation.
 checkin_time)`.
 
 **Question:** identify the violation and fix it.
+
+---
+
+# Practice: A Gym Membership System (Answer)
 
 **Answer:** `gym_location_address` depends on `gym_location_id`, a
 non-key attribute, not on `member_id` or the natural key of a checkin
@@ -828,6 +852,10 @@ mistake, then fix. Update Prof. Lee's name once, in one row, done.
 where `department_office` depends on `major`, not on `student_id`.
 Which normal form does this violate?
 
+---
+
+# Sample Question 4: Answer
+
 **Answer:** **3NF.** `student_id &rarr; major &rarr; department_office`
 is a transitive dependency; `department_office` should live in a
 separate `Major` or `Department` relation.
@@ -838,6 +866,10 @@ separate `Major` or `Department` relation.
 
 **Question:** Why was Week 6's derived registration schema already
 fully normalized, with no extra work needed this week?
+
+---
+
+# Sample Question 5: Answer
 
 **Answer:** Because Week 6's mapping algorithm never copied an
 attribute across relations in the first place, each fact was stored
@@ -850,6 +882,10 @@ start.
 
 **Question:** `Enrollment(student_id, section_id, grade,
 attendance_percent)`. Is this in 2NF? Justify your answer.
+
+---
+
+# Sample Question 6: Answer
 
 **Answer:** **Yes.** Both `grade` and `attendance_percent` depend on
 the full composite key `{student_id, section_id}` together, not on
