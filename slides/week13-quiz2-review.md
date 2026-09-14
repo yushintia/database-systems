@@ -141,7 +141,7 @@ query, in exactly this order.
 
 ---
 
-# Check Yourself: Sample Question 1
+# Sample Question 1
 
 **Question:** `UPDATE Section SET room = '성파 615' WHERE
 instructor_id = 1;` is run without checking how many rows match first.
@@ -154,7 +154,7 @@ which rows the `UPDATE` will affect, before running it.
 
 ---
 
-# Check Yourself: Sample Question 2
+# Sample Question 2
 
 **Question:** Write a query returning each instructor's name and how
 many sections they teach, including instructors currently teaching
@@ -173,7 +173,7 @@ GROUP BY Instructor.name;
 
 ---
 
-# Check Yourself: Sample Question 3
+# Sample Question 3
 
 **Question:** `INSERT INTO Section (course_code, instructor_id) VALUES
 ('CSE999', 1);` fails. `CSE999` does not exist in `Course`. Which
@@ -185,7 +185,7 @@ before it could ever be written to the database.
 
 ---
 
-# Check Yourself: Sample Question 4
+# Sample Question 4
 
 **Question:** Write a query listing every course title and the average
 grade point of students enrolled in it, for courses with more than 5
@@ -204,7 +204,7 @@ HAVING COUNT(*) > 5;
 
 ---
 
-# Check Yourself: Sample Question 5
+# Sample Question 5
 
 **Question:** What is the difference between `DELETE FROM Enrollment;`
 and `DELETE FROM Enrollment WHERE student_id = 1;`?
@@ -257,7 +257,7 @@ queried with everything from this entire semester.
   real, running, queryable MySQL database.
 - **Lab page:** [Lab 13 in the online Lab Manual](../book/labs/lab13-quiz2-review.html), for the full
   self-check questions and worked explanations.
-- **Prepare:** review every Worked Example and Check Yourself slide
+- **Prepare:** review every Worked Example and Sample Question slide
   across Weeks 9-12; the quiz draws directly on the registration schema.
 
 ---

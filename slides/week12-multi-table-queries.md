@@ -1044,32 +1044,40 @@ query shapes, one recurring row, confirming they all agree.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. What is the difference between what `INNER JOIN` keeps and what
-   `LEFT JOIN` keeps?
-2. Why is `WHERE enrolled > 8` invalid immediately after
-   `GROUP BY Section.section_id`, when `enrolled` is an alias for
-   `COUNT(*)`?
-3. On a `LEFT JOIN`, why does putting a condition on the right table
-   in `WHERE` instead of `ON` silently turn it back into an
-   `INNER JOIN`?
+**Question:** What is the difference between what `INNER JOIN` keeps
+and what `LEFT JOIN` keeps?
+
+**Answer:** `INNER JOIN` keeps only rows with a match on both sides.
+`LEFT JOIN` keeps every row from the left table, filling in `NULL`
+for the right table's columns where no match exists.
 
 ---
 
-# Answers
+# Sample Question 2
 
-1. `INNER JOIN` keeps only rows with a match on both sides. `LEFT
-   JOIN` keeps every row from the left table, filling in `NULL` for
-   the right table's columns where no match exists.
-2. `WHERE` filters individual rows **before** grouping happens, so
-   `enrolled` does not exist as a value yet at that point. `HAVING`
-   filters entire groups **after** grouping and aggregation, exactly
-   what this needs.
-3. `WHERE` runs *after* the `LEFT JOIN` already kept the unmatched
-   rows with `NULL`; a `WHERE` condition on the right table's column
-   throws those `NULL` rows straight back out, silently recreating an
-   `INNER JOIN`.
+**Question:** Why is `WHERE enrolled > 8` invalid immediately after
+`GROUP BY Section.section_id`, when `enrolled` is an alias for
+`COUNT(*)`?
+
+**Answer:** `WHERE` filters individual rows **before** grouping
+happens, so `enrolled` does not exist as a value yet at that point.
+`HAVING` filters entire groups **after** grouping and aggregation,
+exactly what this needs.
+
+---
+
+# Sample Question 3
+
+**Question:** On a `LEFT JOIN`, why does putting a condition on the
+right table in `WHERE` instead of `ON` silently turn it back into an
+`INNER JOIN`?
+
+**Answer:** `WHERE` runs *after* the `LEFT JOIN` already kept the
+unmatched rows with `NULL`; a `WHERE` condition on the right table's
+column throws those `NULL` rows straight back out, silently
+recreating an `INNER JOIN`.
 
 ---
 
@@ -1115,8 +1123,8 @@ concurrency control, and recovery.
 - **Lab page:** [Lab 12 in the online Lab Manual](../book/labs/lab12-multi-table-queries.html), for the
   Guided Exercises, Challenge Problem, and rubric
 - **Reading:** Silberschatz et al., 7th ed., Chapter 3, 5 (Joins, Aggregation)
-- **Prepare:** Quiz 2 next week covers Weeks 9-12. Review every Check
-  Yourself slide across the SQL half of the course.
+- **Prepare:** Quiz 2 next week covers Weeks 9-12. Review every Sample
+  Question slide across the SQL half of the course.
 
 ---
 

@@ -127,23 +127,25 @@ introduce content the lab page doesn't have>
 
 ---
 
-<!-- SLOT N: Check yourself -->
+<!-- SLOT N..N+j: Sample question(s) -->
 
-# Check Yourself
+# Sample Question 1
 
-1. <question>
-2. <question>
+**Question:** <question>
 
----
-
-# Answers
-
-1. <answer>
-2. <answer>
+**Answer:** <answer>
 
 ---
 
-<!-- SLOT N+1: Limits (Act 4 / CLOSE), becomes next week's slot 4 -->
+# Sample Question 2
+
+**Question:** <question>
+
+**Answer:** <answer>
+
+---
+
+<!-- SLOT N+j+1: Limits (Act 4 / CLOSE), becomes next week's slot 4 -->
 
 # What <This Week's Technique> Cannot Do
 
@@ -153,7 +155,7 @@ introduce content the lab page doesn't have>
 
 ---
 
-<!-- SLOT N+2: Bridge (Act 4 / CLOSE) -->
+<!-- SLOT N+j+2: Bridge (Act 4 / CLOSE) -->
 
 # Next Week
 
@@ -161,7 +163,7 @@ Week XX leaves **<gap>** unsolved. **Week XX+1** addresses it: <next topic>.
 
 ---
 
-<!-- SLOT N+3: Summary (Act 4 / CLOSE) -->
+<!-- SLOT N+j+3: Summary (Act 4 / CLOSE) -->
 
 # Summary
 
@@ -177,7 +179,7 @@ Week XX leaves **<gap>** unsolved. **Week XX+1** addresses it: <next topic>.
 
 ---
 
-<!-- SLOT N+4: Thank You (Act 4 / CLOSE) -->
+<!-- SLOT N+j+4: Thank You (Act 4 / CLOSE) -->
 
 <!-- _class: end -->
 

@@ -597,31 +597,39 @@ disprove a claimed FD, but it can never fully prove one.
 
 ---
 
-# Quick Check: 1NF, 2NF, or 3NF?
+# Sample Question 1
 
-<div class="thread">A fast sort, before the lecture's official Check Yourself.</div>
+<div class="thread">A fast sort: name the one normal form each violates first.</div>
 
-For each, name the **one** normal form it violates first:
+**Question:** `Course(course_code, title, prerequisite_codes)` where
+`prerequisite_codes` holds `"CS101,CS102"` in one cell. Which normal
+form does this violate first?
 
-1. `Course(course_code, title, prerequisite_codes)` where
-   `prerequisite_codes` holds `"CS101,CS102"` in one cell.
-2. `Enrollment(student_id, section_id, grade, room)`,
-   `PRIMARY KEY(student_id, section_id)`, where `room` depends only on
-   `section_id`.
-3. `Section(section_id, instructor_id, instructor_office)`, single-key,
-   where `instructor_office` depends on `instructor_id`.
+**Answer:** **1NF.** `prerequisite_codes` is a repeating group inside
+one cell, not yet atomic.
 
 ---
 
-# Quick Check: Answers
+# Sample Question 2
 
-1. **1NF** — `prerequisite_codes` is a repeating group inside one cell,
-   not yet atomic.
-2. **2NF** — `room` depends on only part of the composite key
-   `{student_id, section_id}`, a partial dependency.
-3. **3NF** — `section_id` is a single-column key (2NF passes
-   automatically), but `instructor_office` depends on `instructor_id`,
-   a non-key attribute, not on `section_id` directly: transitive.
+**Question:** `Enrollment(student_id, section_id, grade, room)`,
+`PRIMARY KEY(student_id, section_id)`, where `room` depends only on
+`section_id`. Which normal form does this violate first?
+
+**Answer:** **2NF.** `room` depends on only part of the composite key
+`{student_id, section_id}`, a partial dependency.
+
+---
+
+# Sample Question 3
+
+**Question:** `Section(section_id, instructor_id, instructor_office)`,
+single-key, where `instructor_office` depends on `instructor_id`.
+Which normal form does this violate first?
+
+**Answer:** **3NF.** `section_id` is a single-column key (2NF passes
+automatically), but `instructor_office` depends on `instructor_id`, a
+non-key attribute, not on `section_id` directly: transitive.
 
 ---
 
@@ -812,31 +820,40 @@ mistake, then fix. Update Prof. Lee's name once, in one row, done.
 
 ---
 
-<!-- SLOT N: Check yourself -->
+<!-- SLOT N..N+j: Sample question(s) -->
 
-# Check Yourself
+# Sample Question 4
 
-1. `Student(student_id, name, major, department_office)`, where
-   `department_office` depends on `major`, not on `student_id`. Which
-   normal form does this violate?
-2. Why was Week 6's derived registration schema already fully
-   normalized, with no extra work needed this week?
-3. `Enrollment(student_id, section_id, grade, attendance_percent)`. Is
-   this in 2NF? Justify your answer.
+**Question:** `Student(student_id, name, major, department_office)`,
+where `department_office` depends on `major`, not on `student_id`.
+Which normal form does this violate?
+
+**Answer:** **3NF.** `student_id &rarr; major &rarr; department_office`
+is a transitive dependency; `department_office` should live in a
+separate `Major` or `Department` relation.
 
 ---
 
-# Answers
+# Sample Question 5
 
-1. **3NF.** `student_id &rarr; major &rarr; department_office` is a
-   transitive dependency; `department_office` should live in a
-   separate `Major` or `Department` relation.
-2. Because Week 6's mapping algorithm never copied an attribute across
-   relations in the first place, each fact was stored exactly once,
-   directly dependent on its own relation's key, from the start.
-3. **Yes.** Both `grade` and `attendance_percent` depend on the full
-   composite key `{student_id, section_id}` together, not on either
-   attribute alone. No partial dependency exists.
+**Question:** Why was Week 6's derived registration schema already
+fully normalized, with no extra work needed this week?
+
+**Answer:** Because Week 6's mapping algorithm never copied an
+attribute across relations in the first place, each fact was stored
+exactly once, directly dependent on its own relation's key, from the
+start.
+
+---
+
+# Sample Question 6
+
+**Question:** `Enrollment(student_id, section_id, grade,
+attendance_percent)`. Is this in 2NF? Justify your answer.
+
+**Answer:** **Yes.** Both `grade` and `attendance_percent` depend on
+the full composite key `{student_id, section_id}` together, not on
+either attribute alone. No partial dependency exists.
 
 ---
 
@@ -881,7 +898,7 @@ actual tables. (Week 8 is the Midterm Exam, covering Weeks 1 through 7.)
   anomaly), the 3NF decomposition exercise, and rubric.
 - **Reading:** Silberschatz et al., 7th ed., Chapter 7
 - **Prepare:** the Midterm Exam next week covers Weeks 1 through 7.
-  Review every Check Yourself and Summary slide across those weeks.
+  Review every Sample Question and Summary slide across those weeks.
 
 ---
 

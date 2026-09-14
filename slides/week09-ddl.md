@@ -893,61 +893,81 @@ this table right now, constraints included.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. Write the `CREATE TABLE` statement for `Instructor(instructor_id,
-   name)`, with `instructor_id` auto-generated.
-2. Why must `Course` be created before `Section`, but `Enrollment`
-   must be created last of all five?
-3. Why should a `grade` column use `ENUM` or `VARCHAR`, never `DECIMAL`?
+**Question:** Write the `CREATE TABLE` statement for
+`Instructor(instructor_id, name)`, with `instructor_id`
+auto-generated.
 
----
-
-# Answers
-
-1. ```sql
-   CREATE TABLE Instructor (
-       instructor_id INT AUTO_INCREMENT PRIMARY KEY,
-       name VARCHAR(100) NOT NULL
-   );
-   ```
-2. `Section` has a foreign key to `Course`, so `Course` must exist
-   first. `Enrollment` has foreign keys to both `Student` and
-   `Section`, so both of those, and everything they depend on, must
-   already exist.
-3. Grades like "A0" and "B+" are not numbers, they are values from a
-   fixed, known list, exactly what `ENUM` (or `VARCHAR`, if the list
-   might grow) represents. `DECIMAL` would reject "A0" outright.
+**Answer:**
+```sql
+CREATE TABLE Instructor (
+    instructor_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+```
 
 ---
 
-# Check Yourself: Constraints and Referential Actions
+# Sample Question 2
 
-1. Write the column definition for `Enrollment.grade` so it can never
-   be left empty.
-2. `Section.room` should never be reused by two different sections at
-   the same time and semester. Is this a job for `CHECK`, `UNIQUE`, or
-   `NOT NULL`? Which columns would it involve?
-3. A `Course` is deleted. Its `Section` rows should be **prevented**
-   from being silently orphaned or deleted. Which referential action
-   belongs on `Section.course_code`?
+**Question:** Why must `Course` be created before `Section`, but
+`Enrollment` must be created last of all five?
+
+**Answer:** `Section` has a foreign key to `Course`, so `Course` must
+exist first. `Enrollment` has foreign keys to both `Student` and
+`Section`, so both of those, and everything they depend on, must
+already exist.
 
 ---
 
-# Answers: Constraints and Referential Actions
+# Sample Question 3
 
-1. ```sql
-   grade VARCHAR(2) NOT NULL
-   ```
-2. **`UNIQUE`**, on the combination `(room, semester, meeting_time)`
-   together, a composite `UNIQUE` constraint. This is about preventing
-   a duplicate combination, not about validating one column's range
-   (`CHECK`) or requiring a value be present (`NOT NULL`).
-3. **`RESTRICT`** (or `NO ACTION`, MySQL's default): deleting a
-   `Course` that still has `Section` rows referencing it should fail
-   outright, forcing those sections to be reassigned or removed first,
-   exactly like the choice already made for `Section.course_code`
-   earlier in this lecture.
+**Question:** Why should a `grade` column use `ENUM` or `VARCHAR`,
+never `DECIMAL`?
+
+**Answer:** Grades like "A0" and "B+" are not numbers, they are values
+from a fixed, known list, exactly what `ENUM` (or `VARCHAR`, if the
+list might grow) represents. `DECIMAL` would reject "A0" outright.
+
+---
+
+# Sample Question 4
+
+**Question:** Write the column definition for `Enrollment.grade` so it
+can never be left empty.
+
+**Answer:**
+```sql
+grade VARCHAR(2) NOT NULL
+```
+
+---
+
+# Sample Question 5
+
+**Question:** `Section.room` should never be reused by two different
+sections at the same time and semester. Is this a job for `CHECK`,
+`UNIQUE`, or `NOT NULL`? Which columns would it involve?
+
+**Answer:** **`UNIQUE`**, on the combination `(room, semester,
+meeting_time)` together, a composite `UNIQUE` constraint. This is
+about preventing a duplicate combination, not about validating one
+column's range (`CHECK`) or requiring a value be present (`NOT NULL`).
+
+---
+
+# Sample Question 6
+
+**Question:** A `Course` is deleted. Its `Section` rows should be
+**prevented** from being silently orphaned or deleted. Which
+referential action belongs on `Section.course_code`?
+
+**Answer:** **`RESTRICT`** (or `NO ACTION`, MySQL's default): deleting
+a `Course` that still has `Section` rows referencing it should fail
+outright, forcing those sections to be reassigned or removed first,
+exactly like the choice already made for `Section.course_code`
+earlier in this lecture.
 
 ---
 

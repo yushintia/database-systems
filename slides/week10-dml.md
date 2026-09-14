@@ -1000,29 +1000,39 @@ exactly one row: yours.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. Write an `INSERT` statement adding a new `Student`, "Park Jiho,"
-   major "Software Engineering."
-2. What happens if you run `DELETE FROM Section;` with no `WHERE`
-   clause, and why is this dangerous?
-3. Why is it good practice to run a matching `SELECT`, with the same
-   `WHERE`, before running an `UPDATE` or `DELETE`?
+**Question:** Write an `INSERT` statement adding a new `Student`,
+"Park Jiho," major "Software Engineering."
+
+**Answer:**
+```sql
+INSERT INTO Student (name, major)
+VALUES ('Park Jiho', 'Software Engineering');
+```
 
 ---
 
-# Answers
+# Sample Question 2
 
-1. ```sql
-   INSERT INTO Student (name, major)
-   VALUES ('Park Jiho', 'Software Engineering');
-   ```
-2. Every row in `Section` is deleted, permanently, with no way to
-   selectively undo it. It is dangerous because a missing `WHERE`
-   clause silently expands "delete one row" into "delete everything."
-3. Because it lets you see exactly which rows the `WHERE` clause
-   matches before an `UPDATE` or `DELETE` changes them irreversibly, a
-   cheap way to catch a wrong `WHERE` clause before it does any damage.
+**Question:** What happens if you run `DELETE FROM Section;` with no
+`WHERE` clause, and why is this dangerous?
+
+**Answer:** Every row in `Section` is deleted, permanently, with no
+way to selectively undo it. It is dangerous because a missing `WHERE`
+clause silently expands "delete one row" into "delete everything."
+
+---
+
+# Sample Question 3
+
+**Question:** Why is it good practice to run a matching `SELECT`, with
+the same `WHERE`, before running an `UPDATE` or `DELETE`?
+
+**Answer:** Because it lets you see exactly which rows the `WHERE`
+clause matches before an `UPDATE` or `DELETE` changes them
+irreversibly, a cheap way to catch a wrong `WHERE` clause before it
+does any damage.
 
 ---
 

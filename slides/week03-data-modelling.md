@@ -788,55 +788,75 @@ Exercises, each Exercise records reps and weight.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. Requirement: "A member borrows books; each book has a title and an
-   author; a librarian checks a returned book back in." Name the
-   conceptual-stage entities.
-2. Which of the four tests catches a model that two engineers read two
-   different ways?
-3. A design combines student and enrollment data into one table, so a
-   student's major is copied into every enrollment row. Which test
-   does this fail?
+**Question:** Requirement: "A member borrows books; each book has a
+title and an author; a librarian checks a returned book back in."
+Name the conceptual-stage entities.
 
----
-
-# Answers
-
-1. **Member, Book, Librarian.** Relationships: a Member borrows a Book;
-   a Librarian checks a Book back in. No table names or keys yet.
-2. **Understandability.** A model two engineers read two different ways
-   has failed this test, regardless of how complete or correct it
-   otherwise is.
-3. **Minimal redundancy.** Storing the same fact (the student's major)
-   in every enrollment row is exactly what this test exists to catch.
+**Answer:** **Member, Book, Librarian.** Relationships: a Member
+borrows a Book; a Librarian checks a Book back in. No table names or
+keys yet.
 
 ---
 
-# Check Yourself, Round Two
+# Sample Question 2
 
-1. "Students must be able to enroll in at most 6 courses per
-   semester." Which design stage captures this fact first?
-2. Name one thing Week 2's integrity constraints and this week's four
-   "good design" tests have in common, and one thing that is
-   different.
-3. A gym design lists Member and Class, but nothing records a class's
-   maximum number of spots. Which of the four tests does this fail?
+**Question:** Which of the four tests catches a model that two
+engineers read two different ways?
+
+**Answer:** **Understandability.** A model two engineers read two
+different ways has failed this test, regardless of how complete or
+correct it otherwise is.
 
 ---
 
-# Answers, Round Two
+# Sample Question 3
 
-1. **Conceptual design.** It is a real-world rule the model must be
-   able to express - captured as a stated fact before any table or
-   constraint exists to enforce it later.
-2. **In common:** both exist to catch a design mistake before it causes
-   real damage. **Different:** Week 2's constraints are enforced
-   automatically, by definition, once declared; the four tests require
-   a person to deliberately check for them - nothing enforces them
-   for you.
-3. **Completeness.** The stated requirement ("a class has a maximum
-   number of spots") is not represented anywhere in the model yet.
+**Question:** A design combines student and enrollment data into one
+table, so a student's major is copied into every enrollment row.
+Which test does this fail?
+
+**Answer:** **Minimal redundancy.** Storing the same fact (the
+student's major) in every enrollment row is exactly what this test
+exists to catch.
+
+---
+
+# Sample Question 4
+
+**Question:** "Students must be able to enroll in at most 6 courses
+per semester." Which design stage captures this fact first?
+
+**Answer:** **Conceptual design.** It is a real-world rule the model
+must be able to express, captured as a stated fact before any table
+or constraint exists to enforce it later.
+
+---
+
+# Sample Question 5
+
+**Question:** Name one thing Week 2's integrity constraints and this
+week's four "good design" tests have in common, and one thing that is
+different.
+
+**Answer:** **In common:** both exist to catch a design mistake before
+it causes real damage. **Different:** Week 2's constraints are
+enforced automatically, by definition, once declared; the four tests
+require a person to deliberately check for them, nothing enforces
+them for you.
+
+---
+
+# Sample Question 6
+
+**Question:** A gym design lists Member and Class, but nothing records
+a class's maximum number of spots. Which of the four tests does this
+fail?
+
+**Answer:** **Completeness.** The stated requirement ("a class has a
+maximum number of spots") is not represented anywhere in the model
+yet.
 
 ---
 

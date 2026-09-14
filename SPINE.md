@@ -74,16 +74,16 @@ the pain slide (4) is too abstract, so fix it instead of breaking the rule.
 | 9+k+1..N-3 | Mechanics | Stepwise, as many slides as the topic needs |
 | N-2 | Worked example | Same University Course Registration case study, continued from prior weeks; see `_shared/case-study.md` |
 | N-1 | Common mistakes | Anti-patterns and why each is tempting |
-| N | Check yourself | 2–3 questions; put the answers on the slide immediately after, not the same slide |
+| N..N+j | Sample question(s) | 2-3 worked questions, the same reasoning shape a real quiz question takes, each titled `Sample Question <n>` with its answer shown on the *same* slide, taught through rather than quizzed |
 
 ### Act 4: CLOSE
 
 | # | Slide | Rule |
 |---|---|---|
-| N+1 | Limits | What this week's technique cannot do. **This text becomes next week's slot 4** |
-| N+2 | Bridge | "Week N leaves X unsolved → Week N+1 addresses it." Explicit, one sentence |
-| N+3 | Summary | Takeaways + reading assignment + what to prepare |
-| N+4 | Thank You | Template end slide |
+| N+j+1 | Limits | What this week's technique cannot do. **This text becomes next week's slot 4** |
+| N+j+2 | Bridge | "Week N leaves X unsolved → Week N+1 addresses it." Explicit, one sentence |
+| N+j+3 | Summary | Takeaways + reading assignment + what to prepare |
+| N+j+4 | Thank You | Template end slide |
 
 ## The semester chain
 
@@ -106,9 +106,10 @@ the pain slide (4) is too abstract, so fix it instead of breaking the rule.
 | 15 | Final Exam | review only, no chain link |
 
 Weeks 5, 8, 13, 15 use the **short review variant**: Act 0 (slots 1-3) +
-Act 3 slot "Check yourself" (expanded into full review questions) + Act 4
-(slots N+1..N+4, "Limits" replaced by "What to focus on next"). No Pain or
-Ground acts: there is no new concept to motivate.
+Act 3 slot "Sample question(s)" (expanded into a full set of review
+questions) + Act 4 (slots N+j+1..N+j+4, "Limits" replaced by "What to
+focus on next"). No Pain or Ground acts: there is no new concept to
+motivate.
 
 Week 1 uses the **orientation variant**: a pure course-contract session
 (department standard, matching the sibling courses). It is course
@@ -118,7 +119,7 @@ non-technical tease of the running case study, and a discussion-prompt
 slide (not answered) that Week 2 opens by answering. It closes with the
 standard Limits → Next Week → Summary → Thank You, same as every other
 week, so the chain into Week 2 still holds. It has no Pain/Cost/Origin/
-Build/Worked-example/Common-mistakes/Check-yourself acts in the deck. It
+Build/Worked-example/Common-mistakes/Sample-question acts in the deck. It
 still gets one hands-on tie-in in the book: `book/src/labs/
 lab01-intro-and-spreadsheet.md` has students hunt for the spreadsheet's
 own problems (inconsistent names, a deletion anomaly, a concurrent-edit

@@ -516,7 +516,7 @@ relation exists: M:N relationships cannot be represented any other way.
 
 # Worked Example: A Ride-Hailing App's Relationships
 
-<div class="thread">The Check Yourself question at the end of this lecture, answered here first, as a real diagram.</div>
+<div class="thread">The Sample Question at the end of this lecture, answered here first, as a real diagram.</div>
 
 <div class="er">
 <svg viewBox="0 0 1050 300" width="700" height="200">
@@ -893,7 +893,7 @@ weak in the first place.
 
 # Worked Example: A Second M:N Case, Fully Diagrammed
 
-<div class="thread">The TA question from this lecture's Check Yourself, drawn out in full before you're asked to answer it.</div>
+<div class="thread">The TA question from this lecture's Sample Questions, drawn out in full before you're asked to answer it.</div>
 
 <div class="er">
 <svg viewBox="0 0 700 260" width="520" height="193">
@@ -994,57 +994,75 @@ exact same reason `Ride` is.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. Is `office_number` an attribute of Instructor, or a separate entity?
-   Justify your answer.
-2. A Section can have several TAs, and a TA can help with several
-   Sections. What cardinality is that?
-3. In a ride-hailing app, "a Driver gives many Rides; a Rider takes
-   many Rides; each Ride has exactly one Driver and one Rider" - why
-   can't `Ride` simply be a foreign key added to `Driver`?
+**Question:** Is `office_number` an attribute of Instructor, or a
+separate entity? Justify your answer.
 
----
-
-# Answers
-
-1. **Attribute**, unless the system needs to track offices
-   independently of instructors (shared offices, office assignments
-   over time). As stated, it is one property of one instructor.
-2. **M:N**, many-to-many, the same shape as Student to Section.
-3. Because the relationship is M:N (many drivers, many riders, many
-   rides), and an M:N relationship can never be captured by a single
-   foreign key on either side, exactly the same reason Enrollment
-   needs to be its own relation.
+**Answer:** **Attribute**, unless the system needs to track offices
+independently of instructors (shared offices, office assignments over
+time). As stated, it is one property of one instructor.
 
 ---
 
-# Check Yourself, Round Two
+# Sample Question 2
 
-1. A designer gives `Enrollment` its own independent `enrollment_id`,
-   in addition to `student_id` and `section_id`. Is this necessary?
-   Why or why not?
-2. In the library system, is `Copy` weak or strong if it is identified
-   only as "this Book, copy number 3," with no `copy_id` of its own?
-3. A food delivery app's `OrderLine` has attributes `quantity` and
-   `special_instructions`. Do either of these attributes make
-   `OrderLine` a strong entity? Why or why not?
+**Question:** A Section can have several TAs, and a TA can help with
+several Sections. What cardinality is that?
+
+**Answer:** **M:N**, many-to-many, the same shape as Student to
+Section.
 
 ---
 
-# Answers, Round Two
+# Sample Question 3
 
-1. **Not necessary.** `{student_id, section_id}` already uniquely
-   identifies every enrollment; adding `enrollment_id` gives the weak
-   entity a surrogate key it does not need, exactly the pitfall this
-   lecture's Common Mistakes slide names.
-2. **Weak.** Without its own `copy_id`, a copy can only be told apart
-   using "this Book" plus "copy number 3" together - borrowed
-   identity, the definition of a weak entity.
-3. **No.** `quantity` and `special_instructions` describe the
-   OrderLine relationship itself; they do not give it an independent
-   key. `OrderLine` stays weak, identified only as `{order_id,
-   menu_item_id}`.
+**Question:** In a ride-hailing app, "a Driver gives many Rides; a
+Rider takes many Rides; each Ride has exactly one Driver and one
+Rider," why can't `Ride` simply be a foreign key added to `Driver`?
+
+**Answer:** Because the relationship is M:N (many drivers, many
+riders, many rides), and an M:N relationship can never be captured by
+a single foreign key on either side, exactly the same reason
+Enrollment needs to be its own relation.
+
+---
+
+# Sample Question 4
+
+**Question:** A designer gives `Enrollment` its own independent
+`enrollment_id`, in addition to `student_id` and `section_id`. Is
+this necessary? Why or why not?
+
+**Answer:** **Not necessary.** `{student_id, section_id}` already
+uniquely identifies every enrollment; adding `enrollment_id` gives
+the weak entity a surrogate key it does not need, exactly the pitfall
+this lecture's Common Mistakes slide names.
+
+---
+
+# Sample Question 5
+
+**Question:** In the library system, is `Copy` weak or strong if it is
+identified only as "this Book, copy number 3," with no `copy_id` of
+its own?
+
+**Answer:** **Weak.** Without its own `copy_id`, a copy can only be
+told apart using "this Book" plus "copy number 3" together, borrowed
+identity, the definition of a weak entity.
+
+---
+
+# Sample Question 6
+
+**Question:** A food delivery app's `OrderLine` has attributes
+`quantity` and `special_instructions`. Do either of these attributes
+make `OrderLine` a strong entity? Why or why not?
+
+**Answer:** **No.** `quantity` and `special_instructions` describe the
+OrderLine relationship itself; they do not give it an independent
+key. `OrderLine` stays weak, identified only as `{order_id,
+menu_item_id}`.
 
 ---
 

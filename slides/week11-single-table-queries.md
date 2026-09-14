@@ -1010,29 +1010,38 @@ clauses from this lecture.
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. What does `WHERE grade = NULL` actually return, and why does
-   `IS NULL` behave differently?
-2. Write a query returning every distinct `major` in `Student`,
-   sorted alphabetically.
-3. In `SELECT COUNT(*) AS all_rows, COUNT(grade) AS graded_rows FROM
-   Enrollment;`, why can the two counts differ?
+**Question:** What does `WHERE grade = NULL` actually return, and why
+does `IS NULL` behave differently?
+
+**Answer:** `NULL` means "unknown"; nothing equals unknown, not even
+another unknown, so `= NULL` never matches anything. `IS NULL` is the
+only correct test for a missing value.
 
 ---
 
-# Answers
+# Sample Question 2
 
-1. `NULL` means "unknown"; nothing equals unknown, not even another
-   unknown, so `= NULL` never matches anything. `IS NULL` is the only
-   correct test for a missing value.
-2. ```sql
-   SELECT DISTINCT major FROM Student
-   ORDER BY major ASC;
-   ```
-3. `COUNT(*)` counts every row, `NULL` or not. `COUNT(grade)` counts
-   only rows where `grade` is not `NULL`, so the two counts differ by
-   exactly the number of still-ungraded rows.
+**Question:** Write a query returning every distinct `major` in
+`Student`, sorted alphabetically.
+
+**Answer:**
+```sql
+SELECT DISTINCT major FROM Student
+ORDER BY major ASC;
+```
+
+---
+
+# Sample Question 3
+
+**Question:** In `SELECT COUNT(*) AS all_rows, COUNT(grade) AS
+graded_rows FROM Enrollment;`, why can the two counts differ?
+
+**Answer:** `COUNT(*)` counts every row, `NULL` or not. `COUNT(grade)`
+counts only rows where `grade` is not `NULL`, so the two counts differ
+by exactly the number of still-ungraded rows.
 
 ---
 

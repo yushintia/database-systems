@@ -863,56 +863,75 @@ member per movie. Foreign keys: `member_id` &rarr; `Member.member_id`;
 
 ---
 
-# Check Yourself
+# Sample Question 1
 
-1. `Instructor(instructor_id, name, office)`. Is `{instructor_id}` a
-   candidate key, a superkey, both, or neither?
-2. An `Enrollment` row has `student_id = 999`, but no student with ID
-   999 exists in `Student`. Which integrity rule is broken?
-3. A `Loan` row has `due_date = 'next Tuesday'` in a column whose
-   domain is defined as calendar dates only. Which constraint catches this?
+**Question:** `Instructor(instructor_id, name, office)`. Is
+`{instructor_id}` a candidate key, a superkey, both, or neither?
 
----
-
-# Answers
-
-1. **Both.** It uniquely identifies each instructor (superkey) and has
-   no unnecessary attributes to remove (candidate key). A relation's
-   primary key is always both.
-2. **Referential integrity.** The foreign key `student_id` in
-   `Enrollment` must match an existing primary key value in `Student`.
-3. **Domain constraint.** "next Tuesday" is not a calendar date value;
-   it violates the declared domain of the `due_date` attribute.
+**Answer:** **Both.** It uniquely identifies each instructor (superkey)
+and has no unnecessary attributes to remove (candidate key). A
+relation's primary key is always both.
 
 ---
 
-# Check Yourself, Round Two
+# Sample Question 2
 
-1. `Member(member_id, name)`, `Class(class_id, name, day_of_week)`,
-   `Checkin(member_id, class_id, checkin_time)`. A member can attend
-   the same weekly class more than once, on different weeks. Name a
-   candidate key for `Checkin` that actually works, and explain why
-   `{member_id, class_id}` alone is not enough.
-2. A `Section` row references `instructor_id = 12`, but Instructor 12
-   was deleted last month. Which constraint is violated, and why is
-   the row "meaningless," not just wrong?
-3. `Product(sku, name, price)` has `price = -12`, in a column whose
-   domain is "a non-negative amount of money." Which constraint
-   catches this?
+**Question:** An `Enrollment` row has `student_id = 999`, but no
+student with ID 999 exists in `Student`. Which integrity rule is
+broken?
+
+**Answer:** **Referential integrity.** The foreign key `student_id` in
+`Enrollment` must match an existing primary key value in `Student`.
 
 ---
 
-# Answers, Round Two
+# Sample Question 3
 
-1. **{member_id, class_id, checkin_time}.** The same member-class pair
-   legitimately repeats across different weeks, so `checkin_time` (or
-   a date) is required to tell those check-ins apart.
-2. **Referential integrity.** The row points at a primary key value
-   that no longer exists anywhere - "instructor 12" is not a stale
-   fact, it refers to nothing at all.
-3. **Domain constraint.** `-12` is not a member of "non-negative
-   amounts of money," regardless of whether the column's data type
-   (a plain number) would technically allow it.
+**Question:** A `Loan` row has `due_date = 'next Tuesday'` in a column
+whose domain is defined as calendar dates only. Which constraint
+catches this?
+
+**Answer:** **Domain constraint.** "next Tuesday" is not a calendar
+date value; it violates the declared domain of the `due_date`
+attribute.
+
+---
+
+# Sample Question 4
+
+**Question:** `Member(member_id, name)`, `Class(class_id, name,
+day_of_week)`, `Checkin(member_id, class_id, checkin_time)`. A member
+can attend the same weekly class more than once, on different weeks.
+Name a candidate key for `Checkin` that actually works, and explain
+why `{member_id, class_id}` alone is not enough.
+
+**Answer:** **{member_id, class_id, checkin_time}.** The same
+member-class pair legitimately repeats across different weeks, so
+`checkin_time` (or a date) is required to tell those check-ins apart.
+
+---
+
+# Sample Question 5
+
+**Question:** A `Section` row references `instructor_id = 12`, but
+Instructor 12 was deleted last month. Which constraint is violated,
+and why is the row "meaningless," not just wrong?
+
+**Answer:** **Referential integrity.** The row points at a primary key
+value that no longer exists anywhere; "instructor 12" is not a stale
+fact, it refers to nothing at all.
+
+---
+
+# Sample Question 6
+
+**Question:** `Product(sku, name, price)` has `price = -12`, in a
+column whose domain is "a non-negative amount of money." Which
+constraint catches this?
+
+**Answer:** **Domain constraint.** `-12` is not a member of
+"non-negative amounts of money," regardless of whether the column's
+data type (a plain number) would technically allow it.
 
 ---
 

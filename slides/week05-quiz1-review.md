@@ -308,8 +308,8 @@ turns it into a relational schema, one deterministic rule at a time.
   precisely is, how to design one, and how to notate that design.
 - **Lab page:** [Lab 5 in the online Lab Manual](../book/labs/lab05-quiz1-review.html), for the full
   review-question set and the multiple-choice self-test answer key.
-- **Prepare:** review all four weeks' Check Yourself slides before the
-  quiz; they are representative of today's sample questions.
+- **Prepare:** review all four weeks' Sample Question slides before
+  the quiz; they are representative of today's sample questions.
 
 ---
 

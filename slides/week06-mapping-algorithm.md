@@ -351,7 +351,7 @@ composite primary key, nothing invented.
 
 # Rule 4, Worked a Second Time: Textbook and Course
 
-<div class="thread">Confirms Check Yourself's own Q3, worked out in full instead of only asked.</div>
+<div class="thread">Confirms Sample Question 7, worked out in full instead of only asked.</div>
 
 A `Textbook` can be used in many `Course`s, and a `Course` can use many
 `Textbook`s. M:N, so Rule 4 creates a new relation:
@@ -654,29 +654,37 @@ changes nothing about how the resulting table is built.
 
 ---
 
-# Quick Check: Rules 5-10
+# Sample Question 1
 
-<div class="thread">A fast sort, before the lecture's official Check Yourself.</div>
+<div class="thread">A fast sort, applying Rules 5-10.</div>
 
-1. `Section` gains a composite `meeting_time`, made of `day` and
-   `start_hour`. How does Rule 6 map it?
-2. Why does a multivalued attribute never become a single column, no
-   matter how few values it usually holds?
-3. `Vehicle` (in a separate system) specializes into `Car` and `Truck`.
-   Name one advantage Strategy 1 has over Strategy 2.
+**Question:** `Section` gains a composite `meeting_time`, made of `day`
+and `start_hour`. How does Rule 6 map it?
+
+**Answer:** `Section(section_id, ..., day, start_hour)`: the composite
+name never becomes a column, only its two flattened components do.
 
 ---
 
-# Quick Check: Answers
+# Sample Question 2
 
-1. `Section(section_id, ..., day, start_hour)` — the composite name
-   never becomes a column, only its two flattened components do.
-2. A column holds one value. Storing several values in one column
-   (e.g. comma-separated) makes them unqueryable without parsing text
-   by hand, exactly a 1NF violation waiting to happen.
-3. Strategy 1 avoids `NULL` columns: a `Car`-only attribute like
-   `trunk_capacity` never appears, even as an empty cell, on a `Truck`
-   row, since `Truck` has no such column at all.
+**Question:** Why does a multivalued attribute never become a single
+column, no matter how few values it usually holds?
+
+**Answer:** A column holds one value. Storing several values in one
+column (e.g. comma-separated) makes them unqueryable without parsing
+text by hand, exactly a 1NF violation waiting to happen.
+
+---
+
+# Sample Question 3
+
+**Question:** `Vehicle` (in a separate system) specializes into `Car`
+and `Truck`. Name one advantage Strategy 1 has over Strategy 2.
+
+**Answer:** Strategy 1 avoids `NULL` columns: a `Car`-only attribute
+like `trunk_capacity` never appears, even as an empty cell, on a
+`Truck` row, since `Truck` has no such column at all.
 
 ---
 
@@ -814,25 +822,20 @@ keeps working, no matter how many new entities a diagram adds.
 
 ---
 
-# Check Yourself: A New Scenario
+# Sample Question 4
 
-<div class="thread">One scenario, several constructs at once, before this lecture's official Check Yourself.</div>
+<div class="thread">One scenario, several constructs at once.</div>
 
-The registration system adds a `Classroom` entity: `Classroom(1)`
-hosts many `Section(N)`, and each `Classroom` has a composite
-`location` attribute (`building`, `floor`, `room_number`).
+**Question:** The registration system adds a `Classroom` entity:
+`Classroom(1)` hosts many `Section(N)`, and each `Classroom` has a
+composite `location` attribute (`building`, `floor`, `room_number`).
+Which rules apply, and what does each produce?
 
-**Question:** which rules apply, and what does each produce?
-
----
-
-# Check Yourself: A New Scenario, Answer
-
-**Rule 2** (1:N): `Section` gains a foreign key, `classroom_id`,
-referencing `Classroom.classroom_id`. `Classroom` gains no new column.
-
-**Rule 6** (composite attribute): `location` never becomes a column.
-`Classroom` gains three flattened columns instead:
+**Answer:** **Rule 2** (1:N): `Section` gains a foreign key,
+`classroom_id`, referencing `Classroom.classroom_id`. `Classroom`
+gains no new column. **Rule 6** (composite attribute): `location`
+never becomes a column. `Classroom` gains three flattened columns
+instead:
 
 ```
 Classroom(classroom_id, building, floor, room_number)
@@ -933,32 +936,41 @@ PRIMARY KEY (student_id, section_id)
 
 ---
 
-<!-- SLOT N: Check yourself -->
+<!-- SLOT N..N+j: Sample question(s) -->
 
-# Check Yourself
+# Sample Question 5
 
-1. A `Building` (1) contains many `Office` (N). Which relation gets the
-   foreign key, what is it called, and which rule tells you that?
-2. Why does `Enrollment` need a composite primary key instead of a
-   single `enrollment_id`?
-3. A `Textbook` can be used in many `Course`s, and a `Course` can use
-   many `Textbook`s. Which rule applies, and what relation does it
-   produce?
+**Question:** A `Building` (1) contains many `Office` (N). Which
+relation gets the foreign key, what is it called, and which rule
+tells you that?
+
+**Answer:** **Office** gets the foreign key, `building_id`,
+referencing `Building.building_id`, by **Rule 2**. The "many" side
+always holds the key.
 
 ---
 
-# Answers
+# Sample Question 6
 
-1. **Office** gets the foreign key, `building_id`, referencing
-   `Building.building_id`, by **Rule 2**. The "many" side always holds
-   the key.
-2. Because it resolves an M:N relationship: a single `enrollment_id`
-   would not, by itself, prevent the same `{student_id, section_id}`
-   pair from appearing twice. The composite key is what enforces "one
-   enrollment per student per section."
-3. **Rule 4** (M:N). It produces a new relation,
-   `CourseTextbook(course_code, textbook_id)`, with a composite primary
-   key, exactly the same shape as `Enrollment`.
+**Question:** Why does `Enrollment` need a composite primary key
+instead of a single `enrollment_id`?
+
+**Answer:** Because it resolves an M:N relationship: a single
+`enrollment_id` would not, by itself, prevent the same `{student_id,
+section_id}` pair from appearing twice. The composite key is what
+enforces "one enrollment per student per section."
+
+---
+
+# Sample Question 7
+
+**Question:** A `Textbook` can be used in many `Course`s, and a
+`Course` can use many `Textbook`s. Which rule applies, and what
+relation does it produce?
+
+**Answer:** **Rule 4** (M:N). It produces a new relation,
+`CourseTextbook(course_code, textbook_id)`, with a composite primary
+key, exactly the same shape as `Enrollment`.
 
 ---
 
