@@ -26,7 +26,11 @@ CREATE TABLE Course (
 CREATE TABLE Student (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    major VARCHAR(100)
+    -- DEFAULT chosen over plain NULL: a major that goes unrecorded
+    -- reads as "Undeclared" on every query, no NULL-handling needed.
+    -- A student who instead leaves major nullable, with a comment
+    -- justifying it, should receive full credit too.
+    major VARCHAR(100) DEFAULT 'Undeclared'
 );
 
 -- ---------------------------------------------------------------------
@@ -91,6 +95,9 @@ CREATE TABLE Enrollment (
 -- [ ] Every FOREIGN KEY correctly references the target table/column
 -- [ ] NOT NULL present on every column described as "required" in the
 --     lab text (name, title, course_code, room)
+-- [ ] Student.major is either NULL-allowed or DEFAULT 'Undeclared'
+--     (either is correct), with a one-line comment stating which and
+--     why -- the comment is what's graded, not which option they pick
 -- [ ] File runs with zero errors against a freshly reset database
 -- [ ] Header comment block present (SQL Style Guide)
 -- Style deduction, not correctness deduction, if constraints are not

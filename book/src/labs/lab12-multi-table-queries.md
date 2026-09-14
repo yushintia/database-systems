@@ -279,9 +279,9 @@ Write a query listing every student enrolled in one of Professor Han's sections,
 
 ### Exercise 4: GROUP BY and HAVING (Part C)
 
-Write a query showing each `Section.section_id` and how many students are enrolled, but only for sections with more than 8 students enrolled.
+Write a query showing each `Course.course_code` and the total number of students enrolled across all of that course's sections combined, but only for courses with more than 5 students enrolled in total. Unlike the Background's `Section`-level example, `Enrollment` has no `course_code` column, so you will need to `JOIN` through `Section` to reach `Course` before you can `GROUP BY` it.
 
-**Checkpoint — predict before you run it:** would `WHERE COUNT(*) > 8` work in place of `HAVING`? Try it, read the error, and explain why in one sentence.
+**Checkpoint — predict before you run it:** would `WHERE COUNT(*) > 5` work in place of `HAVING`? Try it, read the error, and explain why in one sentence.
 
 ### Exercise 5: Instructors Teaching Nothing (Part C)
 

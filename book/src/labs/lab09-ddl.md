@@ -277,13 +277,14 @@ Save every statement, in the order you run them, into one file: **`lab09_create_
 
 ### Exercise 1: The Three Independent Tables (Part B)
 
-Write `CREATE TABLE` for `Instructor`, `Course`, and `Student`, matching exactly:
+Write `CREATE TABLE` for `Instructor` and `Course`, matching exactly:
 
 ```
 Instructor(instructor_id PK auto, name required)
 Course(course_code PK, title required)
-Student(student_id PK auto, name required, major optional)
 ```
+
+For `Student`, match `student_id PK auto, name required` exactly, but decide `major` yourself. The registrar wants a student's major to be allowed to go unrecorded, but never stored as an empty string. Choose either `NULL`-allowed (Worked Example 1's approach) or `major VARCHAR(100) DEFAULT 'Undeclared'` (the Background's `DEFAULT` example), and add a one-line SQL comment directly above the column stating which you picked and why.
 
 **Checkpoint:** run `SHOW TABLES;`. You should see exactly three tables. Run `DESCRIBE Course;` and confirm `course_code` shows `PRI` under `Key`.
 

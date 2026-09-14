@@ -39,16 +39,23 @@ JOIN Instructor ON Section.instructor_id = Instructor.instructor_id
 WHERE Instructor.name = 'Prof. Han';
 
 -- ---------------------------------------------------------------------
--- Exercise 4: GROUP BY and HAVING
+-- Exercise 4: GROUP BY and HAVING -- course-level total, not
+-- section-level, so it requires the extra JOIN through Section that
+-- the Background's own Section-level example did not need.
 -- ---------------------------------------------------------------------
 
-SELECT Section.section_id, COUNT(*) AS enrolled
+SELECT Course.course_code, COUNT(*) AS enrolled
 FROM Enrollment
 JOIN Section ON Enrollment.section_id = Section.section_id
-GROUP BY Section.section_id
-HAVING COUNT(*) > 8;
+JOIN Course ON Section.course_code = Course.course_code
+GROUP BY Course.course_code
+HAVING COUNT(*) > 5;
 
--- Grading note: WHERE COUNT(*) > 8 in place of HAVING raises
+-- Expected against full_seed.sql: 13 of the 18 courses qualify
+-- (CSE210=26 down to CSE302=6); CSE310, CSE470 (5 each), CSE211,
+-- CSE480, CSE460 (3 each) are correctly excluded.
+
+-- Grading note: WHERE COUNT(*) > 5 in place of HAVING raises
 --   ERROR 1054 (42S22): Unknown column 'COUNT(*)' in 'where clause'
 -- (MySQL) or an equivalent aggregate-in-WHERE error -- aggregates do
 -- not exist as values until grouping has already happened. Full

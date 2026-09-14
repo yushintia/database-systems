@@ -22,8 +22,9 @@ and course title.
 
 ### Exercise 4: GROUP BY and HAVING
 
-Each `Section.section_id` and enrollment count, only for sections with
-more than 8 students enrolled.
+Each `Course.course_code` and total enrollment across all its sections
+combined (JOIN through `Section` first), only for courses with more
+than 5 students enrolled in total.
 
 ### Exercise 5: Instructors Teaching Nothing
 

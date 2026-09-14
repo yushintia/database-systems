@@ -7,9 +7,10 @@ reference solutions.
 
 ### Exercise 1: The Three Independent Tables
 
-Write `CREATE TABLE` for `Instructor(instructor_id PK auto, name required)`,
-`Course(course_code PK, title required)`, and `Student(student_id PK auto,
-name required, major optional)`.
+Write `CREATE TABLE` for `Instructor(instructor_id PK auto, name required)`
+and `Course(course_code PK, title required)`. For `Student(student_id PK
+auto, name required, major ...)`, decide `major` yourself: NULL-allowed or
+`DEFAULT 'Undeclared'`, with a one-line comment justifying the choice.
 
 ### Exercise 2: Section
 
