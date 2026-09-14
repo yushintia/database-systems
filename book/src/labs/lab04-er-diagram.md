@@ -220,6 +220,11 @@ Your diagram must show, at minimum:
 - Every relationship's cardinality, stated explicitly (not implied)
 - Which entities are weak (double-bordered) and which are strong
 - At least one key attribute per strong entity, underlined
+- A **TA** entity you add yourself, with its own key (`ta_id`), and an
+  M:N relationship to Section (this is Practice 4's requirement, not
+  something the Worked Example above already drew for you). TA-Section
+  carries no attribute of its own, so draw it as a direct M:N
+  relationship, not a third weak entity like Enrollment or Waitlist.
 
 Save your result as `lab04_er.png` (or `.drawio`, or a clear photo —
 any of these is fine).
@@ -234,7 +239,7 @@ their own work.
 **Peer-review checklist:**
 
 1. **Entities present?** Are Student, Course, Instructor, Section,
-   Enrollment, and Waitlist all drawn?
+   Enrollment, Waitlist, and TA all drawn?
 2. **Cardinality typed correctly?** Is every relationship explicitly
    labeled 1:1, 1:N, or M:N — not left blank or ambiguous?
 3. **Weak entities marked?** Are Enrollment and Waitlist both drawn
