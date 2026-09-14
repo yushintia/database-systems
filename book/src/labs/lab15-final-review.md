@@ -98,7 +98,7 @@ practice for exactly the kind of multi-step tracing question below.
 
 ## Practice Questions
 
-Same questions as the Check Yourself section of the Week 15 slides,
+Same questions as the Sample Question section of the Week 15 slides,
 with fuller worked explanations than fit on a slide. Read the
 matching week's lab page first if a question still feels unfamiliar.
 

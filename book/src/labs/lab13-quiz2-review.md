@@ -43,7 +43,7 @@ answers shown immediately.
 - Table creation order follows dependency order: a table cannot
   reference one that does not exist yet
 
-**Self-check (from the Week 9 self-check quiz):**
+**Self-check (from Week 9's Sample Question slides):**
 
 **Q.** You run `CREATE TABLE Section (... FOREIGN KEY (instructor_id)
 REFERENCES Instructor(instructor_id));`, but `Instructor` does not
@@ -75,7 +75,7 @@ key, and `title` (up to 150 characters) is required.
 - `DELETE FROM ... WHERE` removes rows; MySQL blocks deletions that
   would orphan a foreign-key reference
 
-**Self-check (from the Week 10 self-check quiz):**
+**Self-check (from Week 10's Sample Question slides):**
 
 **Q.** Why does `UPDATE Instructor SET name = 'Lee, Married Name';`
 (with no `WHERE` clause) cause a serious problem?
@@ -103,7 +103,7 @@ major "Data Science," to `Student`.
 - `DISTINCT` removes duplicate results; `ORDER BY` sorts; `LIMIT`
   caps how many rows return
 
-**Self-check (from the Week 11 self-check quiz):**
+**Self-check (from Week 11's Sample Question slides):**
 
 **Q.** Which query correctly finds every enrollment with no grade
 recorded yet?
@@ -132,7 +132,7 @@ using `IN`.
 - `GROUP BY` clusters rows; `COUNT`, `SUM`, `AVG`, `MAX`, `MIN`
   summarize each cluster; `HAVING` filters groups, `WHERE` filters rows
 
-**Self-check (from the Week 12 self-check quiz):**
+**Self-check (from Week 12's Sample Question slides):**
 
 **Q.** What happens if you write a `JOIN` with no matching condition
 at all?
