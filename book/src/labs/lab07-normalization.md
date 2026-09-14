@@ -254,6 +254,31 @@ Section(section_id, course_code, course_title,
 your answers to steps 1-4, and a one-sentence confirmation (or
 explanation of the mismatch) for step 5.
 
+### Part 3: Normalize Your Own System (the graded deliverable)
+
+Take the relations you produced in **Lab 06 Part C** (mapped from your
+own Lab 4 E-R diagram, not the registration system's). For every
+relation with more than one non-key attribute:
+
+1. Check 1NF. State whether it passes.
+2. Check 2NF, if its primary key is composite. State whether it
+   passes, and why.
+3. Check 3NF: for every non-key attribute, ask whether it depends on
+   the whole key, and only the key. Name any transitive dependency you
+   find (both halves of the `A &rarr; B &rarr; C` chain).
+4. Decompose any relation that fails a check, exactly as you did in
+   Part 2. Write your final, normalized schema: every relation, every
+   primary key, every foreign key.
+
+There is no reference schema to check this against; unlike Part C's
+mapping rules, your normalized design is genuinely your own. Self-check
+by re-applying the test itself: for every relation in your final
+schema, is every non-key attribute determined by the whole key, and
+nothing but the key? If yes to both, on every relation, you are done.
+
+**Deliverable:** appended to `lab07_normalized.md`, as "Part 3: My Own
+System, Normalized."
+
 ---
 
 ## Challenge Problem
@@ -328,8 +353,9 @@ checkin_time)`. Identify the violation and fix it.
 
 | Deliverable | Filename | Points |
 |-------------|----------|--------|
-| Anomaly hunt results and analysis | `lab07_anomalies.md` | 4 |
-| 3NF decomposition (Part 2) | `lab07_normalized.md` | 4 |
+| Anomaly hunt results and analysis | `lab07_anomalies.md` | 2 |
+| 3NF decomposition (Part 2) | `lab07_normalized.md` | 2 |
+| Normalize your own system (Part 3) | `lab07_normalized.md` | 4 |
 | Challenge: normalizing Waitlist | included in `lab07_normalized.md` | 2 |
 
 **Total: 10 points**

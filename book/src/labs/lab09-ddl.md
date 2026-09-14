@@ -310,6 +310,23 @@ Write `CREATE TABLE Enrollment`, with a composite primary key `(student_id, sect
 
 Combine Exercises 1–4 into one clean file, `lab09_create_schema.sql`, containing all five `CREATE TABLE` statements in valid dependency order, plus a one-line header comment (see the [SQL Style Guide](../appendix/sql-style-guide.md)). Run it start to finish against a freshly reset database to confirm it works as a single script, not just as separate lines typed in order.
 
+### Part D: Create Your Own Schema (the graded deliverable)
+
+Take the normalized schema you produced in **Lab 07 Part 3** (your own
+system, not the registration system's). Write `CREATE TABLE` for at
+least 3 of its relations: correct primary keys, correct foreign keys,
+and `NOT NULL` on every attribute your own requirements call required,
+in valid dependency order (independent relations before anything that
+references them, exactly Figure 9.1's rule applied to your own
+design).
+
+Run it against a freshly created database of your own (`CREATE
+DATABASE`, any name that isn't `registration_db`) to confirm the whole
+script executes cleanly, start to finish, with zero errors.
+
+**Deliverable:** `lab09_own_schema.sql`, containing at least 3
+`CREATE TABLE` statements from your own normalized design.
+
 ---
 
 ## Challenge Problem
@@ -376,9 +393,10 @@ A course can require another course as a prerequisite. Write `CREATE TABLE` for 
 
 | Deliverable | Filename | Points |
 |-------------|----------|--------|
-| All 5 tables created, correct columns and types, runs cleanly against `reset.sql` | `lab09_create_schema.sql` | 4 |
-| Correct constraints: `PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`, `AUTO_INCREMENT`, composite key on `Enrollment` | `lab09_create_schema.sql` | 4 |
-| Correct dependency order and style (named constraints, header comment, formatting per the [SQL Style Guide](../appendix/sql-style-guide.md)) | `lab09_create_schema.sql` | 2 |
+| All 5 tables created, correct columns and types, runs cleanly against `reset.sql` | `lab09_create_schema.sql` | 3 |
+| Correct constraints: `PRIMARY KEY`, `FOREIGN KEY`, `NOT NULL`, `AUTO_INCREMENT`, composite key on `Enrollment` | `lab09_create_schema.sql` | 3 |
+| Correct dependency order and style (named constraints, header comment, formatting per the [SQL Style Guide](../appendix/sql-style-guide.md)) | `lab09_create_schema.sql` | 1 |
+| Create your own schema (Part D) | `lab09_own_schema.sql` | 3 |
 
 **Total: 10 points**
 

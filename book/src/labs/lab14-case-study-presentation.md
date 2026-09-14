@@ -40,6 +40,13 @@ instead of by the instructor:
 4. **The payoff:** one real question your system can now answer,
    shown as a working SQL query, with its result
 
+None of this starts cold today. Your E-R diagram is Assignment 1
+(Week 4); the mapped relations are Lab 06 Part C; the normalized
+schema and the anomaly it caught are Lab 07 Part 3; the `CREATE
+TABLE` statements are Lab 09 Part D. Today is assembling and
+presenting work you have already produced, not producing it for the
+first time.
+
 > **In plain words: your own system**
 > "Your own choosing" means picking any small, real domain your team
 > understands well enough to model honestly — a gym membership
