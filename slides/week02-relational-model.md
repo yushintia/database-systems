@@ -153,6 +153,10 @@ class on Earth. That precision is the entire point.
   "any text up to 100 characters" or "an integer 0 through 100"
 - **Tuple:** one row, one value per attribute, matching the schema
 
+**Concretely:** schema `Student(student_id, name, major)`, with one
+tuple `(1, 'Kim Minji', 'Computer Science')`: one value per attribute,
+matching the schema exactly.
+
 ---
 
 <!-- Act 3 / BUILD -->

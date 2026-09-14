@@ -65,13 +65,13 @@ the pain slide (4) is too abstract, so fix it instead of breaking the rule.
 | # | Slide | Rule |
 |---|---|---|
 | 8 | Origin | Who, when, what forced it. Ideas are answers to historical pain, not arbitrary convention |
-| 9 | Core concept | First formal definition of the week |
+| 9..9+k | Core concept(s) | The week's formal definitions, grouped by real conceptual closeness (closely related terms may share a slide, they don't need to be split apart one-per-slide). Hard rule: no formal claim may sit further than one slide away from a concrete instantiation of it. A short definition gets a compact inline example on the same bullet; a definition needing real elaboration gets its own dedicated example slide immediately after it |
 
 ### Act 3: BUILD (flexible)
 
 | # | Slide | Rule |
 |---|---|---|
-| 10..N-3 | Mechanics | Stepwise, as many slides as the topic needs |
+| 9+k+1..N-3 | Mechanics | Stepwise, as many slides as the topic needs |
 | N-2 | Worked example | Same University Course Registration case study, continued from prior weeks; see `_shared/case-study.md` |
 | N-1 | Common mistakes | Anti-patterns and why each is tempting |
 | N | Check yourself | 2–3 questions; put the answers on the slide immediately after, not the same slide |
