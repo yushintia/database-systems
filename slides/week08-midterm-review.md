@@ -95,6 +95,20 @@ Yushintia Pramitarini, Ph.D · Dept. of Intelligent Computing · Mon [4-6] · �
 
 ---
 
+# Review: Week 2, Worked Example
+
+<div class="thread">The terms above, applied in one breath, the way a midterm question will ask.</div>
+
+`Enrollment(student_id, section_id, grade)`, `PRIMARY KEY
+(student_id, section_id)`.
+
+- `{student_id, section_id}` is the **candidate key** (and primary key)
+- `student_id` alone is a **foreign key** to `Student`
+- `section_id` alone is a **foreign key** to `Section`
+- `grade IN ('A0','B+','B0','C+','F')` is a **domain constraint**
+
+---
+
 # Review: Design Process and Notation (Weeks 3-4)
 
 - **Three design stages:** conceptual, logical, physical, not the same

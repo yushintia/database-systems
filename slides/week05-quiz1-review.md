@@ -96,6 +96,23 @@ find where it sits on this chain first.
 
 ---
 
+# Review: Week 1, Worked Example
+
+<div class="thread">The terms above, applied in one breath, the way a quiz question will ask.</div>
+
+Lab 01's registration spreadsheet: the same real student appears as
+`Kim Minji`, `MinJi Kim`, and `김민지` in different rows.
+
+- This is Silberschatz's **redundancy and inconsistency** failure, not
+  a typo: one real-world fact stored three disagreeing ways
+- The spreadsheet has no fixed **schema**, only whatever columns
+  someone typed that day, so there is no agreed-on structure any
+  **instance** of the data has to match
+- A **DBMS** exists specifically to stop this: enforce one shared
+  structure, not leave every edit to trust and memory
+
+---
+
 # Review: Week 2 Core Terms
 
 <div class="cardlist">
@@ -130,6 +147,24 @@ find where it sits on this chain first.
   relational schema), physical (how it is stored)
 - Not the same three as Week 1's abstraction levels: one is a one-time
   building process, the other is an ongoing running structure
+
+---
+
+# Review: Week 3, Worked Example
+
+<div class="thread">The terms above, applied in one breath, the way a quiz question will ask.</div>
+
+Requirement: "a student enrolls in a section."
+
+- **Conceptual (this stage):** entities `Student` and `Section`, a
+  relationship "enrolls in", no numbers, no columns yet
+- **Logical (Week 6 preview):** becomes `Student(student_id, name,
+  major)` plus an `Enrollment` relation, only named, not derived here
+- **Physical (much later):** an index on `student_id`, a real concern,
+  just not this stage's
+
+Naming a later stage is not the same as doing it, exactly why the
+order never reverses.
 
 ---
 

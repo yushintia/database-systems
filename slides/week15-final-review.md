@@ -82,6 +82,22 @@ Yushintia Pramitarini, Ph.D 路 Dept. of Intelligent Computing 路 Mon [4-6] 路 靹
 
 ---
 
+# Review: Foundations, Worked Example
+
+<div class="thread">A DBMS failure, and the relation that prevents it, in one breath.</div>
+
+Lab 01's spreadsheet: the same student appears as `Kim Minji`,
+`MinJi Kim`, and `旯�氙检`, Silberschatz's **redundancy and
+inconsistency** failure, not a typo.
+
+`Enrollment(student_id, section_id, grade)`, `PRIMARY KEY
+(student_id, section_id)`: `{student_id, section_id}` is the
+**candidate key**, `student_id` and `section_id` are each a
+**foreign key**, exactly the structure a DBMS enforces that a
+spreadsheet never could.
+
+---
+
 # Review: Design (Weeks 3-4)
 
 - Three design stages: **conceptual, logical, physical**, distinct
@@ -89,6 +105,20 @@ Yushintia Pramitarini, Ph.D 路 Dept. of Intelligent Computing 路 Mon [4-6] 路 靹
 - **E-R diagrams**: entities, attributes, relationships, and explicit
   cardinality (1:1, 1:N, M:N)
 - **Weak entities** borrow identity from the entities they depend on
+
+---
+
+# Review: Design, Worked Example
+
+<div class="thread">One requirement, watched moving from sentence to diagram.</div>
+
+"A student enrolls in one or more sections."
+
+- **Conceptual (Wk 3):** Student and Section exist; a Student enrolls
+  in a Section, no numbers yet
+- **E-R notation (Wk 4):** Student M:N Section, resolved by the weak
+  entity Enrollment, the same shape as `TA_Section(ta_id, section_id)`
+  for "a TA can help with many Sections"
 
 ---
 
@@ -101,6 +131,20 @@ Yushintia Pramitarini, Ph.D 路 Dept. of Intelligent Computing 路 Mon [4-6] 路 靹
   determines one value of B
 - **1NF, 2NF, 3NF**: no repeating groups, no partial dependency, no
   transitive dependency
+
+---
+
+# Review: Mechanics, Worked Example
+
+<div class="thread">The same E-R fact, mapped, then checked against every normal form.</div>
+
+Enrollment maps to `Enrollment(student_id, section_id, grade)`,
+`PRIMARY KEY (student_id, section_id)` (Week 6, Rules 3 and 4 agree).
+
+Checked against normalization: 1NF (no repeating groups), 2NF (`grade`
+depends on the full composite key), 3NF (no transitive dependency,
+`grade` depends on nothing but the key). Already normalized, because
+Week 6 never copied an attribute across relations.
 
 ---
 
