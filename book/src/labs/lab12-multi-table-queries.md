@@ -361,6 +361,6 @@ Write a query listing the `student_id` and enrollment count for every student en
 
 ## Further Reading
 
-- Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed., Chapter 3 (Joins, Aggregation)
+- Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed., Chapter 3, 5 (Joins, Aggregation)
 - [SQL Style Guide](../appendix/sql-style-guide.md)
 - [Case Study Reference](../appendix/case-study-reference.md)

@@ -334,7 +334,7 @@ checkin_time)`. Identify the violation and fix it.
 ## Further Reading
 
 - Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th
-  ed., Ch. 8.
+  ed., Ch. 7.
 - [The full Week 7 lecture slides](../../slides/week07-normalization.html) — including
   lossless-join and dependency-preserving decomposition, closure, and
   BCNF, beyond this lab's 1NF/2NF/3NF scope.

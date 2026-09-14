@@ -315,6 +315,6 @@ A `Loan(book_isbn, member_id, due_date)` table has `PRIMARY KEY(book_isbn, membe
 
 ## Further Reading
 
-- Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed., Chapter 3 (SQL DML)
+- Silberschatz, Korth, Sudarshan, *Database System Concepts*, 7th ed., Chapter 3-4 (SQL DML)
 - [SQL Style Guide](../appendix/sql-style-guide.md)
 - [Troubleshooting MySQL](../appendix/troubleshooting-mysql.md) — foreign-key error messages in both directions
