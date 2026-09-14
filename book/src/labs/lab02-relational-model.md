@@ -136,6 +136,28 @@ A relation has two parts that change at very different speeds:
 > major)`. A relation can have several candidate keys but only one
 > primary key.
 
+Some relations have more than one candidate key at once.
+`Instructor(instructor_id, name, email)` has two: `{instructor_id}`
+and `{email}` (assuming email is unique and never reused). Only one
+gets underlined as primary:
+
+`Instructor(`**`instructor_id`**`, name, email)`
+
+> **In plain words: alternate key**
+> A candidate key that exists but was *not* chosen as primary is
+> called an **alternate key**. `email` still matters here: a real
+> database can still enforce its uniqueness with a `UNIQUE`
+> constraint, it is just not the relation's main identifier.
+
+> **In plain words: natural key vs. surrogate key**
+> A **natural key** is drawn from real-world data (`email`): people
+> change it, or reuse one across accounts. A **surrogate key** is
+> system-generated, meaningless outside the database (`student_id`):
+> it has no real-world reason to ever change. This is exactly why
+> Lab 01's "Kim Minji" problem gets fixed by a surrogate `student_id`,
+> never by trusting a name or any other real-world value to stay
+> stable.
+
 ### Foreign Keys and the Three Integrity Constraints
 
 > **In plain words: foreign key**
@@ -256,11 +278,11 @@ luck on today's data is not a key.
 
 **What actually fixes this:** a system-generated `student_id`, never
 typed by a human, added specifically so `{student_id}` becomes a
-candidate key that cannot repeat this failure — exactly the fourth
-step in this week's Background, and exactly what `raw_registrations`
-is missing. Nothing forces us yet to add it here, though — that
-decision belongs to a real design process, which is Lab 03's job, not
-this week's.
+candidate key that cannot repeat this failure — exactly the surrogate
+key this week's Background describes, and exactly what
+`raw_registrations` is missing. Nothing forces us yet to add it here,
+though — that decision belongs to a real design process, which is
+Lab 03's job, not this week's.
 
 ---
 
@@ -359,7 +381,7 @@ Kim Minji, Computer Sci., CSE301, Prof. Lee, A0
 
 ### Exercise 2: Referential Integrity, By Hand
 
-`Enrollment(student_id, course_code, grade)` has `student_id` as a
+`Enrollment(student_id, section_id, grade)` has `student_id` as a
 foreign key referencing `Student.student_id`. Suppose a row has
 `student_id = 999`, but no student with ID 999 exists in `Student`.
 

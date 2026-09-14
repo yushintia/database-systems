@@ -528,7 +528,7 @@ unique, reliable, but not the relation's chosen identifier.
 
 # Foreign Keys and the Three Integrity Constraints
 
-<div class="thread">A primary key identifies rows within one relation. Four more rules connect and protect every relation.</div>
+<div class="thread">A primary key identifies rows within one relation. Three more rules connect and protect every relation.</div>
 
 **Foreign key:** an attribute in one relation that must match the
 primary key of a tuple in another relation, or be empty - the formal

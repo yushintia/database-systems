@@ -30,7 +30,7 @@
 | Week | Topic | Silberschatz (S) | Connolly & Begg (C&B) | Elmasri & Navathe (E&N) |
 |---|---|---|---|---|
 | 1 | Introduction | S Ch. 1 | C&B Ch. 1 | E&N Ch. 1 |
-| 2 | Relational Model | S Ch. 2 | C&B Ch. 3-4 | E&N Ch. 3 |
+| 2 | Relational Model | S Ch. 2 | C&B Ch. 3-4 | E&N Ch. 5 |
 | 3 | Data Modelling | S Ch. 6 | C&B Ch. 11 | E&N Ch. 3 |
 | 4 | E-R Diagram | S Ch. 6 | C&B Ch. 12 | E&N Ch. 3 |
 | 5 | Quiz 1 | review | review | review |
