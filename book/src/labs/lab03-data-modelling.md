@@ -207,9 +207,22 @@ that silence is the entire lesson.
 
 > [`toy_sandbox.sql`](files/lab03/toy_sandbox.sql)
 
+### Line by line: what the script actually does
+
+| Statement(s) | What it does |
+|---|---|
+| `CREATE TABLE Course (course_code VARCHAR(10), title VARCHAR(100));` | Declares a two-column table, no primary key on `course_code`, on purpose |
+| `CREATE TABLE Section (section_id INT, course_code VARCHAR(10), instructor VARCHAR(100), room VARCHAR(20));` | Declares a four-column table, no primary key on `section_id`, no foreign key tying `course_code` back to `Course`, on purpose |
+| The first two `INSERT` blocks | Load two believable rows into each table, nothing wrong yet |
+| The four `INSERT`s after "Now the contradictions" | Each one inserts a row that should be impossible in a well-designed schema (a repeated `course_code` with a different title, a `Section` pointing at a course that doesn't exist, a repeated `section_id`, and a sloppily-retyped `course_code`), and MySQL accepts every single one without an error, because nothing in the schema forbids any of it |
+
 Run it (Workbench: **File > Open SQL Script...** then **Execute**, or
 `mysql -u root -p < toy_sandbox.sql`), then open both tables in
 Workbench's data grid and find:
+
+`SELECT * FROM Course;` means "show every column, every row, of
+`Course`," a Week 11 skill, used today only to look at what actually
+loaded:
 
 ```sql
 SELECT * FROM Course;

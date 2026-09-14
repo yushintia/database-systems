@@ -178,6 +178,11 @@ before the delete. Running
 DELETE FROM Section WHERE section_id = 4;
 ```
 
+| Line | What it does |
+|---|---|
+| `DELETE FROM Section` | Removes whole rows from the denormalized table |
+| `WHERE section_id = 4` | ...but only the one row for section 4; nothing else is touched, and nothing warns about what that row exclusively contained |
+
 deletes the section — and, as a side effect, every trace that
 "Operating Systems" or "Dr. Park" ever existed anywhere in the
 database. Before the delete, both were real, nameable things you

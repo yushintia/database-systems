@@ -192,6 +192,15 @@ line below exactly as written:
 SELECT * FROM raw_registrations LIMIT 5;
 ```
 
+This is a query, the skill you learn for real starting Week 11. Today
+it is only a window for looking at what loaded:
+
+| Piece | What it does |
+|---|---|
+| `SELECT *` | "Show me every column" |
+| `FROM raw_registrations` | "...from this table" |
+| `LIMIT 5` | "...but only the first 5 rows" (the table has 18; this keeps the output short) |
+
 ```
 +---------------+-------------------+-------------+-------------------+-----------+----------+-------+
 | student_name  | student_major     | course_code | course_title      | instructor| room     | grade |
@@ -255,12 +264,81 @@ this week's.
 
 ---
 
+## Worked Example: Constructing a Relation, Start to Finish
+
+Finding a key on a broken table only shows what fails. Building a
+relation the right way, on purpose, is a different skill: four
+questions, asked in order, every time. Here it is done once, on
+**Course**, so Exercise 1 still asks you to do it yourself on
+`Student`.
+
+### Step 1: Isolate the facts about one real-world thing
+
+Start from the same flat row Lab 01 used: `Kim Minji, Computer
+Science, CSE301, Database Systems, Prof. Lee, 성파 702, A0`. Ask of
+every single value: is this a fact about the course itself, or about
+something else? `CSE301` and `Database Systems` survive: a course code
+and a course title are true of the course no matter who teaches it,
+where, or which students ever enroll. `Prof. Lee` and `성파 702` are
+facts about one specific *offering* of the course, not the course
+itself (a later term could offer CSE301 with a different instructor,
+in a different room, and it would still be the same course). `Kim
+Minji` and `A0` are facts about one student's one enrollment. Only the
+first two values belong in `Course`.
+
+### Step 2: Name the attributes and their domains
+
+Two attributes survived Step 1, so `Course` gets exactly two:
+`course_code` (a fixed-format code, letters followed by digits, such
+as `CSE301`) and `title` (free text, up to some reasonable length).
+Naming the domain now, even loosely, is what will later let a
+database reject `course_code = 'nine'` instead of quietly storing it.
+
+### Step 3: List every candidate key honestly
+
+Check each plausible attribute set against the same standard Attempts
+1-4 above used: does it stay unique for every real course, not just
+today's sample?
+
+| Candidate | Verdict | Why |
+|---|---|---|
+| `{course_code}` | Candidate key | The university's own catalog guarantees no two courses share a code |
+| `{title}` | Fails | Two different courses can legitimately share a title, such as two different "Special Topics" offerings |
+| `{course_code, title}` | Superkey only | Unique, but `title` adds nothing once `course_code` alone already works |
+
+### Step 4: Choose the primary key and write the schema
+
+Only one real candidate key exists, so it is also the primary key:
+
+```
+Course(course_code, title)
+```
+
+with `course_code` underlined by convention. Notice this works as a
+*natural* key, built from a value the real world already guarantees is
+unique (the catalog), unlike `student_name` in Attempt 1 above. That
+is exactly why `Student` cannot reuse this same trick: no attribute a
+human types for a student is guaranteed unique by anything in the real
+world, which is why `Student` needs a *system-generated*
+`student_id` instead. Deciding that, for `Student`, is Exercise 1.
+
+> **In plain words: the four questions, every time**
+> 1. What real-world thing are these facts actually about?
+> 2. What are its attributes, and what is each one's domain?
+> 3. What are every candidate key, checked honestly, not just today?
+> 4. Which candidate key becomes the primary key?
+
+---
+
 ## Guided In-Lab Exercises
 
 These are paper/analysis exercises. Answer them directly inside
 `lab02_keys.md` — there is no SQL to write this week.
 
 ### Exercise 1: The Registration System, One Relation at a Time (Part B)
+
+Use the same four questions the Worked Example just walked through on
+`Course`, this time on `Student`.
 
 Lab 01's spreadsheet had one flat row like this:
 
