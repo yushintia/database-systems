@@ -520,7 +520,7 @@ constraint (Week 9), even though only the primary key gets underlined
 in this course's notation.
 
 <div class="why">
-`Instructor.email` from two slides ago is a textbook alternate key:
+`Instructor.email` from three slides ago is a textbook alternate key:
 unique, reliable, but not the relation's chosen identifier.
 </div>
 

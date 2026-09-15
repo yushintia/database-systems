@@ -137,11 +137,11 @@ A relation has two parts that change at very different speeds:
 > primary key.
 
 Some relations have more than one candidate key at once.
-`Instructor(instructor_id, name, email)` has two: `{instructor_id}`
+`Instructor(instructor_id, name, office, email)` has two: `{instructor_id}`
 and `{email}` (assuming email is unique and never reused). Only one
 gets underlined as primary:
 
-`Instructor(`**`instructor_id`**`, name, email)`
+`Instructor(`**`instructor_id`**`, name, office, email)`
 
 > **In plain words: alternate key**
 > A candidate key that exists but was *not* chosen as primary is
@@ -375,9 +375,11 @@ Kim Minji, Computer Sci., CSE301, Prof. Lee, A0
    (not the course, not the grade).
 3. Write the full `Student` relation schema, including a key that
    guarantees no two students are indistinguishable.
-4. `Course(course_code, title)` and `Instructor(instructor_id, name)`
-   are this week's other two relations. For each, name a candidate key
-   and say whether it is also the primary key.
+4. `Course(course_code, title)` is this week's other simple relation:
+   name its candidate key and say whether it is also the primary key.
+   `Instructor(instructor_id, name, office, email)` has **two**
+   candidate keys (per this week's Background): name both, and say
+   which one is the primary key and which is the alternate key.
 
 ### Exercise 2: Referential Integrity, By Hand
 
