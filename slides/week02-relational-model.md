@@ -673,8 +673,16 @@ already enough to reject it.
 
 <div class="thread">Same registration spreadsheet from Week 1, now a live table - and still no clean key in sight.</div>
 
-`flat_load.sql` loads Week 1's 18 messy rows into one raw MySQL table,
-`raw_registrations` - no primary key declared, on purpose.
+`raw_registrations`: Week 1's 18 messy rows, no primary key declared,
+on purpose.
+
+| student_name | student_major | course_code | course_title | instructor | room | grade |
+|---|---|---|---|---|---|---|
+| Kim Minji | Computer Science | CSE301 | Database Systems | Prof. Lee | 성파 702 | A0 |
+| Park Jiho | Software Engineering | CSE301 | Database Systems | Prof. Lee | 성파 702 | B+ |
+| MinJi Kim | Computer Science | CSE210 | Data Structures | Prof. Han | 인지관 305 | A- |
+| Lee Somin | Computer Science | CSE301 | Database Systems | Prof. Lee | 성파 702 | A0 |
+| Choi Yuna | Data Science | CSE210 | Data Structures | Prof. Han | 인지관 305 | B0 |
 
 | Attempt | Why it fails |
 |---|---|
